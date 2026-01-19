@@ -685,7 +685,7 @@ El Problema: El motor del portón eléctrico se quemó (Costo estimado: $600).</
 <blockquote>
 <p>Cierre: Al finalizar el trabajo, María registra la factura. El sistema reconoce a “Servicios B” como Contribuyente Especial y aplica las retenciones de ley sin que María tenga que calcularlas.</p>
 </blockquote>
-<p><strong>Inteligencia de Negocios 360°: Benchmarking, Analítica Prescriptiva y Portal de Transparencia (BI &amp; Data Storytelling):</strong></p>
+<h2 id="inteligencia-de-negocios-360°-benchmarking-analítica-prescriptiva-y-portal-de-transparencia-bi--data-storytelling"><strong>Inteligencia de Negocios 360°: Benchmarking, Analítica Prescriptiva y Portal de Transparencia (BI &amp; Data Storytelling):</strong></h2>
 <p>Derivado de funciones analizadas: #20, #21, #22, #51, #52, #56, #83, #97.<br>
 Este módulo supera los reportes estáticos tradicionales (“tablas llenas de números”). Su objetivo es democratizar la información financiera, ofreciendo al Administrador herramientas de análisis profundo y predictivo para la toma de decisiones, y ofreciendo al Propietario un Portal de Transparencia Visual que fomente la confianza y el pago oportuno.</p>
 <p><strong>Tecnología Aplicada:</strong></p>
@@ -707,7 +707,7 @@ Este módulo supera los reportes estáticos tradicionales (“tablas llenas de n
 <p><strong>Ejemplo Práctico de Uso:</strong></p>
 <p>Escenario Admin: Es día de Asamblea. María conecta su laptop al TV, entra al SaaS y presiona “Modo Asamblea”. La pantalla muestra gráficos nítidos y grandes. Los vecinos preguntan: “¿Por qué subió el condominio?”. María cambia la vista a “Normalizado en Dólares” y demuestra con la gráfica que el costo en divisas se ha mantenido estable, desmintiendo la percepción de aumento.</p>
 <p>Escenario Vecino: Juan recibe su recibo. Tiene dudas. Abre su App y ve el Gráfico de Dona. Nota que el segmento “Reparaciones” es grande. Toca el segmento (Drill-down) y se despliega la lista: “Reparación Motor Portón - $400”. Juan entiende, se siente tranquilo por la transparencia y paga</p>
-<p><strong>Gestión de Fianza del Administrador (Art. 19 LPH)</strong></p>
+<h2 id="gestión-de-fianza-del-administrador-art.-19-lph"><strong>Gestión de Fianza del Administrador (Art. 19 LPH)</strong></h2>
 <p><strong>Memoria Descriptiva:</strong><br>
 Sistema de control y auditoría de la garantía legal que debe prestar el administrador para ejercer sus funciones. Este submódulo impide (o alerta críticamente) la gestión de fondos si no existe un respaldo jurídico vigente que responda ante posibles daños o malversaciones.<br>
 Permite la carga digital del documento probatorio (Póliza de Seguros, Contrato de Fianza o Hipoteca), registra la fecha de caducidad y activa un protocolo de “Cuenta Regresiva” para notificar a la Junta de Condominio antes del vencimiento. El sistema actúa como un auditor automático, promoviendo la transparencia y la confianza vecinal.</p>
@@ -725,7 +725,7 @@ Permite la carga digital del documento probatorio (Póliza de Seguros, Contrato 
 <p><strong>Frontend (React/Tailwind):</strong></p>
 <p>Componente de carga de archivos (File Upload) en la configuración del edificio.</p>
 <p><strong>Widget de Alerta:</strong> Un “Banner” persistente en el Dashboard que diga: <em>“ATENCIÓN: La fianza del administrador vence en 15 días”</em> o <em>“Fianza Vencida - Gestión en Riesgo Legal”</em>.</p>
-<p><strong>Estructura Rígida de la Junta de Condominio (Art. 18 y 24 LPH)</strong></p>
+<h2 id="estructura-rígida-de-la-junta-de-condominio-art.-18-y-24-lph"><strong>Estructura Rígida de la Junta de Condominio (Art. 18 y 24 LPH)</strong></h2>
 <p><strong>Memoria Descriptiva:</strong><br>
 Módulo de gobernanza que garantiza la legitimidad del cuerpo colegiado del condominio. El sistema implementa las restricciones del Art. 24 de la LPH, impidiendo la operación administrativa formal si no existe una Junta constituida por tres principales y tres suplentes.<br>
 Gestiona el “Ciclo de Vida” de la Junta (Elección, Período Vigente, Renuncia, Sucesión). Incluye lógica de ascenso automático de suplentes ante faltas temporales o absolutas de los principales, manteniendo siempre el quórum de gobierno necesario para la toma de decisiones válidas. Genera alertas de “Acefalía” si el número de miembros activos cae por debajo del mínimo legal.</p>
@@ -744,7 +744,7 @@ Gestiona el “Ciclo de Vida” de la Junta (Elección, Período Vigente, Renunc
 <p><strong>Middleware de Aprobación: Para acciones críticas (Mover dinero de Fondo de Reserva), requerir aprobación digital de la mayoría simple de los PRINCIPALES activos.</strong></p>
 <p><strong>Frontend (React):</strong></p>
 <p><strong>Organigrama Visual: Widget en el Dashboard que muestre las fotos de los 3 Principales y 3 Suplentes. Si falta uno, muestra una silueta vacía roja “Acefalía Legal”.</strong></p>
-<p><strong>Libros Obligatorios Sellados (Art. 20 LPH)</strong></p>
+<h2 id="libros-obligatorios-sellados-art.-20-lph"><strong>Libros Obligatorios Sellados (Art. 20 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 20 LPH:</strong> Literal e) El Administrador debe llevar <em>“los libros de contabilidad y de actas de la asamblea… y de la Junta de Condominio, debidamente estampillados por un Notario Público”</em>.</p>
 <p><strong>Implicación Crítica:</strong> Un PDF bonito generado por el software NO es un libro legal en Venezuela si no está impreso en los libros que selló el Notario. Si hay un juicio, el juez pide “El Libro”, no “El Dashboard”. El software debe permitir imprimir <strong>sobre</strong> el libro físico o generar hojas que cumplan el formato de foliado para ser insertadas…</p>
@@ -765,7 +765,7 @@ Incluye un motor de impresión calibrado que respeta los márgenes de seguridad 
 <p><strong>Control de “Huérfanas y Viudas”:</strong> Evitar que un párrafo legal se corte mal entre páginas.</p>
 <p><strong>Frontend:</strong></p>
 <p><strong>Asistente de Impresión:</strong> Interfaz que pregunte: <em>“¿Cuál es el último folio impreso en el libro físico?”</em> (ej. 53). El sistema genera el PDF empezando la numeración en 54.</p>
-<p><strong>Gestión de Traspaso de Propiedad y Prelación de Créditos (Art. 13 LPH)</strong></p>
+<h2 id="gestión-de-traspaso-de-propiedad-y-prelación-de-créditos-art.-13-lph"><strong>Gestión de Traspaso de Propiedad y Prelación de Créditos (Art. 13 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 13 LPH:</strong> <em>“La obligación del propietario… sigue a la propiedad”</em>. Es una obligación <em>Propter Rem</em>.</p>
 <p><strong>Implicación Crítica:</strong> Si Juan vende el Apto a María, y Juan debía $1000, la deuda <strong>NO</strong> desaparece ni se queda con Juan. La deuda es del Apartamento. María hereda la deuda. El software no puede simplemente “borrar saldo” al cambiar de usuario, ni permitir un cambio de propietario sin advertencia de solvencia.</p>
@@ -792,7 +792,7 @@ El sistema audita el estado de cuenta de la unidad al momento del traspaso. Si e
 <blockquote>
 <p>Si es Moroso: <strong>ALERTA ROJA</strong>. “¿El nuevo propietario asume la deuda de $500?”. Checkbox obligatorio legal.</p>
 </blockquote>
-<p><strong>Gestión de Pólizas de Seguro Obligatorias (Art. 20, Literal d)</strong></p>
+<h2 id="gestión-de-pólizas-de-seguro-obligatorias-art.-20-literal-d"><strong>Gestión de Pólizas de Seguro Obligatorias (Art. 20, Literal d)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 20, Literal d LPH: Es obligación taxativa del administrador <em>“Velar por que el inmueble esté asegurado contra incendio y terremoto…”</em>.</strong></p>
 <p><strong>La Brecha: Ya hicimos la fianza del <em>Administrador</em>, pero no tenemos dónde guardar la Póliza del Edificio. Si ocurre un siniestro y la póliza estaba vencida por descuido del software, la responsabilidad civil recae sobre la plataforma por no alertar.</strong></p>
@@ -808,7 +808,7 @@ El sistema impide que el condominio quede desprotegido por olvido administrativo
 <p><strong>B. Stack Tecnológico</strong></p>
 <p><strong>Backend: Tarea programada de verificación de vigencia.</strong></p>
 <p><strong>Integración: Posible vínculo con el módulo de Gastos (para generar la renovación automática en Cuentas por Pagar).</strong></p>
-<p><strong>Gestión de “Mejoras Voluptuarias” y Opt-Out (Art. 9 LPH)</strong></p>
+<h2 id="gestión-de-mejoras-voluptuarias-y-opt-out-art.-9-lph"><strong>Gestión de “Mejoras Voluptuarias” y Opt-Out (Art. 9 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 9 LPH: <em>“Las mejoras… que tengan carácter de voluptuarias [lujo innecesario]… requerirán el consentimiento de los propietarios”.</em> Y LO MÁS IMPORTANTE: <em>“Los disidentes no podrán ser obligados a contribuir… ni podrán servirse de ellas”</em>.</strong></p>
 <p><strong>La Brecha: Tenemos “Gastos Sectorizados” (Por Torre), pero no tenemos “Gastos por Exclusión Individual”. Si se aprueba una piscina climatizada (lujo) y el Sr. Pérez vota en contra, la ley dice que no paga, pero el software actual le cobraría. Además, el software debe bloquearle el acceso a esa piscina (Control de Acceso).</strong></p>
