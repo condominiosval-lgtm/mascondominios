@@ -1,12 +1,18 @@
 ---
-
+extensions:
+  markdown:
+    toc: true
 
 ---
 
-<hr>
-<h2 id="extensionstoc-true">extensions:<br>
-toc: true</h2>
-<p>[TOC]</p>
+<h1 id="tabla-de-contenidos">Tabla de Contenidos</h1>
+<ol>
+<li><a href="#objetivo-general-del-desarrollo">Objetivo general del desarrollo</a></li>
+<li><a href="#detalles-inherentes-a-la-landing-page">Detalles inherentes a la Landing Page</a></li>
+<li><a href="#estrategia-de-seo">Estrategia de SEO</a></li>
+<li><a href="#precios-din%C3%A1micos">Modelo de Precios Dinámicos</a></li>
+<li><a href="#requerimientos-t%C3%A9cnicos">Requerimientos Técnicos</a></li>
+</ol>
 <h1 id="objetivo-general-del-desarrollo">Objetivo general del desarrollo:</h1>
 <p>El objetivo general de este desarrollo es la creación de un ecosistema SaaS bajo el dominio <a href="http://mascondominios.com.ve">mascondominios.com.ve</a>, el cual albergará una Landing Page que promocionará un software para administración de condominios en la República Bolivariana de Venezuela. En términos de SEO, la Landing Page tendrá una máxima relevancia, ya que será la página encargada de promover la conversión de un visitante (cliente potencial) a un cliente registrado (usuario) que adquiera un plan para usar el SaaS.</p>
 <p>Este software se comercializará como un SaaS (Software como Servicio) ofreciendo un modelo de <strong>Precios Dinámicos por Volumen</strong>, donde el costo se ajusta automáticamente a la cantidad real de inmuebles gestionados, permitiendo que un mismo usuario excepto las comunidades autogestionadas administre múltiples propiedades con facturación consolidada, permitiendo que un mismo usuario administre múltiples propiedades con ciclos de facturación independientes. Dentro de ese dominio habrá un subdominio bajo la forma <a href="http://app.mascondominios.com.ve">app.mascondominios.com.ve</a>, el cual albergará el SaaS. Este llevará la mayor cantidad de trabajo en términos de lógica, ya que será el encargado de realizar las funciones de cálculo para la administración de condominios como tal, y al cual solo podrán acceder los usuarios ya registrados que cuenten con un plan activo, así como aquellos usuarios que activen el modo prueba (limitado a 5 días).</p>
