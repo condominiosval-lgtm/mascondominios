@@ -11,7 +11,7 @@ extensions:
 <li><a href="#detalles-inherentes-a-la-landing-page">Detalles inherentes a la Landing Page</a>
 <ul>
 <li><a href="#detalles-de-las-pesta%C3%B1as-que-contendr%C3%A1-la-landing-page">Detalles de las pestañas que contendrá la landing page</a></li>
-<li><a href="#detalles-de-las-funciones-que-realizar%C3%A1-la-landing-page-y-sus-secciones">Detalles de las funciones que realizará la landing page</a></li>
+<li><a href="#detalles-de-las-funciones-que-realizar%C3%A1-la-landing-page-y-sus-secciones">Detalles de las funciones que realizará la landing page y sus secciones</a></li>
 <li><a href="#resumen-de-tecnolog%C3%ADas-a-usarse-en-la-landing-page">Resumen de tecnologías a usarse en la landing page</a></li>
 </ul>
 </li>
@@ -111,6 +111,17 @@ extensions:
 <li><a href="#gesti%C3%B3n-de-traspaso-de-propiedad-y-prelaci%C3%B3n-de-cr%C3%A9ditos-art-13-lph">Gestión de Traspaso de Propiedad</a></li>
 <li><a href="#gesti%C3%B3n-de-p%C3%B3lizas-de-seguro-obligatorias-art-20-literal-d">Gestión de Pólizas de Seguro</a></li>
 <li><a href="#gesti%C3%B3n-de-mejoras-voluptuarias-y-opt-out-art-9-lph">Gestión de Mejoras Voluptuarias</a></li>
+</ul>
+</li>
+<li><a href="#esquemas">ESQUEMAS</a>
+<ul>
+<li><a href="#modelo-de-negocio-y-arquitectura-f%C3%ADsica">Modelo de Negocio y Arquitectura Física</a>
+<ul>
+<li><a href="#esquema-1-arquitectura-de-datos-modelo-multi-tenant--suscripci%C3%B3n-granular">ESQUEMA 1: Arquitectura de Datos</a></li>
+<li><a href="#esquema-2-flujo-de-la-verdad-sincronizaci%C3%B3n-y-tasas">ESQUEMA 2: Flujo de la Verdad</a></li>
+<li><a href="#esquema-3-infraestructura-f%C3%ADsica-devops">ESQUEMA 3: Infraestructura Física</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
