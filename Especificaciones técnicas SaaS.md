@@ -890,4 +890,77 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><strong>Facturación: Se genera la cuota “Construcción Jacuzzi”. Al 1-A le llega en $0.00.</strong></p>
 <p><strong>Uso: El hijo del Apto 1-A intenta abrir la puerta del Jacuzzi con su App.</strong></p>
 <p><strong>Denegación: La App dice: “Acceso Restringido. Unidad disidente de esta mejora”.</strong></p>
+<h1 id="esquemas">ESQUEMAS</h1>
+<h2 id="modelo-de-negocio-y-arquitectura-física"><strong>Modelo de Negocio y Arquitectura Física:</strong></h2>
+<h3 id="esquema-1-arquitectura-de-datos-modelo-multi-tenant--suscripción-granular"><strong>ESQUEMA 1: Arquitectura de Datos (Modelo Multi-Tenant &amp; Suscripción Granular)</strong></h3>
+<p>Este plano define la estructura de la Base de Datos (PostgreSQL) para soportar que “María” tenga 5 condominios con pagos independientes y “Juan” aparezca en todos.</p>
+<p><strong>A) El Esquema Público (“Public Schema”)</strong></p>
+<p><em>Aquí vive la información global y la facturación del SaaS.</em></p>
+<p><strong>Tabla GlobalUser (Identidad Única - Juan/María):</strong></p>
+<p>id: UUID.</p>
+<p>email: (Llave única para login).</p>
+<p>password_hash: (Encriptado).</p>
+<p>perfil_base: “Administrador” / “Propietario”.</p>
+<p><strong>Tabla PlanCatalog (El Menú del SaaS):</strong></p>
+<p>id: “plan_basic_50”.</p>
+<p>limite_unidades: 50.</p>
+<p>precio: $10.</p>
+<p><strong>Tabla Tenant (La Entidad Facturable - El Edificio):</strong></p>
+<p>id: UUID (Ej: Residencias Sol).</p>
+<p>schema_name: “tenant_001”.</p>
+<p>admin_owner_id: Vínculo a GlobalUser (María).</p>
+<p><strong>plan_id: Vínculo a PlanCatalog (Aquí vive el cobro, NO en el usuario).</strong></p>
+<p><strong>subscription_status: “ACTIVE” / “EXPIRED” / “TRIAL”.</strong></p>
+<p>trial_ends_at: Fecha límite de prueba.</p>
+<p><strong>Tabla ExchangeRate (El Histórico del Dólar):</strong></p>
+<p>fecha_hora: Timestamp.</p>
+<p>tasa: 50.00 Bs.</p>
+<p>fuente: “BCV” / “MANUAL_OVERRIDE”.</p>
+<p><strong>B) Los Esquemas Privados (“Tenant Schemas”)</strong></p>
+<p><em>Se crea una copia aislada de estas tablas para CADA edificio. Aquí vive la contabilidad.</em></p>
+<p><strong>Tabla TenantProfile (El Rol Local):</strong></p>
+<p>user_id: Vínculo al GlobalUser público.</p>
+<p>rol: “Junta”, “Vecino”, “Conserje”.</p>
+<p>unidad_id: Vínculo al apartamento.</p>
+<p><strong>Tabla Transaction (El Dinero - Finanzas):</strong></p>
+<p>tipo: Deuda / Pago.</p>
+<p>monto_usd: (Moneda base).</p>
+<p>monto_bs: (Moneda visual).</p>
+<p><strong>unique_hash: (Constraint de Seguridad)</strong> -&gt; <em>Hash(Banco + Referencia + Fecha + Monto)</em> para evitar duplicados.</p>
+<p><strong>Tabla AuditLog (La Caja Negra):</strong></p>
+<p>Registro histórico inmutable (django-simple-history).</p>
+<hr>
+<h3 id="esquema-2-flujo-de-la-verdad-sincronización-y-tasas"><strong>ESQUEMA 2: Flujo de la Verdad (Sincronización y Tasas)</strong></h3>
+<p>Este plano dicta cómo se mueven los datos entre el mundo offline, el servidor y la realidad económica.</p>
+<p><strong>A) El Oráculo del Dólar (Exchange Rate Flow)</strong></p>
+<p><strong>Entrada:</strong> Cron Job (Automático cada 1h) <strong>O</strong> Acción Manual del Admin (Prioridad).</p>
+<p><strong>Proceso:</strong> El Backend actualiza la tabla ExchangeRate en el esquema público.</p>
+<p><strong>Disparador (Webhook):</strong> Si la tasa cambió, el Backend llama a Vercel/Netlify.</p>
+<p><strong>Reacción:</strong> La Landing Page se recompila sola y “quema” el nuevo precio en el HTML (Static Fallback).</p>
+<p><strong>Propagación:</strong> La nueva tasa se envía a todos los Tenants para los cálculos de deuda en Bs.</p>
+<p><strong>B) El Protocolo de Sincronización (Offline -&gt; Online)</strong></p>
+<p><em>El usuario paga sin internet.</em></p>
+<p><strong>Local (WatermelonDB):</strong> Guarda el pago con estado pending_sync.</p>
+<p><strong>Conexión (Network):</strong> Al detectar internet, la App envía el paquete JSON.</p>
+<p><strong>Validación (Backend):</strong></p>
+<p>¿El Tenant está ACTIVE? (Si está EXPIRED, rechaza).</p>
+<p>¿Ya existe el unique_hash (Referencia bancaria)? (Si existe, rechaza).</p>
+<p><strong>Cálculo Aditivo:</strong> El servidor procesa el pago y recalcula el saldo final.</p>
+<p><strong>Respuesta (Pull):</strong> El servidor devuelve “OK” y el nuevo saldo oficial.</p>
+<p><strong>Caché Multimedia:</strong> Si la respuesta incluye un recibo PDF, la App lo descarga al sistema de archivos del celular (fs-cache) para verlo sin internet a futuro.</p>
+<hr>
+<h3 id="esquema-3-infraestructura-física-devops"><strong>ESQUEMA 3: Infraestructura Física (DevOps)</strong></h3>
+<p>Este plano muestra dónde se instala cada pieza del rompecabezas.</p>
+<p><strong>Capa de Usuario (Clientes):</strong></p>
+<p><strong>Landing Page:</strong> Hosting Estático (Vercel/Netlify) + React Islands.</p>
+<p><strong>Web SaaS:</strong> Hosting S3 + CloudFront (SPA React).</p>
+<p><strong>App Móvil:</strong> Binarios en Play Store / App Store (React Native).</p>
+<p><strong>Capa de Lógica (Servidores):</strong></p>
+<p><strong>API Cluster:</strong> Contenedores Docker con Django + Gunicorn (Escalables).</p>
+<p><strong>Task Workers:</strong> Contenedores Celery (Para generar los PDFs pesados y enviar correos).</p>
+<p><strong>Broker:</strong> Redis (Para pasar mensajes entre API y Workers).</p>
+<p><strong>Capa de Datos (Almacenamiento):</strong></p>
+<p><strong>DB Principal:</strong> PostgreSQL con extensión schemas.</p>
+<p><strong>Hot Storage (S3):</strong> Bucket para imágenes y PDFs de recibos recientes (Privado).</p>
+<p><strong>Cold Storage (S3 Archive):</strong> Bucket barato para Logs de auditoría de +24 meses.</p>
 
