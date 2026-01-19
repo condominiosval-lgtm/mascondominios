@@ -173,7 +173,7 @@ La Lógica de Negocio: (Multi-tenant y la estrategia de Dólar Base / Bolívar V
 <p>Unidad de Cobro: Por Inmueble.</p>
 <p>Restricción Dura: Este perfil tiene un bloqueo a nivel de código (TenantLimit = 1). El sistema le permite ajustar la capacidad de <em>su</em> edificio, pero inhabilita la opción de crear un segundo edificio.</p>
 <p>Propósito: Mantener el control sobre usuarios no profesionales.</p>
-<h2 id="c-la-empresa-administradora-wholesalemayorista"><strong>C) La Empresa Administradora (Wholesale/Mayorista):</strong></h2>
+<h3 id="c-la-empresa-administradora-wholesalemayorista"><strong>C) La Empresa Administradora (Wholesale/Mayorista):</strong></h3>
 <p>Unidad de Cobro: Por “Slot” de Edificio Completo.</p>
 <p>Condición de Entrada: Mínimo 5 condominios para activar este perfil.</p>
 <p>Interfaz: Slider de “Cantidad de Condominios”.</p>
@@ -198,7 +198,7 @@ María quería contratar 100 apartamentos, pero por error seleccionó 90 y pagó
 <p>Caso Práctico 2 (La Empresa Mayorista - Downgrade):<br>
 La empresa “TuCasa C.A.” pagó por 20 edificios ($300). Este mes perdieron 2 contratos y bajan el slider a 18 edificios.<br>
 <em>Solución:</em> El sistema le indica: “Cambio aceptado. Tienes un saldo a favor de $30.00. Tu próxima factura será más barata”. El sistema guarda esos $30 en la base de datos y los descuenta automáticamente en la renovación del mes siguiente.</p>
-<h3 id="funcionalidad-administrativa-crítica."><strong>Funcionalidad Administrativa Crítica.</strong></h3>
+<h2 id="funcionalidad-administrativa-crítica."><strong>Funcionalidad Administrativa Crítica.</strong></h2>
 <p>Este módulo gestiona la viabilidad financiera del propio SaaS. Se diferencia de la competencia por su enfoque en la <strong>“Eficiencia Operativa Masiva”</strong>: permite a las grandes administradoras gestionar y pagar múltiples suscripciones simultáneamente, eliminando la fatiga de pagos individuales repetitivos. Además, implementa una estrategia de cobranza preventiva (Dunning Strategy) para minimizar la suspensión del servicio.</p>
 <p><strong>Tecnología Aplicada y Protocolo de Seguridad:</strong></p>
 <p><strong>Motor de Notificaciones Proactivas:</strong> Un cronograma automatizado (Celery Beat) monitorea las fechas de corte y ejecuta una “Cascada de Avisos Omnicanal” (Email T-5 días → Push T-3 días → WhatsApp T-1 día) con enlaces profundos directos al módulo de pago.</p>
@@ -229,7 +229,7 @@ Impide la generación errónea de deuda a la propia comunidad (Auto-cobro) y ase
 <p><strong>B. Stack Tecnológico</strong></p>
 <p><strong>Billing Engine:</strong> Filtro WHERE is_exempt_from_fees = FALSE.</p>
 <p><strong>Voting Engine:</strong>  Filtro WHERE is_common_area = FALSE.</p>
-<p>##<strong>Digitalización del Documento de Condominio (Reglas Constitucionales - Art. 26 LPH)</strong></p>
+<h2 id="digitalización-del-documento-de-condominio-reglas-constitucionales---art.-26-lph"><strong>Digitalización del Documento de Condominio (Reglas Constitucionales - Art. 26 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 26 LPH: El Documento de Condominio es la ley suprema del edificio (mientras no viole la LPH). Define cosas que varían por edificio: fecha de cierre fiscal, intereses de mora específicos, mayorías especiales.</strong></p>
 <p><strong>Implicación Crítica:</strong> El software no puede tener “Reglas Duras” (Hardcoded). Debe leer las reglas del Documento.</p>
@@ -242,13 +242,13 @@ Controla aspectos como el inicio del año fiscal, los porcentajes estatutarios d
 <p><strong><em>Sistema:</em> “¿Cuándo cierra su ejercicio económico?” -&gt; Admin: “31 de Marzo”.</strong></p>
 <p><strong><em>Sistema:</em> “¿Porcentaje Fondo Reserva?” -&gt; Admin: “10%”.</strong></p>
 <p><strong><em>Sistema:</em> “¿Día de corte de cobranza?” -&gt; Admin: “Los días 05”.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>3.</strong> &lt;![endif]&gt;<strong>Comportamiento:</strong></p>
-<p><strong>El 1ro de Abril, el sistema reinicia automáticamente la numeración de facturas (Año Fiscal Nuevo).</strong></p>
-<p><strong>Si un vecino paga el día 06, el sistema le cobra mora (porque la regla decía día 05).</strong></p>
+<p><strong>Comportamiento:</strong></p>
+<p>El 1ro de Abril, el sistema reinicia automáticamente la numeración de facturas (Año Fiscal Nuevo).</p>
+<p>Si un vecino paga el día 06, el sistema le cobra mora (porque la regla decía día 05).</p>
 <p><strong>B. Stack Tecnológico</strong></p>
-<p><strong>Backend: Todos los motores (Billing, Voting, Penalty) deben inyectar esta configuración al iniciar. config = CondoConstitution.objects.get(tenant=current)</strong></p>
-<p><strong>BLOQUE 2: EL NÚCLEO FINANCIERO Y CONTABLE (FinTech Engine)</strong></p>
-<p><strong>i)</strong> <strong>Diferenciación Estricta de Gastos por “Cosas Comunes Limitadas” (Art. 5 y Art. 11 LPH)</strong></p>
+<p><strong>Backend:</strong>  Todos los motores (Billing, Voting, Penalty) deben inyectar esta configuración al iniciar. config = CondoConstitution.objects.get(tenant=current)</p>
+<h1 id="bloque-2-el-núcleo-financiero-y-contable-fintech-engine"><strong>BLOQUE 2: EL NÚCLEO FINANCIERO Y CONTABLE (FinTech Engine)</strong></h1>
+<h2 id="diferenciación-estricta-de-gastos-por-cosas-comunes-limitadas-art.-5-y-art.-11-lph"><strong>Diferenciación Estricta de Gastos por “Cosas Comunes Limitadas” (Art. 5 y Art. 11 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 5 LPH:</strong> Define que ciertos bienes son comunes a todos, pero otros son comunes solo a un grupo de apartamentos (ej. “los que tengan acceso a [azoteas o patios]”).</p>
 <p><strong>Art. 11 LPH:</strong> Establece que la contribución a los gastos comunes se hará conforme a los porcentajes establecidos, <em>PERO</em> aclara que esto aplica <em>“a cada apartamento… en cuanto a las cosas comunes que le correspondan”</em>.</p>
@@ -289,7 +289,7 @@ Permite al administrador definir sub-conjuntos de inmuebles (Grupos de Distribuc
 <p>Para la Conexión Bancaria Futura (H2H): Arquitectura de Bóveda Encriptada (django-fernet-fields/AES-256) preparada para custodiar credenciales bancarias del usuario bajo cifrado en reposo.</p>
 <p><strong>Memoria Descriptiva del Alcance:</strong> Permite tres vías de ingreso: 1) Importación Inteligente (Cruce automático de archivos bancarios contra reportes de la App); 2) Gestión Manual (Registro rápido de pagos presenciales); 3) Infraestructura H2H (Bases listas para futura integración API directa).</p>
 <p><strong>Ejemplo Práctico de Uso:</strong> El administrador carga un Excel bancario. El Motor Híbrido concilia automáticamente el 95% de los pagos. Simultáneamente, registra en la “Taquilla Manual” un pago de $20 en efectivo de un vecino, generando recibo inmediato</p>
-<p><strong>Indexación Dinámica de Deuda y Visualización Bimonetaria (Motor de Tasa Flotante):</strong></p>
+<h2 id="indexación-dinámica-de-deuda-y-visualización-bimonetaria-motor-de-tasa-flotante"><strong>Indexación Dinámica de Deuda y Visualización Bimonetaria (Motor de Tasa Flotante):</strong></h2>
 <p><em>Derivado de función analizada: #3.</em> Este módulo resuelve la complejidad económica de Venezuela: mantener el valor real de la deuda del condominio frente a la devaluación, utilizando el Dólar como moneda base (“Ancla”) y el Bolívar como moneda de pago (“Transaccional”).</p>
 <p><strong>Tecnología Aplicada:</strong></p>
 <p>Modelo Backend: Uso de django-money. La deuda se almacena en USD. El valor en Bs es una Propiedad Calculada en tiempo real basada en el ExchangeRate Oracle.</p>
@@ -297,16 +297,17 @@ Permite al administrador definir sub-conjuntos de inmuebles (Grupos de Distribuc
 <p>Frontend Reactivo: Actualización vía WebSocket/Polling del monto en Bs si la tasa cambia mientras el usuario paga.</p>
 <p><strong>Memoria Descriptiva del Alcance:</strong> Garantiza que la deuda sea un valor “Duro”. 1) Visualización Dual: Siempre muestra “Deuda $” y “A Pagar Bs”. 2) Cálculo al Instante: Valida el pago contra la tasa del segundo exacto de la operación. 3) Histórico Legal: Mantiene registro de las tasas usadas en el pasado.</p>
 <p>Ejemplo Práctico de Uso: Un vecino tiene una deuda de $100 desde Enero. Paga en Marzo. El sistema ignora la tasa vieja de Enero y le cobra los Bolívares equivalentes a los $100 según la tasa del día de Marzo, protegiendo el patrimonio del condominio.</p>
-<p><strong>Gestión de Fondos y Cuentas Virtuales (Arquitectura Multi-Ledger):</strong></p>
+<h2 id="gestión-de-fondos-y-cuentas-virtuales-arquitectura-multi-ledger"><strong>Gestión de Fondos y Cuentas Virtuales (Arquitectura Multi-Ledger):</strong></h2>
 <p>Derivado de funciones analizadas: #4, #5. Este módulo permite la segregación lógica del dinero (Fondo de Reserva, Prestaciones), incluso si físicamente el dinero reside en una única cuenta bancaria real.</p>
-<p>Tecnología Aplicada:</p>
-<p>Contabilidad Virtual: Implementación de “Libros Mayores Virtuales” (Ledgers) en la BD.</p>
+<p><strong>Tecnología Aplicada:</strong></p>
+<p><strong>Contabilidad Virtual:</strong> Implementación de “Libros Mayores Virtuales” (Ledgers) en la BD.</p>
 <p>Transacciones Atómicas: Uso de transaction.atomic en Django para mover dinero entre fondos sin riesgo de inconsistencia.</p>
-<p>Triggers: Reglas automáticas para apartar porcentajes (ej: 10% a Reserva) con cada ingreso.</p>
+<p><strong>Triggers:</strong> Reglas automáticas para apartar porcentajes (ej: 10% a Reserva) con cada ingreso.</p>
 <p><strong>Memoria Descriptiva del Alcance:</strong> Funciona como un banco interno. 1) Visualización Separada: Muestra “Saldo en Banco” vs “Saldo Disponible Operativo”. 2) Movimientos Inter-Fondo: Permite préstamos internos con traza de auditoría. 3) Protección: Impide gastar el dinero de la Reserva sin autorización explícita.</p>
 <p><strong>Ejemplo Práctico de Uso:</strong> El banco tiene $1.000, pero el sistema muestra que solo hay $600 para gastar, porque $400 son de la Reserva. El administrador hace una transferencia virtual de emergencia desde la Reserva, quedando registrado el “Auto-Préstamo”.</p>
-<p><strong>Motor de Contabilidad Fiscal Nativa, Automatización Tributaria y Reportes Financieros (ERP Integrado &amp; Tax Engine):</strong> Derivado de funciones analizadas: #20, #21, #26, #27, #28, #29, #40, #45, #46, #47, #110. Este módulo elimina la dependencia de software contable externo y dota al administrador de capacidad de reporte financiero formal. Implementa una Contabilidad de Doble Partida Automática: el administrador opera administrativamente y el sistema genera los asientos y, crucialmente, emite los Estados Financieros Auditables (Balances) necesarios para la rendición de cuentas.</p>
-<p>Tecnología Aplicada:</p>
+<h2 id="motor-de-contabilidad-fiscal-nativa-automatización-tributaria-y-reportes-financieros-erp-integrado--tax-engine"><strong>Motor de Contabilidad Fiscal Nativa, Automatización Tributaria y Reportes Financieros (ERP Integrado &amp; Tax Engine):</strong></h2>
+<p>Derivado de funciones analizadas: #20, #21, #26, #27, #28, #29, #40, #45, #46, #47, #110. Este módulo elimina la dependencia de software contable externo y dota al administrador de capacidad de reporte financiero formal. Implementa una Contabilidad de Doble Partida Automática: el administrador opera administrativamente y el sistema genera los asientos y, crucialmente, emite los Estados Financieros Auditables (Balances) necesarios para la rendición de cuentas.</p>
+<p><strong>Tecnología Aplicada:</strong></p>
 <p>Motor Contable (Double-Entry Ledger): Estructura de base de datos inmutable para asientos contables.</p>
 <p>Motor de Reglas Fiscales (Tax Engine): Algoritmo que adapta retenciones según el Perfil Fiscal (Contribuyente Especial/Ordinario).</p>
 <p>Calculadora de IGTF Automática: Detección y cálculo automático del 3% en pagos con divisas, generando el pasivo fiscal.</p>
@@ -325,7 +326,7 @@ María convoca a la Junta para el cierre de año. Necesita mostrar los números 
 Entra al módulo Contable, selecciona el rango “Enero - Diciembre” y hace clic en “Imprimir Balance General” y “Balance de Comprobación”.<br>
 El sistema genera dos PDFs con membrete oficial, formato contable estándar y firma digital. María los imprime para la reunión.<br>
 Simultáneamente, el sistema detecta que hubo pagos en dólares y genera el reporte de IGTF acumulado para que el contador lo declare</p>
-<p><strong>BLOQUE 3: ADMINISTRACIÓN, COBRANZA Y LEGAL (Back-Office)</strong></p>
+<h1 id="bloque-3-administración-cobranza-y-legal-back-office"><strong>BLOQUE 3: ADMINISTRACIÓN, COBRANZA Y LEGAL (Back-Office)</strong></h1>
 <p><strong>Motor de Emisión Masiva y Gateway de Comunicaciones Automatizado (Omnicanalidad: WhatsApp, Email &amp; Push):</strong></p>
 <p><strong>Derivado de funciones analizadas:</strong> #6, #7, #12, #35, #79, #80, #82, #90.<br>
 Este módulo representa la evolución de la cobranza hacia una Automatización Desatendida con Identidad Propia y Tolerancia a Fallos. Su objetivo es generar documentos legales de alta definición y despacharlos simultáneamente por todos los canales digitales disponibles, priorizando la inmediatez (Push/WhatsApp) y la formalidad (Email), asegurando que el administrador tenga control total sobre la efectividad de la entrega sin riesgos técnicos_._</p>
@@ -512,27 +513,29 @@ Este módulo centraliza la experiencia del usuario final y moderniza la conviven
 <p><strong>Tecnología Aplicada:</strong></p>
 <p><strong>Sincronización Real-Time (Django Channels):</strong> Implementación de WebSockets para que las votaciones y cambios de estatus de tickets se reflejen instantáneamente en todos los dispositivos conectados sin recargar la pantalla.</p>
 <p><strong>Dictado por Voz (Web Speech API):</strong> Integración nativa de reconocimiento de voz en el editor de Actas, permitiendo al administrador dictar las conclusiones para agilizar la transcripción.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Streaming Delegado:</strong> Integración fluida (iFrame/Deep Link) con plataformas externas (Zoom/Google Meet) para las Asambleas, manteniendo el control de acceso (Auth) dentro del SaaS.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Gestión de Archivos S3:</strong> Almacenamiento seguro de las evidencias fotográficas de los tickets.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Smart Sharing (WhatsApp API Link):</strong> Generación dinámica de enlaces para “Delegar Tickets”. El sistema convierte la data del reporte (Foto + Descripción + Ubicación) en un mensaje de WhatsApp formateado listo para ser enviado al personal obrero externo sin darles acceso al sistema.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Memoria Descriptiva del Alcance:</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Perfil de Contacto Inteligente:</strong> El sistema permite al usuario personalizar sus “Datos de Contacto Local” para cada propiedad de forma independiente, o replicar cambios a todas sus propiedades si así lo desea, manteniendo la integridad de la base de datos.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Sistema de Tickets Avanzado (PQRS &amp; Mantenimiento):</strong> Flujo estructurado que distingue visualmente los tipos de reporte:</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<strong>Clasificación y Prioridad:</strong> Al crear un reporte, el vecino selecciona: Tipo (Mantenimiento, Seguridad, Convivencia, Sugerencia) y Prioridad (Baja, Media, Alta, Emergencia). Una “Sugerencia” se visualiza en un buzón distinto a una “Emergencia de Bomba”, evitando ruido operativo.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<strong>Delegación Externa:</strong> El administrador cuenta con un botón “Asignar a Técnico”. Al pulsarlo, el sistema abre el WhatsApp del administrador con un mensaje pre-redactado: “Hola Sr. Pedro, por favor atienda esta falla en Piso 3. Foto adjunta: [Link]”.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;Módulo de Democracia Configurable (Poder al Administrador):</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Reglas de Asamblea: El administrador configura los “Toggles”: ¿Permitir acceso a morosos? (Si/No), ¿Tipo de Voto? (1x1 / Por Alícuota). El sistema obedece ciegamente esta configuración.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Sub-módulo de Orquestación de Asambleas Híbridas (Zoom/Meet API Wrapper &amp; BYOL):</p>
+<p><strong>Streaming Delegado:</strong> Integración fluida (iFrame/Deep Link) con plataformas externas (Zoom/Google Meet) para las Asambleas, manteniendo el control de acceso (Auth) dentro del SaaS.</p>
+<p><strong>Gestión de Archivos S3:</strong> Almacenamiento seguro de las evidencias fotográficas de los tickets.</p>
+<p><strong>Smart Sharing (WhatsApp API Link):</strong> Generación dinámica de enlaces para “Delegar Tickets”. El sistema convierte la data del reporte (Foto + Descripción + Ubicación) en un mensaje de WhatsApp formateado listo para ser enviado al personal obrero externo sin darles acceso al sistema.</p>
+<p><strong>Memoria Descriptiva del Alcance:</strong></p>
+<p><strong>Perfil de Contacto Inteligente:</strong> El sistema permite al usuario personalizar sus “Datos de Contacto Local” para cada propiedad de forma independiente, o replicar cambios a todas sus propiedades si así lo desea, manteniendo la integridad de la base de datos.</p>
+<p><strong>Sistema de Tickets Avanzado (PQRS &amp; Mantenimiento):</strong> Flujo estructurado que distingue visualmente los tipos de reporte:</p>
+<p><strong>Clasificación y Prioridad:</strong> Al crear un reporte, el vecino selecciona: Tipo (Mantenimiento, Seguridad, Convivencia, Sugerencia) y Prioridad (Baja, Media, Alta, Emergencia). Una “Sugerencia” se visualiza en un buzón distinto a una “Emergencia de Bomba”, evitando ruido operativo.</p>
+<p><strong>Delegación Externa:</strong> El administrador cuenta con un botón “Asignar a Técnico”. Al pulsarlo, el sistema abre el WhatsApp del administrador con un mensaje pre-redactado: “Hola Sr. Pedro, por favor atienda esta falla en Piso 3. Foto adjunta: [Link]”.</p>
+<ol start="3">
+<li>Módulo de Democracia Configurable (Poder al Administrador):</li>
+</ol>
+<p>Reglas de Asamblea: El administrador configura los “Toggles”: ¿Permitir acceso a morosos? (Si/No), ¿Tipo de Voto? (1x1 / Por Alícuota). El sistema obedece ciegamente esta configuración.</p>
+<p>Sub-módulo de Orquestación de Asambleas Híbridas (Zoom/Meet API Wrapper &amp; BYOL):</p>
 <p><strong>Funcionalidad de Integración Crítica y Gobernanza Digital.</strong><br>
 Se eleva la gestión de videollamadas a una <strong>Integración Server-to-Server (S2S)</strong> mediante el modelo <strong>BYOL (Bring Your Own License)</strong>. El sistema actúa como un orquestador seguro que encapsula la complejidad de las APIs de terceros (Zoom/Google Meet), permitiendo al Administrador controlar el ciclo de vida de la reunión (Crear, Iniciar, Finalizar) y monitorear el quórum sin compartir credenciales sensibles con el personal operativo.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Tecnología Aplicada y Stack de Seguridad:</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Protocolo de Autenticación (OAuth 2.0):</strong> No se almacenan usuarios ni contraseñas. Se implementa un flujo de autorización estándar (Authorization Code Flow) para obtener y renovar <em>Access Tokens</em> y <em>Refresh Tokens</em> directamente con los proveedores (Zoom/Google).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Cifrado en Reposo (Encryption at Rest):</strong> Los tokens almacenados en la base de datos se cifran utilizando la librería cryptography de Python (implementación <strong>Fernet/AES-256-CBC</strong>). Las llaves de descifrado residen en variables de entorno del servidor, nunca en la base de datos.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Middleware de Video:</strong> Uso de la API REST de Zoom (/v2/users/me/meetings) o Google Calendar API para la creación programática de salas.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Sincronización de Quórum (Redis + WebSockets):</strong> Implementación de <strong>Django Channels</strong> para mantener un túnel en tiempo real. El Backend sondea (Polling) la API de participantes de Zoom cada 30 segundos y empuja la actualización al Frontend del Administrador vía WebSockets, unificando la asistencia virtual con la presencial.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Impacto en Arquitectura de Datos (ERD y Diccionario):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Entidad Afectada:</strong> Tabla <strong>IntegrationConfig</strong> (Esquema Público).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Definición del Payload (config_data JSONB):</strong> Aunque la tabla ya existe en el ERD V6.3, se define estrictamente la estructura interna del campo JSON para este módulo:</p>
+<p><strong>Tecnología Aplicada y Stack de Seguridad:</strong></p>
+<p><strong>Protocolo de Autenticación (OAuth 2.0):</strong> No se almacenan usuarios ni contraseñas. Se implementa un flujo de autorización estándar (Authorization Code Flow) para obtener y renovar <em>Access Tokens</em> y <em>Refresh Tokens</em> directamente con los proveedores (Zoom/Google).</p>
+<p><strong>Cifrado en Reposo (Encryption at Rest):</strong> Los tokens almacenados en la base de datos se cifran utilizando la librería cryptography de Python (implementación <strong>Fernet/AES-256-CBC</strong>). Las llaves de descifrado residen en variables de entorno del servidor, nunca en la base de datos.</p>
+<p><strong>Middleware de Video:</strong> Uso de la API REST de Zoom (/v2/users/me/meetings) o Google Calendar API para la creación programática de salas.</p>
+<p><strong>Sincronización de Quórum (Redis + WebSockets):</strong> Implementación de <strong>Django Channels</strong> para mantener un túnel en tiempo real. El Backend sondea (Polling) la API de participantes de Zoom cada 30 segundos y empuja la actualización al Frontend del Administrador vía WebSockets, unificando la asistencia virtual con la presencial.</p>
+<p><strong>Impacto en Arquitectura de Datos (ERD y Diccionario):</strong></p>
+<p><strong>Entidad Afectada:</strong> Tabla <strong>IntegrationConfig</strong> (Esquema Público).</p>
+<p><strong>Definición del Payload (config_data JSONB):</strong> Aunque la tabla ya existe en el ERD V6.3, se define estrictamente la estructura interna del campo JSON para este módulo:</p>
 <p>codeJSON</p>
 <p>{</p>
 <p>“provider”: “zoom”,</p>
@@ -542,259 +545,287 @@ Se eleva la gestión de videollamadas a una <strong>Integración Server-to-Serve
 <p>“token_expiry”: “2025-10-20T14:00:00Z”,</p>
 <p>“meeting_preferences”: { “mute_upon_entry”: true, “waiting_room”: true }</p>
 <p>}</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Integridad:</strong> El sistema valida la existencia de este JSON válido antes de permitir agendar una asamblea.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Memoria Descriptiva del Flujo:</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Vinculación de Licencia (Handshake):</strong> En la configuración inicial, el Administrador selecciona “Conectar Zoom Pro”. El sistema redirige a la web de Zoom (OAuth), el usuario autoriza, y Zoom devuelve el token al Backend del SaaS, que lo cifra y guarda.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Inyección de Identidad (Guest Injection):</strong> Para los vecinos, el sistema genera enlaces que utilizan el protocolo de URL Scheme (ej: zoommtg://). Esto permite inyectar el parámetro dn (Display Name) con el formato estandarizado <strong>“Unidad - Nombre”</strong> (ej: “1A - Pedro Pérez”). Esto garantiza que en la pantalla del TV, cada cara tenga su etiqueta de apartamento correcta automáticamente.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;<strong>Interfaz Híbrida (TV + Laptop):</strong> El Dashboard administrativo habilita una vista de “Sala de Control” diseñada para proyectarse. Muestra gráficos de votación grandes y el contador de Quórum, mientras el video corre en la aplicación nativa en segundo plano o monitor extendido.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Ejemplo Práctico de Uso (User Journey):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Fase 1: Configuración (Admin):</strong><br>
+<p><strong>Integridad:</strong> El sistema valida la existencia de este JSON válido antes de permitir agendar una asamblea.</p>
+<p><strong>Memoria Descriptiva del Flujo:</strong></p>
+<p><strong>Vinculación de Licencia (Handshake):</strong> En la configuración inicial, el Administrador selecciona “Conectar Zoom Pro”. El sistema redirige a la web de Zoom (OAuth), el usuario autoriza, y Zoom devuelve el token al Backend del SaaS, que lo cifra y guarda.</p>
+<p><strong>Inyección de Identidad (Guest Injection):</strong> Para los vecinos, el sistema genera enlaces que utilizan el protocolo de URL Scheme (ej: zoommtg://). Esto permite inyectar el parámetro dn (Display Name) con el formato estandarizado <strong>“Unidad - Nombre”</strong> (ej: “1A - Pedro Pérez”). Esto garantiza que en la pantalla del TV, cada cara tenga su etiqueta de apartamento correcta automáticamente.</p>
+<p><strong>Interfaz Híbrida (TV + Laptop):</strong> El Dashboard administrativo habilita una vista de “Sala de Control” diseñada para proyectarse. Muestra gráficos de votación grandes y el contador de Quórum, mientras el video corre en la aplicación nativa en segundo plano o monitor extendido.</p>
+<p><strong>Ejemplo Práctico de Uso (User Journey):</strong></p>
+<p><strong>Fase 1: Configuración (Admin):</strong><br>
 María entra a “Ajustes del Condominio”. Clic en “Conectar Zoom”. Se abre una ventana emergente de Zoom, ella se loguea con la cuenta corporativa del edificio. El sistema confirma: <em>“Licencia Pro Vinculada Exitosamente”</em>.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Fase 2: El Evento (Admin):</strong><br>
+<p><strong>Fase 2: El Evento (Admin):</strong><br>
 Es día de Asamblea. María conecta su Laptop al TV del salón.<br>
 Entra al SaaS y presiona <strong>“Iniciar Asamblea”</strong>.<br>
 El sistema, por detrás, contacta a Zoom, despierta la sala y lanza la App de Zoom en la Laptop de María proyectada en el TV.<br>
 En la pantalla del SaaS (Laptop), María ve: <em>“Conectados: 0”</em>.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Fase 3: El Acceso (Vecino):</strong><br>
+<p><strong>Fase 3: El Acceso (Vecino):</strong><br>
 Pedro (en su casa) recibe una notificación Push. Toca “Unirse a la Asamblea”.<br>
 La App valida que Pedro no debe dinero (Solvencia).<br>
 Si está solvente, la App abre Zoom automáticamente.<br>
 <strong>Detalle clave:</strong> Pedro NO tuvo que escribir su nombre. En el TV del salón, María ve aparecer un recuadro que dice <strong>“5-B Pedro Pérez”</strong>.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Fase 4: El Quórum (Sistema):</strong><br>
+<p><strong>Fase 4: El Quórum (Sistema):</strong><br>
 Automáticamente, el contador en la pantalla de María sube: <em>“Quórum: 35% (Online) + 10% (Presencial Check-in Manual) = 45%”</em>.</p>
-<p>&lt;![if !supportLists]&gt;n) &lt;![endif]&gt;<strong>Motor de Carta Consulta Digital (Procedimiento Art. 23 LPH)</strong></p>
+<p><strong>Motor de Carta Consulta Digital (Procedimiento Art. 23 LPH)</strong></p>
 <p><strong>Referencia Legal:</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Art. 23 LPH: <em>“Las consultas a los propietarios sobre los asuntos de la administración… se harán por escrito… determinando un plazo prudencial [mínimo 8 días]…”</em>.</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Implicación Crítica: Una “Encuesta” en la App es informal (como un grupo de WhatsApp). Una “Carta Consulta” es un procedimiento jurídico estricto. Si no se respeta el formato, la notificación y el plazo de espera, la decisión (ej. pintar el edificio) es nula. El software debe distinguir entre “Preguntar opinión” (Encuesta) y “Tomar decisión vinculante sin asamblea” (Carta Consulta).</strong></p>
+<p><strong>Art. 23 LPH: <em>“Las consultas a los propietarios sobre los asuntos de la administración… se harán por escrito… determinando un plazo prudencial [mínimo 8 días]…”</em>.</strong></p>
+<p><strong>Implicación Crítica: Una “Encuesta” en la App es informal (como un grupo de WhatsApp). Una “Carta Consulta” es un procedimiento jurídico estricto. Si no se respeta el formato, la notificación y el plazo de espera, la decisión (ej. pintar el edificio) es nula. El software debe distinguir entre “Preguntar opinión” (Encuesta) y “Tomar decisión vinculante sin asamblea” (Carta Consulta).</strong></p>
 <p><strong>Memoria Descriptiva:</strong> Módulo de toma de decisiones no presenciales con validez jurídica. Diferencia las “Encuestas de Opinión” de las “Consultas Vinculantes”. El sistema orquesta el ciclo de vida estricto del Artículo 23 de la LPH: Redacción, Notificación Certificada, Plazo de Espera Legal (conteo de días hábiles o continuos según configuración) y Escrutinio Automático.<br>
 El módulo garantiza el derecho a la defensa y la información, obligando a adjuntar los soportes (presupuestos, planos) a la consulta. Genera automáticamente el “Acta de Escrutinio” al cierre del plazo, la cual tiene valor probatorio ante tribunales en caso de impugnación.</p>
 <p><strong>User Journey (Flujo de Legalidad):</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Redacción:</strong> El Administrador redacta la consulta: “¿Aprueba usted la Cuota Extra de $2000 para la bomba?”. Adjunta los 3 presupuestos (Función #55).</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Lanzamiento:</strong> El sistema bloquea la edición y envía correos certificados a todos los propietarios.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;<strong>El Plazo:</strong> El sistema activa un contador regresivo de 8 días. Durante este tiempo, la votación está abierta.</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;<strong>La Notificación:</strong> El Sr. Pérez recibe un correo: <em>“Boleta de Carta Consulta N° 005. Tiene hasta el 20/Oct para decidir”</em>.</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;<strong>El Voto:</strong> El Sr. Pérez entra a la App. No ve un simple “Sí/No”. Ve el documento legal. Selecciona “APRUEBO” y el sistema le pide confirmación biométrica/password (Firma).</p>
-<p>&lt;![if !supportLists]&gt;6. &lt;![endif]&gt;<strong>Cierre:</strong> Al día 8, a las 11:59 PM, el sistema cierra la urna digital.</p>
-<p>&lt;![if !supportLists]&gt;7. &lt;![endif]&gt;<strong>Resultado:</strong> Se alcanza el 75% de aprobación. El sistema genera el Acta de Escrutinio PDF, la envía a todos y crea automáticamente la Cuentas por Cobrar (Cuota Extra) en el módulo financiero.</p>
+<p><strong>Redacción:</strong> El Administrador redacta la consulta: “¿Aprueba usted la Cuota Extra de $2000 para la bomba?”. Adjunta los 3 presupuestos (Función #55).</p>
+<p><strong>Lanzamiento:</strong> El sistema bloquea la edición y envía correos certificados a todos los propietarios.</p>
+<p><strong>El Plazo:</strong> El sistema activa un contador regresivo de 8 días. Durante este tiempo, la votación está abierta.</p>
+<p><strong>La Notificación:</strong> El Sr. Pérez recibe un correo: <em>“Boleta de Carta Consulta N° 005. Tiene hasta el 20/Oct para decidir”</em>.</p>
+<p><strong>El Voto:</strong> El Sr. Pérez entra a la App. No ve un simple “Sí/No”. Ve el documento legal. Selecciona “APRUEBO” y el sistema le pide confirmación biométrica/password (Firma).</p>
+<p><strong>Cierre:</strong> Al día 8, a las 11:59 PM, el sistema cierra la urna digital.</p>
+<p><strong>Resultado:</strong> Se alcanza el 75% de aprobación. El sistema genera el Acta de Escrutinio PDF, la envía a todos y crea automáticamente la Cuentas por Cobrar (Cuota Extra) en el módulo financiero.</p>
 <p><strong>B. Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend (Python/Django):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Generador PDF (WeasyPrint):</strong> El sistema debe generar un PDF individualizado (“Boleta de Consulta”) para cada propietario.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Task Scheduler (Celery):</strong> Tarea CloseConsultation() que se ejecuta automáticamente al vencer el deadline_date, impidiendo votos tardíos y generando el Acta de Escrutinio.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Frontend (React):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Vista Legal:</strong> No es una UI de votación “gamificada”. Es una vista formal tipo contrato donde el usuario lee el texto completo y “Firma” su decisión.</p>
-<p>&lt;![if !supportLists]&gt;o) &lt;![endif]&gt;<strong>Gestión de Voto Salvado y Protección de Responsabilidad:</strong></p>
+<p><strong>Backend (Python/Django):</strong></p>
+<p><strong>Generador PDF (WeasyPrint):</strong> El sistema debe generar un PDF individualizado (“Boleta de Consulta”) para cada propietario.</p>
+<p><strong>Task Scheduler (Celery):</strong> Tarea CloseConsultation() que se ejecuta automáticamente al vencer el deadline_date, impidiendo votos tardíos y generando el Acta de Escrutinio.</p>
+<p><strong>Frontend (React):</strong></p>
+<p><strong>Vista Legal:</strong> No es una UI de votación “gamificada”. Es una vista formal tipo contrato donde el usuario lee el texto completo y “Firma” su decisión.</p>
+<p><strong>Gestión de Voto Salvado y Protección de Responsabilidad:</strong></p>
 <p><strong>Art. 202 Código Civil (Supletorio a la LPH):</strong> Permite a un miembro de una corporación/asamblea eximirse de responsabilidad por una decisión dañina o ilegal si manifiesta su voto en contra y <em>razona</em> su disenso. <strong>Implicación Crítica:</strong> Si la Asamblea decide ilegalmente “No pagarle prestaciones al conserje”, y el conserje demanda, todos pagan… excepto los que salvaron su voto. El software debe permitir esta protección jurídica. Un simple botón “No” no basta.</p>
 <p><strong>Memoria Descriptiva:</strong><br>
 Funcionalidad transversal a los módulos de Asamblea, Encuestas y Carta Consulta que implementa la figura jurídica del “Voto Salvado” o Disidente. Permite a los propietarios dejar constancia expresa y razonada de su oposición a una medida, protegiendo su patrimonio personal ante futuras demandas o responsabilidades civiles derivadas de decisiones comunitarias erróneas.<br>
 El sistema asegura que este razonamiento no se pierda en un chat, sino que quede inmutablemente registrado en la base de datos y se transcriba automáticamente en el Libro de Actas, cumpliendo con el debido proceso.</p>
 <p><strong>User Journey (Flujo de Protección):</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>El Conflicto:</strong> Se vota “Despedir al Vigilante sin pagarle liquidación”.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>La Acción:</strong> El Sr. Rodríguez sabe que eso es ilegal. Entra a votar en la Carta Consulta.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;<strong>La Elección:</strong> No marca “Negado” (que es solo oposición numérica). Marca <strong>“SALVAR VOTO”</strong>.</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;<strong>El Razonamiento:</strong> Se abre una caja de texto. Escribe: <em>“Salvo mi voto pues viola la Ley del Trabajo y expone al edificio a multas”</em>.</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;<strong>El Acta:</strong> Al generarse el Acta de Escrutinio, aparece su nombre y su texto textual.</p>
-<p>&lt;![if !supportLists]&gt;6. &lt;![endif]&gt;<strong>La Demanda:</strong> Meses después, el vigilante demanda y gana. El tribunal ordena pagar multas.</p>
-<p>&lt;![if !supportLists]&gt;7. &lt;![endif]&gt;<strong>La Exoneración:</strong> El Sr. Rodríguez descarga el Acta del sistema y demuestra que él se opuso, quedando exento de pagar la alícuota correspondiente a esa multa.</p>
+<ol>
+<li>
+<p><strong>El Conflicto:</strong> Se vota “Despedir al Vigilante sin pagarle liquidación”.</p>
+</li>
+<li>
+<p><strong>La Acción:</strong> El Sr. Rodríguez sabe que eso es ilegal. Entra a votar en la Carta Consulta.</p>
+</li>
+</ol>
+<p>3.<strong>La Elección:</strong> No marca “Negado” (que es solo oposición numérica). Marca <strong>“SALVAR VOTO”</strong>.</p>
+<ol start="4">
+<li>
+<p><strong>El Razonamiento:</strong> Se abre una caja de texto. Escribe: <em>“Salvo mi voto pues viola la Ley del Trabajo y expone al edificio a multas”</em>.</p>
+</li>
+<li>
+<p><strong>El Acta:</strong> Al generarse el Acta de Escrutinio, aparece su nombre y su texto textual.</p>
+</li>
+<li>
+<p><strong>La Demanda:</strong> Meses después, el vigilante demanda y gana. El tribunal ordena pagar multas.</p>
+</li>
+<li>
+<p><strong>La Exoneración:</strong> El Sr. Rodríguez descarga el Acta del sistema y demuestra que él se opuso, quedando exento de pagar la alícuota correspondiente a esa multa.</p>
+</li>
+</ol>
 <p><strong>Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Frontend:</strong> Lógica condicional en el formulario. Al seleccionar “Salvar Voto”, se despliega un Textarea obligatorio: <em>“Por favor explique el motivo legal o técnico de su voto salvado para que conste en acta”</em>.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend:</strong> El generador de Actas (PDF) debe tener una sección específica: <em>“Votos Salvados: El propietario de la Unidad 5-B salvó su voto alegando: [Texto del usuario]”</em>.</p>
-<p>&lt;![if !supportLists]&gt;p) &lt;![endif]&gt;<strong>Generador de Carteles de Convocatoria y Certificación (Art. 22 LPH)</strong></p>
+<p><strong>Frontend:</strong> Lógica condicional en el formulario. Al seleccionar “Salvar Voto”, se despliega un Textarea obligatorio: <em>“Por favor explique el motivo legal o técnico de su voto salvado para que conste en acta”</em>.</p>
+<p><strong>Backend:</strong> El generador de Actas (PDF) debe tener una sección específica: <em>“Votos Salvados: El propietario de la Unidad 5-B salvó su voto alegando: [Texto del usuario]”</em>.</p>
+<p><strong>Generador de Carteles de Convocatoria y Certificación (Art. 22 LPH)</strong></p>
 <p><strong>Referencia Legal:</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Art. 22 LPH:</strong> <em>“La convocatoria… se hará mediante avisos… publicados en la prensa o fijados en la entrada… con tres (3) días de anticipación por lo menos.”</em></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Implicación Crítica:</strong> Una notificación Push no basta. Si un vecino impugna la asamblea diciendo “Yo no vi el celular”, y no hay cartel físico, la asamblea se anula. El software debe generar el “Cartel Físico” para imprimir.</p>
+<p><strong>Art. 22 LPH:</strong> <em>“La convocatoria… se hará mediante avisos… publicados en la prensa o fijados en la entrada… con tres (3) días de anticipación por lo menos.”</em></p>
+<p><strong>Implicación Crítica:</strong> Una notificación Push no basta. Si un vecino impugna la asamblea diciendo “Yo no vi el celular”, y no hay cartel físico, la asamblea se anula. El software debe generar el “Cartel Físico” para imprimir.</p>
 <p><strong>Memoria Descriptiva:</strong><br>
 Herramienta de formalización de convocatorias que cierra la brecha entre lo digital y lo físico exigido por ley. Genera automáticamente el “Cartel de Convocatoria” en formato PDF de alta legibilidad (tipo Edicto) listo para imprimir y fijar en áreas comunes.<br>
 Incluye un flujo de certificación forense: el sistema no considera “Convocada” la asamblea hasta que el personal operativo (Conserje/Vigilante) sube una fotografía del cartel fijado en la entrada del edificio. Esta foto recibe un sellado de tiempo (Timestamp) y sirve como prueba irrefutable de que se cumplió con el deber de información pública del Artículo 22.</p>
 <p><strong>User Journey (Flujo de Convocatoria):</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Creación:</strong> El Admin crea la Asamblea “Aprobación Presupuesto”.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Impresión:</strong> El sistema genera el PDF “CARTEL DE CONVOCATORIA” con letra grande, fecha, hora y QR.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;<strong>Fijación:</strong> El Admin imprime y le dice al Conserje: “Pégalo en el ascensor”.</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;<strong>Certificación:</strong> El Conserje abre su App, va a “Tareas”, selecciona “Certificar Convocatoria”, toma la foto del papel en la pared.</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;<strong>Activación:</strong> El sistema registra: “Convocatoria pública realizada el 10/Oct a las 10:00 AM”. Comienza a correr el plazo legal de 3 días. Antes de eso, el sistema bloquea el inicio de la asamblea digital.</p>
+<p><strong>Creación:</strong> El Admin crea la Asamblea “Aprobación Presupuesto”.</p>
+<p><strong>Impresión:</strong> El sistema genera el PDF “CARTEL DE CONVOCATORIA” con letra grande, fecha, hora y QR.</p>
+<p><strong>Fijación:</strong> El Admin imprime y le dice al Conserje: “Pégalo en el ascensor”.</p>
+<p><strong>Certificación:</strong> El Conserje abre su App, va a “Tareas”, selecciona “Certificar Convocatoria”, toma la foto del papel en la pared.</p>
+<p><strong>Activación:</strong> El sistema registra: “Convocatoria pública realizada el 10/Oct a las 10:00 AM”. Comienza a correr el plazo legal de 3 días. Antes de eso, el sistema bloquea el inicio de la asamblea digital.</p>
 <p><strong>B. Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend (PDF Engine):</strong> Plantilla “Edicto/Cartel”. Letra grande, formato legal, con código QR para descargar la agenda detallada.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>App Staff:</strong> Función “Certificar Convocatoria”. Permite al conserje tomar una foto del cartel pegado en el ascensor. Esta foto se guarda con Timestamp como prueba judicial.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Libro de Actas Asistido: Generación de Borrador Editable post-asamblea. El administrador puede completar el acta usando Dictado por Voz. El envío final del PDF es manual y controlado (Email/Link WhatsApp) solo cuando el administrador presiona “Sellar y Publicar”.</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;Muro Social Configurable: El administrador decide la dinámica del “Muro” mediante una configuración:</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Opción A (Abierta): Red social vecinal (Posts y Comentarios habilitados).</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Opción B (Cartelera Unidireccional): Solo el administrador publica, los vecinos solo ven y dan “Me gusta”. Esto previene conflictos tóxicos según la cultura del edificio.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;Ejemplo Práctico de Uso: El vecino Pedro ve una filtración grave a las 11 PM. Abre la App, crea un Ticket tipo “Mantenimiento”, selecciona prioridad “Emergencia” y sube la foto.<br>
+<p><strong>Backend (PDF Engine):</strong> Plantilla “Edicto/Cartel”. Letra grande, formato legal, con código QR para descargar la agenda detallada.</p>
+<p><strong>App Staff:</strong> Función “Certificar Convocatoria”. Permite al conserje tomar una foto del cartel pegado en el ascensor. Esta foto se guarda con Timestamp como prueba judicial.</p>
+<p>Libro de Actas Asistido: Generación de Borrador Editable post-asamblea. El administrador puede completar el acta usando Dictado por Voz. El envío final del PDF es manual y controlado (Email/Link WhatsApp) solo cuando el administrador presiona “Sellar y Publicar”.</p>
+<p>Muro Social Configurable: El administrador decide la dinámica del “Muro” mediante una configuración:</p>
+<blockquote>
+<p>Opción A (Abierta): Red social vecinal (Posts y Comentarios habilitados).</p>
+</blockquote>
+<p>Opción B (Cartelera Unidireccional): Solo el administrador publica, los vecinos solo ven y dan “Me gusta”. Esto previene conflictos tóxicos según la cultura del edificio.</p>
+<p>Ejemplo Práctico de Uso: El vecino Pedro ve una filtración grave a las 11 PM. Abre la App, crea un Ticket tipo “Mantenimiento”, selecciona prioridad “Emergencia” y sube la foto.<br>
 En el Dashboard de María, el ticket aparece resaltado en Rojo al tope de la lista. María lo abre y presiona “Delegar a Plomero”. Se abre su WhatsApp con la foto y se la envía al Sr. Luis (Plomero). Al día siguiente, María convoca Asamblea. Configura el Muro Social en “Modo Solo Lectura” para evitar peleas previas. En la Asamblea, usa el Micrófono para dictar el Acta. Al finalizar, sella el PDF y lo distribuye con un clic.</p>
-<p>&lt;![if !supportLists]&gt;q) &lt;![endif]&gt;<strong>Gestión de Proyectos y Recaudación de Cuotas Especiales (Crowdfunding Interno):<br>
+<p><strong>Gestión de Proyectos y Recaudación de Cuotas Especiales (Crowdfunding Interno):<br>
 <em>Funcionalidad Exclusiva (Innovación Propia).</em></strong></p>
 <p>Este módulo separa las finanzas ordinarias (gasto mensual) de las inversiones mayores (pozos, ascensores, pintura). Aplica la psicología de las plataformas de Crowdfunding (financiamiento colectivo) para incentivar el aporte vecinal.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;Tecnología Aplicada:</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Contabilidad de Proyectos (Project Accounting):</strong> Creación de centros de costos temporales aislados. El dinero que entra para “El Pozo” no se mezcla con el de “Vigilancia”.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Barra de Progreso Visual:</strong> Componente gráfico en la App que muestra el % de recaudación en tiempo real.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Gestión de Cuotas (Installments):</strong> Algoritmo que divide el monto total del proyecto en N cuotas especiales, generando avisos de cobro independientes del recibo de condominio regular.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Memoria Descriptiva del Alcance:</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Ficha del Proyecto:</strong> El administrador crea el proyecto “Reparación Bomba” con meta ($2.000), fotos del daño y presupuesto del proveedor.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Seguimiento de Metas:</strong> Los vecinos ven una barra: “Llevamos $1.200 de $2.000 (60%)”. Esto genera presión social positiva (“Faltas tú”).</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;Transparencia de Ejecución: Una vez recaudado, el administrador sube las fotos del avance de la obra en la misma ficha, cerrando el ciclo de confianza.</p>
+<p>Tecnología Aplicada:</p>
+<p><strong>Contabilidad de Proyectos (Project Accounting):</strong> Creación de centros de costos temporales aislados. El dinero que entra para “El Pozo” no se mezcla con el de “Vigilancia”.</p>
+<p><strong>Barra de Progreso Visual:</strong> Componente gráfico en la App que muestra el % de recaudación en tiempo real.</p>
+<p><strong>Gestión de Cuotas (Installments):</strong> Algoritmo que divide el monto total del proyecto en N cuotas especiales, generando avisos de cobro independientes del recibo de condominio regular.</p>
+<p><strong>Memoria Descriptiva del Alcance:</strong></p>
+<p><strong>Ficha del Proyecto:</strong> El administrador crea el proyecto “Reparación Bomba” con meta ($2.000), fotos del daño y presupuesto del proveedor.</p>
+<p><strong>Seguimiento de Metas:</strong> Los vecinos ven una barra: “Llevamos $1.200 de $2.000 (60%)”. Esto genera presión social positiva (“Faltas tú”).</p>
+<p>Transparencia de Ejecución: Una vez recaudado, el administrador sube las fotos del avance de la obra en la misma ficha, cerrando el ciclo de confianza.</p>
 <p><strong>Ejemplo Práctico:</strong><br>
 <em>Se quemó el motor del portón. María crea el Proyecto “Motor Nuevo” ($1.000) dividido en 2 cuotas de $10 por apartamento. A Juan le llega una notificación nueva (distinta al condominio). Entra a la App, ve la foto del motor quemado y la barra de progreso en 0%. Paga su cuota. La barra sube. Cuando llega al 100%, el sistema libera los fondos contablemente para que María pague</em></p>
-<p>&lt;![if !supportLists]&gt;r) &lt;![endif]&gt;<strong>Ecosistema SRM: Gestión de Proveedores, Licitaciones Transparentes y Adjudicación Democrática:</strong> Funcionalidad Administrativa, Fiscal y de Gobernanza.<br>
+<p><strong>Ecosistema SRM: Gestión de Proveedores, Licitaciones Transparentes y Adjudicación Democrática:</strong> Funcionalidad Administrativa, Fiscal y de Gobernanza.<br>
 Este módulo constituye un SRM (Supplier Relationship Management) integral. Su objetivo es profesionalizar la contratación de servicios, blindar legalmente las decisiones de gasto (Cumplimiento LPH) y ofrecer mecanismos de democracia digital para decisiones de alto impacto. Transforma una simple lista de contactos en un motor de licitaciones auditable.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Tecnología Aplicada:</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Gestor Documental Seguro (AWS S3): Almacenamiento encriptado de expedientes legales (RIF, Registro Mercantil, Solvencias) y propuestas económicas (Cotizaciones PDF).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Motor de Asignación Polimórfica: El sistema de Tickets implementa una lógica de despacho flexible que permite asignar incidencias a entidades heterogéneas: Personal Interno (Conserje), Proveedor Externo (Empresa) o Cola de Espera.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Interfaz de Comparación Visual (Side-by-Side UI): Componente de React diseñado para renderizar matrices comparativas de datos, permitiendo visualizar hasta 3 propuestas simultáneamente con resaltado automático de variables clave (Precio, Tiempo de Garantía).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Puente de Encuestas (Voting Bridge): Automatización que permite clonar los objetos de una Licitación (Proveedores + PDFs) y convertirlos instantáneamente en opciones de una Encuesta Vecinal (Módulo VI).</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Memoria Descriptiva del Alcance:</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;Base de Datos Maestra de Proveedores (El “Expediente Digital”):</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Repositorio Centralizado: Se crea una base de datos persistente y estructurada (Supplier Database) que almacena el historial y credenciales de todos los contratistas, eliminando la dependencia de agendas telefónicas personales o archivos dispersos.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Perfil Fiscal: Ficha maestra con datos tributarios. Incluye un “Semáforo Fiscal” que configura automáticamente las retenciones de ISLR/IVA en el módulo de pagos según la naturaleza del proveedor (Persona Natural/Jurídica, Contribuyente Especial).</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Marketplace Vecinal: Los proveedores de esta base de datos que sean marcados como “Públicos” aparecen en la App del Vecino con un sistema de reputación (Rating de 5 estrellas y reseñas), creando una red de confianza depurada por la comunidad.</p>
-<p>&lt;![if !supportLists]&gt;<strong>2.</strong> &lt;![endif]&gt;<strong>Motor de Licitaciones (Compliance):</strong></p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Para gastos extraordinarios, se habilita el flujo de “Concurso de Precios”. El sistema exige la carga de mínimo 3 cotizaciones para proceder.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Comparador Inteligente: El administrador visualiza las opciones lado a lado. El sistema resalta en verde la opción más económica y en rojo las alertas (ej: “Sin Garantía”).</p>
-<p>&lt;![if !supportLists]&gt;<strong>3.</strong> &lt;![endif]&gt;<strong>Mecanismos de Adjudicación (La Toma de Decisión):<br>
+<p><strong>Tecnología Aplicada:</strong></p>
+<p>Gestor Documental Seguro (AWS S3): Almacenamiento encriptado de expedientes legales (RIF, Registro Mercantil, Solvencias) y propuestas económicas (Cotizaciones PDF).</p>
+<p>Motor de Asignación Polimórfica: El sistema de Tickets implementa una lógica de despacho flexible que permite asignar incidencias a entidades heterogéneas: Personal Interno (Conserje), Proveedor Externo (Empresa) o Cola de Espera.</p>
+<p>Interfaz de Comparación Visual (Side-by-Side UI): Componente de React diseñado para renderizar matrices comparativas de datos, permitiendo visualizar hasta 3 propuestas simultáneamente con resaltado automático de variables clave (Precio, Tiempo de Garantía).</p>
+<p>Puente de Encuestas (Voting Bridge): Automatización que permite clonar los objetos de una Licitación (Proveedores + PDFs) y convertirlos instantáneamente en opciones de una Encuesta Vecinal (Módulo VI).</p>
+<p><strong>Memoria Descriptiva del Alcance:</strong></p>
+<p>Base de Datos Maestra de Proveedores (El “Expediente Digital”):</p>
+<p>Repositorio Centralizado: Se crea una base de datos persistente y estructurada (Supplier Database) que almacena el historial y credenciales de todos los contratistas, eliminando la dependencia de agendas telefónicas personales o archivos dispersos.</p>
+<p>Perfil Fiscal: Ficha maestra con datos tributarios. Incluye un “Semáforo Fiscal” que configura automáticamente las retenciones de ISLR/IVA en el módulo de pagos según la naturaleza del proveedor (Persona Natural/Jurídica, Contribuyente Especial).</p>
+<p>Marketplace Vecinal: Los proveedores de esta base de datos que sean marcados como “Públicos” aparecen en la App del Vecino con un sistema de reputación (Rating de 5 estrellas y reseñas), creando una red de confianza depurada por la comunidad.</p>
+<p><strong>Motor de Licitaciones (Compliance):</strong></p>
+<p>Para gastos extraordinarios, se habilita el flujo de “Concurso de Precios”. El sistema exige la carga de mínimo 3 cotizaciones para proceder.</p>
+<p>Comparador Inteligente: El administrador visualiza las opciones lado a lado. El sistema resalta en verde la opción más económica y en rojo las alertas (ej: “Sin Garantía”).</p>
+<p><strong>Mecanismos de Adjudicación (La Toma de Decisión):<br>
 El sistema ofrece dos vías para cerrar la licitación:</strong></p>
 <p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Vía A (Directa/Junta): El administrador presiona “Adjudicar” sobre un proveedor. El sistema cierra el concurso, notifica al ganador y guarda una instantánea inmutable de la comparativa como auditoría.</p>
 <p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Vía B (Democrática/Asamblea Virtual): Para decisiones delicadas, el administrador presiona “Someter a Votación”. El sistema genera una encuesta automática donde los vecinos ven los PDFs y precios, y votan directamente desde su App. Al cerrar la votación, el sistema adjudica al ganador de la mayoría.</p>
-<p>&lt;![if !supportLists]&gt;<strong>4.</strong> &lt;![endif]&gt;<strong>Despacho de Servicios (Ticket Dispatch):</strong></p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Integración nativa con el Módulo de Tickets. Al reportarse una falla, el administrador puede generar una “Orden de Servicio” digital que se envía automáticamente vía WhatsApp/Email al proveedor adjudicado, incluyendo fotos y ubicación.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;Ejemplo Práctico de Uso (El Ciclo Completo):<br>
+<blockquote>
+<p><strong>Despacho de Servicios (Ticket Dispatch):</strong></p>
+</blockquote>
+<p>Integración nativa con el Módulo de Tickets. Al reportarse una falla, el administrador puede generar una “Orden de Servicio” digital que se envía automáticamente vía WhatsApp/Email al proveedor adjudicado, incluyendo fotos y ubicación.</p>
+<p>Ejemplo Práctico de Uso (El Ciclo Completo):<br>
 El Problema: El motor del portón eléctrico se quemó (Costo estimado: $600).</p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;Licitación: María (Admin) solicita y carga 3 presupuestos al sistema: “Portones A (&lt;![if !msEquation]&gt;&lt;![if !vml]&gt;<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAATCAMAAABlYpkDAAAAAXNSR0IArs4c6QAAAKtQTFRFAAAAAAAAAAA6AABmADo6ADpmADqQAGa2OgAAOgA6OgBmOjo6OjpmOjqQOmaQOma2OpC2OpDbZgAAZgA6ZjoAZjo6ZjpmZmZmZma2ZpDbZrbbZrb/kDoAkDo6kGY6kJC2kLbbkNvbkNv/tmYAtmY6tmZmtpA6tpBmttu2ttvbttv/tv//25A625Bm27Zm27aQ29u22//b2////7Zm/7aQ/9uQ/9u2//+2///bq33bVAAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAAZdEVYdFNvZnR3YXJlAE1pY3Jvc29mdCBPZmZpY2V/7TVxAAACH0lEQVRIS+1Va1PCMBBsikDwha1vWxUp+KJUpcbm//8ydy8JMkpnHEb95H3grk16u7d3CVH0b/8KeAXK4eKXtbB3BLAT3Yeba9UjoPdmd4alPKvlJbf52F4pFR9syKxQsDhjussL/Bp9wPR1PLY5SAQfEXUNODYtojJpA6874OxtNfavmjRDsdwjKfhIKxzw0hMY9MY1VZHKXWwG4w2r5mdmG7gk1RwyTelkbVIwMToLnnTWltekqJz2dqzic5vH40r3FnN0zujeS65YijlSKrESI4zPwZy9wiPpP2kklm7afP9YqaETAD/Bf9D6XKfR3UcCDC6isj99yE9Hdf91VPTttdlbSEFGYymT4hhWKBQl2gmW2PMua6bQwEPHK7UEXQFfjtoneJsjm82T6PkocYp5meokAj6WXKcQS8hG1R0Sdq0sWLTIKmDItEb2NnD5xmildjCv0kSXNZqiwpWpQCzZZe4qzbMrAyPPHhwUAO4mvTMLvl12R9iDLkcGEs8BVLDNjg9jAZNKRSrX6VLARZ0CHaww5aU/asGH9aCO1x6M7S2+Ztq3k1mYSjO4mSA5aE0fufR0JvF9ipYjORoi4BSm4rw5Gjh1fgTg9/kieFFSLJxG2Q2599g/3EWgHZaatDuS8jjSJSaYrUfMXSgejq9Minnb4uXij5oH+Oo+Wh50bN26yUL7PYVscr064xn5cXPX63r7qz+WHy/quwnfAeD4S47swze/AAAAAElFTkSuQmCC" alt="">&lt;![endif]&gt;&lt;![endif]&gt;550)” y “Técnico Juan ($480)”.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;Análisis: En la pantalla “Comparador”, María nota que aunque Juan es más barato, “Servicios B” ofrece 1 año de garantía vs. 1 mes de Juan.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;Derivación Democrática: Para evitar conflictos, María presiona “Crear Votación Vecinal”. Configura 48 horas.</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;Participación: El vecino Pedro recibe una notificación Push. Abre la App, ve las 3 tarjetas con sus precios y garantías. Vota por “Servicios B” (prefiere calidad).</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;Adjudicación: Gana “Servicios B” con el 60%. El sistema cierra la licitación, marca a “Servicios B” como proveedor activo para este ticket y le envía la orden de trabajo por WhatsApp automáticamente.</p>
-<p>&lt;![if !supportLists]&gt;6. &lt;![endif]&gt;Cierre: Al finalizar el trabajo, María registra la factura. El sistema reconoce a “Servicios B” como Contribuyente Especial y aplica las retenciones de ley sin que María tenga que calcularlas.</p>
-<p>&lt;![if !supportLists]&gt;s) &lt;![endif]&gt;<strong>Inteligencia de Negocios 360°: Benchmarking, Analítica Prescriptiva y Portal de Transparencia (BI &amp; Data Storytelling):</strong></p>
+<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;Licitación: María (Admin) solicita y carga 3 presupuestos al sistema: “Portones A (&lt;![if !msEquation]&gt;&lt;![if !vml]&gt;<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAATCAMAAABlYpkDAAAAAXNSR0IArs4c6QAAAKtQTFRFAAAAAAAAAAA6AABmADo6ADpmADqQAGa2OgAAOgA6OgBmOjo6OjpmOjqQOmaQOma2OpC2OpDbZgAAZgA6ZjoAZjo6ZjpmZmZmZma2ZpDbZrbbZrb/kDoAkDo6kGY6kJC2kLbbkNvbkNv/tmYAtmY6tmZmtpA6tpBmttu2ttvbttv/tv//25A625Bm27Zm27aQ29u22//b2////7Zm/7aQ/9uQ/9u2//+2///bq33bVAAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAAZdEVYdFNvZnR3YXJlAE1pY3Jvc29mdCBPZmZpY2V/7TVxAAACH0lEQVRIS+1Va1PCMBBsikDwha1vWxUp+KJUpcbm//8ydy8JMkpnHEb95H3grk16u7d3CVH0b/8KeAXK4eKXtbB3BLAT3Yeba9UjoPdmd4alPKvlJbf52F4pFR9syKxQsDhjussL/Bp9wPR1PLY5SAQfEXUNODYtojJpA6874OxtNfavmjRDsdwjKfhIKxzw0hMY9MY1VZHKXWwG4w2r5mdmG7gk1RwyTelkbVIwMToLnnTWltekqJz2dqzic5vH40r3FnN0zujeS65YijlSKrESI4zPwZy9wiPpP2kklm7afP9YqaETAD/Bf9D6XKfR3UcCDC6isj99yE9Hdf91VPTttdlbSEFGYymT4hhWKBQl2gmW2PMua6bQwEPHK7UEXQFfjtoneJsjm82T6PkocYp5meokAj6WXKcQS8hG1R0Sdq0sWLTIKmDItEb2NnD5xmildjCv0kSXNZqiwpWpQCzZZe4qzbMrAyPPHhwUAO4mvTMLvl12R9iDLkcGEs8BVLDNjg9jAZNKRSrX6VLARZ0CHaww5aU/asGH9aCO1x6M7S2+Ztq3k1mYSjO4mSA5aE0fufR0JvF9ipYjORoi4BSm4rw5Gjh1fgTg9/kieFFSLJxG2Q2599g/3EWgHZaatDuS8jjSJSaYrUfMXSgejq9Minnb4uXij5oH+Oo+Wh50bN26yUL7PYVscr064xn5cXPX63r7qz+WHy/quwnfAeD4S47swze/AAAAAElFTkSuQmCC" alt="">550)” y “Técnico Juan ($480)”.</p>
+<p>Análisis: En la pantalla “Comparador”, María nota que aunque Juan es más barato, “Servicios B” ofrece 1 año de garantía vs. 1 mes de Juan.</p>
+<p>Derivación Democrática: Para evitar conflictos, María presiona “Crear Votación Vecinal”. Configura 48 horas.</p>
+<p>Participación: El vecino Pedro recibe una notificación Push. Abre la App, ve las 3 tarjetas con sus precios y garantías. Vota por “Servicios B” (prefiere calidad).</p>
+<p>Adjudicación: Gana “Servicios B” con el 60%. El sistema cierra la licitación, marca a “Servicios B” como proveedor activo para este ticket y le envía la orden de trabajo por WhatsApp automáticamente.</p>
+<blockquote>
+<p>Cierre: Al finalizar el trabajo, María registra la factura. El sistema reconoce a “Servicios B” como Contribuyente Especial y aplica las retenciones de ley sin que María tenga que calcularlas.</p>
+</blockquote>
+<p><strong>Inteligencia de Negocios 360°: Benchmarking, Analítica Prescriptiva y Portal de Transparencia (BI &amp; Data Storytelling):</strong></p>
 <p>Derivado de funciones analizadas: #20, #21, #22, #51, #52, #56, #83, #97.<br>
 Este módulo supera los reportes estáticos tradicionales (“tablas llenas de números”). Su objetivo es democratizar la información financiera, ofreciendo al Administrador herramientas de análisis profundo y predictivo para la toma de decisiones, y ofreciendo al Propietario un Portal de Transparencia Visual que fomente la confianza y el pago oportuno.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Tecnología Aplicada:</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Motor de Visualización Reactiva (Recharts/Nivo): Implementación de librerías gráficas de alto rendimiento en React. Estas permiten interactividad total: “Drill-down” (hacer clic en una barra para ver el desglose), “Hover” (ver detalles al pasar el mouse) y animaciones suaves que hacen la data agradable a la vista.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Normalización Financiera (Inflation-Proof Engine): Algoritmos en el Backend que permiten cambiar la visualización de los gráficos en tiempo real: Ver en Bolívares, Ver en Dólares o Ver Ajustado por Inflación. Esto elimina la “ilusión monetaria” y permite análisis reales en una economía inestable.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Inteligencia Colectiva (Benchmarking Anónimo): El sistema agrega data anonimizada de múltiples condominios para generar comparativas de mercado (ej: costo promedio de vigilancia por m²), alertando sobre sobreprecios.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Modo Presentación (Reveal.js): Renderizado de la interfaz en modo “Pantalla Completa” optimizado para Video Beams/TVs, transformando el Dashboard en diapositivas automáticas.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Memoria Descriptiva del Alcance:</strong></p>
+<p><strong>Tecnología Aplicada:</strong></p>
+<p>Motor de Visualización Reactiva (Recharts/Nivo): Implementación de librerías gráficas de alto rendimiento en React. Estas permiten interactividad total: “Drill-down” (hacer clic en una barra para ver el desglose), “Hover” (ver detalles al pasar el mouse) y animaciones suaves que hacen la data agradable a la vista.</p>
+<p>Normalización Financiera (Inflation-Proof Engine): Algoritmos en el Backend que permiten cambiar la visualización de los gráficos en tiempo real: Ver en Bolívares, Ver en Dólares o Ver Ajustado por Inflación. Esto elimina la “ilusión monetaria” y permite análisis reales en una economía inestable.</p>
+<p>Inteligencia Colectiva (Benchmarking Anónimo): El sistema agrega data anonimizada de múltiples condominios para generar comparativas de mercado (ej: costo promedio de vigilancia por m²), alertando sobre sobreprecios.</p>
+<p>Modo Presentación (Reveal.js): Renderizado de la interfaz en modo “Pantalla Completa” optimizado para Video Beams/TVs, transformando el Dashboard en diapositivas automáticas.</p>
+<p><strong>Memoria Descriptiva del Alcance:</strong></p>
 <p>A) Para el Administrador (Gestión y Estrategia):</p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;Health Score (Semáforo del Edificio): Un indicador velocímetro (0-100) que resume la salud del condominio combinando: % Recaudación + Estado del Fondo de Reserva + Tickets Resueltos. Permite identificar rápidamente qué edificio requiere atención.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;Modo Asamblea: Con un solo clic, el sistema genera una presentación gerencial interactiva lista para proyectar. Oculta menús, agranda textos y muestra las gráficas clave (Ingresos vs Gastos, Morosidad, Proyectos), eliminando la necesidad de hacer PowerPoints manuales.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;Analítica Prescriptiva: El sistema cruza la data y sugiere acciones. Ejemplo: “Tu gasto en Cisternas de Agua subió 20% vs el año pasado. Se sugiere revisar flotantes o ajustar cuota”.</p>
+<p>Health Score (Semáforo del Edificio): Un indicador velocímetro (0-100) que resume la salud del condominio combinando: % Recaudación + Estado del Fondo de Reserva + Tickets Resueltos. Permite identificar rápidamente qué edificio requiere atención.</p>
+<p>Modo Asamblea: Con un solo clic, el sistema genera una presentación gerencial interactiva lista para proyectar. Oculta menús, agranda textos y muestra las gráficas clave (Ingresos vs Gastos, Morosidad, Proyectos), eliminando la necesidad de hacer PowerPoints manuales.</p>
+<blockquote>
+<p>Analítica Prescriptiva: El sistema cruza la data y sugiere acciones. Ejemplo: “Tu gasto en Cisternas de Agua subió 20% vs el año pasado. Se sugiere revisar flotantes o ajustar cuota”.</p>
+</blockquote>
 <p>B) Para el Propietario (Transparencia y Confianza):</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;"¿En qué se gasta mi dinero?": En el escritorio de la App/Web del vecino, se muestra un Gráfico de Dona (Donut Chart) simplificado con la distribución del gasto del mes (ej: 30% Vigilancia, 20% Agua, 10% Limpieza).</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;Evolución Personal: Un gráfico de línea que muestra su historial de consumo y pagos en los últimos 6 meses, ayudándole a entender sus propias finanzas.</p>
-<p>&lt;![if !supportLists]&gt;6. &lt;![endif]&gt;Estado de los Fondos: Visualización de “Barras de Progreso” que muestran cuánto dinero hay acumulado en la Reserva o Prestaciones, brindando tranquilidad sobre los ahorros del edificio.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Ejemplo Práctico de Uso:</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Escenario Admin: Es día de Asamblea. María conecta su laptop al TV, entra al SaaS y presiona “Modo Asamblea”. La pantalla muestra gráficos nítidos y grandes. Los vecinos preguntan: “¿Por qué subió el condominio?”. María cambia la vista a “Normalizado en Dólares” y demuestra con la gráfica que el costo en divisas se ha mantenido estable, desmintiendo la percepción de aumento.</p>
+<p>“¿En qué se gasta mi dinero?”: En el escritorio de la App/Web del vecino, se muestra un Gráfico de Dona (Donut Chart) simplificado con la distribución del gasto del mes (ej: 30% Vigilancia, 20% Agua, 10% Limpieza).</p>
+<p>Evolución Personal: Un gráfico de línea que muestra su historial de consumo y pagos en los últimos 6 meses, ayudándole a entender sus propias finanzas.</p>
+<p>Estado de los Fondos: Visualización de “Barras de Progreso” que muestran cuánto dinero hay acumulado en la Reserva o Prestaciones, brindando tranquilidad sobre los ahorros del edificio.</p>
+<p><strong>Ejemplo Práctico de Uso:</strong></p>
+<p>Escenario Admin: Es día de Asamblea. María conecta su laptop al TV, entra al SaaS y presiona “Modo Asamblea”. La pantalla muestra gráficos nítidos y grandes. Los vecinos preguntan: “¿Por qué subió el condominio?”. María cambia la vista a “Normalizado en Dólares” y demuestra con la gráfica que el costo en divisas se ha mantenido estable, desmintiendo la percepción de aumento.</p>
 <p>Escenario Vecino: Juan recibe su recibo. Tiene dudas. Abre su App y ve el Gráfico de Dona. Nota que el segmento “Reparaciones” es grande. Toca el segmento (Drill-down) y se despliega la lista: “Reparación Motor Portón - $400”. Juan entiende, se siente tranquilo por la transparencia y paga</p>
-<p>&lt;![if !supportLists]&gt;t) &lt;![endif]&gt;<strong>Gestión de Fianza del Administrador (Art. 19 LPH)</strong></p>
+<p><strong>Gestión de Fianza del Administrador (Art. 19 LPH)</strong></p>
 <p><strong>Memoria Descriptiva:</strong><br>
 Sistema de control y auditoría de la garantía legal que debe prestar el administrador para ejercer sus funciones. Este submódulo impide (o alerta críticamente) la gestión de fondos si no existe un respaldo jurídico vigente que responda ante posibles daños o malversaciones.<br>
 Permite la carga digital del documento probatorio (Póliza de Seguros, Contrato de Fianza o Hipoteca), registra la fecha de caducidad y activa un protocolo de “Cuenta Regresiva” para notificar a la Junta de Condominio antes del vencimiento. El sistema actúa como un auditor automático, promoviendo la transparencia y la confianza vecinal.</p>
 <p><strong>User Journey (Flujo de Cumplimiento):</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Configuración Inicial:</strong> El Administrador recién electo entra al Panel de Control &gt; Sección “Legal”. El sistema muestra una barra de progreso incompleta: “Requisito Faltante: Fianza Art. 19”.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Carga:</strong> El Admin selecciona “Tipo de Garantía: Póliza de Seguros”, ingresa el monto ($5,000), la aseguradora (“Seguros Caracas”) y la fecha de vencimiento (31/Dic/2025). Sube el PDF de la póliza escaneada.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;<strong>Validación:</strong> El Presidente de la Junta recibe una notificación: “El Administrador ha cargado su Fianza. Por favor revisar y aprobar”. El Presidente valida el PDF y da clic en “Aprobar”.</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;<strong>Operación:</strong> El semáforo de “Cumplimiento Legal” del edificio cambia a VERDE.</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;<strong>Vencimiento:</strong> Un año después, 30 días antes de vencer la póliza, el sistema envía alertas automáticas al Admin y a la Junta: “Renovar Fianza urgentemente”.</p>
-<p>&lt;![if !supportLists]&gt;6. &lt;![endif]&gt;<strong>Bloqueo (Opcional):</strong> Si la fianza vence y no se renueva, el sistema muestra un banner rojo indeleble a todos los vecinos en la Cartelera Digital: “ADMINISTRACIÓN SIN GARANTÍA VIGENTE”, ejerciendo presión social para el cumplimiento.</p>
+<p><strong>Configuración Inicial:</strong> El Administrador recién electo entra al Panel de Control &gt; Sección “Legal”. El sistema muestra una barra de progreso incompleta: “Requisito Faltante: Fianza Art. 19”.</p>
+<p><strong>Carga:</strong> El Admin selecciona “Tipo de Garantía: Póliza de Seguros”, ingresa el monto ($5,000), la aseguradora (“Seguros Caracas”) y la fecha de vencimiento (31/Dic/2025). Sube el PDF de la póliza escaneada.</p>
+<p><strong>Validación:</strong> El Presidente de la Junta recibe una notificación: “El Administrador ha cargado su Fianza. Por favor revisar y aprobar”. El Presidente valida el PDF y da clic en “Aprobar”.</p>
+<p><strong>Operación:</strong> El semáforo de “Cumplimiento Legal” del edificio cambia a VERDE.</p>
+<p><strong>Vencimiento:</strong> Un año después, 30 días antes de vencer la póliza, el sistema envía alertas automáticas al Admin y a la Junta: “Renovar Fianza urgentemente”.</p>
+<p><strong>Bloqueo (Opcional):</strong> Si la fianza vence y no se renueva, el sistema muestra un banner rojo indeleble a todos los vecinos en la Cartelera Digital: “ADMINISTRACIÓN SIN GARANTÍA VIGENTE”, ejerciendo presión social para el cumplimiento.</p>
 <p><strong>Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend (Python/Django):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Modelo de datos estándar.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Tarea Programada (Celery):</strong> CheckBondExpiration(). Debe correr diariamente. Si today &gt; expiry_date, el sistema cambia el status a EXPIRED y dispara alertas.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Frontend (React/Tailwind):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Componente de carga de archivos (File Upload) en la configuración del edificio.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Widget de Alerta:</strong> Un “Banner” persistente en el Dashboard que diga: <em>“ATENCIÓN: La fianza del administrador vence en 15 días”</em> o <em>“Fianza Vencida - Gestión en Riesgo Legal”</em>.</p>
-<p>&lt;![if !supportLists]&gt;u) &lt;![endif]&gt;<strong>Estructura Rígida de la Junta de Condominio (Art. 18 y 24 LPH)</strong></p>
-<p><strong>Memoria Descriptiva:<br>
+<p><strong>Backend (Python/Django):</strong></p>
+<p>Modelo de datos estándar.</p>
+<p><strong>Tarea Programada (Celery):</strong> CheckBondExpiration(). Debe correr diariamente. Si today &gt; expiry_date, el sistema cambia el status a EXPIRED y dispara alertas.</p>
+<p><strong>Frontend (React/Tailwind):</strong></p>
+<p>Componente de carga de archivos (File Upload) en la configuración del edificio.</p>
+<p><strong>Widget de Alerta:</strong> Un “Banner” persistente en el Dashboard que diga: <em>“ATENCIÓN: La fianza del administrador vence en 15 días”</em> o <em>“Fianza Vencida - Gestión en Riesgo Legal”</em>.</p>
+<p><strong>Estructura Rígida de la Junta de Condominio (Art. 18 y 24 LPH)</strong></p>
+<p><strong>Memoria Descriptiva:</strong><br>
 Módulo de gobernanza que garantiza la legitimidad del cuerpo colegiado del condominio. El sistema implementa las restricciones del Art. 24 de la LPH, impidiendo la operación administrativa formal si no existe una Junta constituida por tres principales y tres suplentes.<br>
-Gestiona el “Ciclo de Vida” de la Junta (Elección, Período Vigente, Renuncia, Sucesión). Incluye lógica de ascenso automático de suplentes ante faltas temporales o absolutas de los principales, manteniendo siempre el quórum de gobierno necesario para la toma de decisiones válidas. Genera alertas de “Acefalía” si el número de miembros activos cae por debajo del mínimo legal.</strong></p>
+Gestiona el “Ciclo de Vida” de la Junta (Elección, Período Vigente, Renuncia, Sucesión). Incluye lógica de ascenso automático de suplentes ante faltas temporales o absolutas de los principales, manteniendo siempre el quórum de gobierno necesario para la toma de decisiones válidas. Genera alertas de “Acefalía” si el número de miembros activos cae por debajo del mínimo legal.</p>
 <p><strong>User Journey (Flujo de Legitimidad):</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>1.</strong> &lt;![endif]&gt;<strong>Elección: Tras la Asamblea, el Administrador carga el “Nuevo Período de Junta”. El sistema le pide obligatoriamente asignar: Presidente, Secretario, Vocal (Principales) y Suplente 1, 2, 3.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>2.</strong> &lt;![endif]&gt;<strong>Validación: El sistema verifica que los 6 seleccionados sean propietarios solventes (Requisito Art. 18).</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>3.</strong> &lt;![endif]&gt;<strong>Activación: Al completar la carga, se activa el “Modo Gobierno”. Los miembros reciben permisos especiales en la App (ej. Ver Conciliación Bancaria, Aprobar Pagos).</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>4.</strong> &lt;![endif]&gt;<strong>La Renuncia: El “Vocal Principal” vende su apartamento y se muda. El sistema detecta el cambio de propiedad y lo da de baja del cargo automáticamente.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>5.</strong> &lt;![endif]&gt;<strong>Sucesión Automática: El sistema notifica al “Suplente 3”: <em>“Por vacante absoluta del Principal, usted ha sido ascendido a Principal en funciones”</em>. Sus permisos en la App se elevan automáticamente.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>6.</strong> &lt;![endif]&gt;<strong>Transparencia: La Cartelera Digital actualiza el Organigrama para que todos los vecinos sepan quiénes son sus nuevas autoridades vigentes.</strong></p>
+<p><strong>Elección: Tras la Asamblea, el Administrador carga el “Nuevo Período de Junta”. El sistema le pide obligatoriamente asignar: Presidente, Secretario, Vocal (Principales) y Suplente 1, 2, 3.</strong></p>
+<p><strong>Validación: El sistema verifica que los 6 seleccionados sean propietarios solventes (Requisito Art. 18).</strong></p>
+<p><strong>Activación: Al completar la carga, se activa el “Modo Gobierno”. Los miembros reciben permisos especiales en la App (ej. Ver Conciliación Bancaria, Aprobar Pagos).</strong></p>
+<blockquote>
+<p><strong>La Renuncia: El “Vocal Principal” vende su apartamento y se muda. El sistema detecta el cambio de propiedad y lo da de baja del cargo automáticamente.</strong></p>
+</blockquote>
+<p><strong>Sucesión Automática: El sistema notifica al “Suplente 3”: <em>“Por vacante absoluta del Principal, usted ha sido ascendido a Principal en funciones”</em>. Sus permisos en la App se elevan automáticamente.</strong></p>
+<p><strong>Transparencia: La Cartelera Digital actualiza el Organigrama para que todos los vecinos sepan quiénes son sus nuevas autoridades vigentes.</strong></p>
 <p><strong>Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend (Python/Django):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Lógica de Sucesión: Implementar método promote_alternate(principal_id). Si el Principal renuncia, el sistema busca al Suplente con el mismo order y lo asciende, notificando a la comunidad.</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Middleware de Aprobación: Para acciones críticas (Mover dinero de Fondo de Reserva), requerir aprobación digital de la mayoría simple de los PRINCIPALES activos.</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Frontend (React):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Organigrama Visual: Widget en el Dashboard que muestre las fotos de los 3 Principales y 3 Suplentes. Si falta uno, muestra una silueta vacía roja “Acefalía Legal”.</strong></p>
-<p>&lt;![if !supportLists]&gt;v) &lt;![endif]&gt;<strong>Libros Obligatorios Sellados (Art. 20 LPH)</strong></p>
+<p><strong>Backend (Python/Django):</strong></p>
+<p><strong>Lógica de Sucesión: Implementar método promote_alternate(principal_id). Si el Principal renuncia, el sistema busca al Suplente con el mismo order y lo asciende, notificando a la comunidad.</strong></p>
+<p><strong>Middleware de Aprobación: Para acciones críticas (Mover dinero de Fondo de Reserva), requerir aprobación digital de la mayoría simple de los PRINCIPALES activos.</strong></p>
+<p><strong>Frontend (React):</strong></p>
+<p><strong>Organigrama Visual: Widget en el Dashboard que muestre las fotos de los 3 Principales y 3 Suplentes. Si falta uno, muestra una silueta vacía roja “Acefalía Legal”.</strong></p>
+<p><strong>Libros Obligatorios Sellados (Art. 20 LPH)</strong></p>
 <p><strong>Referencia Legal:</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Art. 20 LPH:</strong> Literal e) El Administrador debe llevar <em>“los libros de contabilidad y de actas de la asamblea… y de la Junta de Condominio, debidamente estampillados por un Notario Público”</em>.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Implicación Crítica:</strong> Un PDF bonito generado por el software NO es un libro legal en Venezuela si no está impreso en los libros que selló el Notario. Si hay un juicio, el juez pide “El Libro”, no “El Dashboard”. El software debe permitir imprimir <strong>sobre</strong> el libro físico o generar hojas que cumplan el formato de foliado para ser insertadas…</p>
+<p><strong>Art. 20 LPH:</strong> Literal e) El Administrador debe llevar <em>“los libros de contabilidad y de actas de la asamblea… y de la Junta de Condominio, debidamente estampillados por un Notario Público”</em>.</p>
+<p><strong>Implicación Crítica:</strong> Un PDF bonito generado por el software NO es un libro legal en Venezuela si no está impreso en los libros que selló el Notario. Si hay un juicio, el juez pide “El Libro”, no “El Dashboard”. El software debe permitir imprimir <strong>sobre</strong> el libro físico o generar hojas que cumplan el formato de foliado para ser insertadas…</p>
 <p><strong>Memoria Descriptiva:</strong><br>
 Módulo de compatibilidad con la formalidad registral venezolana. Permite la “Materialización Legal” de la información digital. El sistema lleva un control paralelo de la paginación física (Folios) de los Libros de Actas y Libros Diarios de Contabilidad.<br>
 Incluye un motor de impresión calibrado que respeta los márgenes de seguridad de los libros estampillados por Notaría. Antes de imprimir un acta o un mes contable, el sistema verifica la secuencia de folios para asegurar la continuidad cronológica y numérica, generando un índice de referencia cruzada (Digital &lt;-&gt; Físico) que blinda al condominio ante auditorías forenses o inspecciones judiciales.</p>
 <p><strong>User Journey (Flujo de Formalización):</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Configuración del Libro:</strong> El Administrador registra el “Libro de Actas N° 2”, indicando que fue sellado por la Notaría Quinta y tiene 200 folios útiles.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Cierre de Acta:</strong> Se aprueba el Acta de Asamblea #15 digitalmente.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;<strong>Materialización:</strong> El Admin selecciona “Imprimir Acta #15 para Libro”.</p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;<strong>Sincronización:</strong> El sistema pregunta: <em>“El sistema registra que el último folio usado fue el 42. ¿Correcto?”</em>. El Admin verifica el libro físico y confirma.</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;<strong>Generación:</strong> El sistema genera un PDF estrictamente formateado que comienza numerando en “Folio 43”, con márgenes amplios para no escribir sobre los sellos húmedos del Notario.</p>
-<p>&lt;![if !supportLists]&gt;6. &lt;![endif]&gt;<strong>Registro:</strong> Al confirmar la impresión exitosa, el sistema bloquea el Acta Digital #15 (Inmutable) y registra en BD que ocupa los folios 43-45.</p>
-<p>&lt;![if !supportLists]&gt;7. &lt;![endif]&gt;<strong>Auditoría:</strong> En el futuro, si se busca el Acta #15, el sistema indica: <em>“Disponible digitalmente aquí. Físicamente en Libro N° 2, Folios 43-45”</em>.</p>
+<p><strong>Configuración del Libro:</strong> El Administrador registra el “Libro de Actas N° 2”, indicando que fue sellado por la Notaría Quinta y tiene 200 folios útiles.</p>
+<p><strong>Cierre de Acta:</strong> Se aprueba el Acta de Asamblea #15 digitalmente.</p>
+<p><strong>Materialización:</strong> El Admin selecciona “Imprimir Acta #15 para Libro”.</p>
+<p><strong>Sincronización:</strong> El sistema pregunta: <em>“El sistema registra que el último folio usado fue el 42. ¿Correcto?”</em>. El Admin verifica el libro físico y confirma.</p>
+<p><strong>Generación:</strong> El sistema genera un PDF estrictamente formateado que comienza numerando en “Folio 43”, con márgenes amplios para no escribir sobre los sellos húmedos del Notario.</p>
+<p><strong>Registro:</strong> Al confirmar la impresión exitosa, el sistema bloquea el Acta Digital #15 (Inmutable) y registra en BD que ocupa los folios 43-45.</p>
+<p><strong>Auditoría:</strong> En el futuro, si se busca el Acta #15, el sistema indica: <em>“Disponible digitalmente aquí. Físicamente en Libro N° 2, Folios 43-45”</em>.</p>
 <p><strong>Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend (Python/WeasyPrint):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Motor de Maquetación Estricta:</strong> Configuración de márgenes personalizados (CSS @page) para coincidir con el papel físico notariado (que suele tener sellos en los bordes).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Control de “Huérfanas y Viudas”:</strong> Evitar que un párrafo legal se corte mal entre páginas.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Frontend:</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Asistente de Impresión:</strong> Interfaz que pregunte: <em>“¿Cuál es el último folio impreso en el libro físico?”</em> (ej. 53). El sistema genera el PDF empezando la numeración en 54.</p>
-<p>&lt;![if !supportLists]&gt;w) &lt;![endif]&gt;<strong>Gestión de Traspaso de Propiedad y Prelación de Créditos (Art. 13 LPH)</strong></p>
+<p><strong>Backend (Python/WeasyPrint):</strong></p>
+<p><strong>Motor de Maquetación Estricta:</strong> Configuración de márgenes personalizados (CSS @page) para coincidir con el papel físico notariado (que suele tener sellos en los bordes).</p>
+<p><strong>Control de “Huérfanas y Viudas”:</strong> Evitar que un párrafo legal se corte mal entre páginas.</p>
+<p><strong>Frontend:</strong></p>
+<p><strong>Asistente de Impresión:</strong> Interfaz que pregunte: <em>“¿Cuál es el último folio impreso en el libro físico?”</em> (ej. 53). El sistema genera el PDF empezando la numeración en 54.</p>
+<p><strong>Gestión de Traspaso de Propiedad y Prelación de Créditos (Art. 13 LPH)</strong></p>
 <p><strong>Referencia Legal:</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Art. 13 LPH:</strong> <em>“La obligación del propietario… sigue a la propiedad”</em>. Es una obligación <em>Propter Rem</em>.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Implicación Crítica:</strong> Si Juan vende el Apto a María, y Juan debía $1000, la deuda <strong>NO</strong> desaparece ni se queda con Juan. La deuda es del Apartamento. María hereda la deuda. El software no puede simplemente “borrar saldo” al cambiar de usuario, ni permitir un cambio de propietario sin advertencia de solvencia.</p>
+<p><strong>Art. 13 LPH:</strong> <em>“La obligación del propietario… sigue a la propiedad”</em>. Es una obligación <em>Propter Rem</em>.</p>
+<p><strong>Implicación Crítica:</strong> Si Juan vende el Apto a María, y Juan debía $1000, la deuda <strong>NO</strong> desaparece ni se queda con Juan. La deuda es del Apartamento. María hereda la deuda. El software no puede simplemente “borrar saldo” al cambiar de usuario, ni permitir un cambio de propietario sin advertencia de solvencia.</p>
 <p><strong>Memoria Descriptiva:</strong><br>
 Motor de transferencia de titularidad que respeta la naturaleza <em>Propter Rem</em> de la deuda condominial. Este módulo impide que las deudas se “evaporen” durante la compra-venta de inmuebles.<br>
 El sistema audita el estado de cuenta de la unidad al momento del traspaso. Si existe deuda, bloquea el cambio de propietario en la App hasta que: a) Se pague la totalidad (Solvencia), o b) El nuevo propietario firme digitalmente una “Asunción de Deuda”, aceptando explícitamente cargar con el pasivo histórico. Esto protege las finanzas del condominio y evita disputas legales con los nuevos vecinos.</p>
 <p><strong>User Journey (Flujo de Traspaso):</strong></p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;<strong>Venta:</strong> Juan vende el Apto 5-B a Pedro. Juan debe $1,000.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;<strong>Registro:</strong> El Admin entra a “Unidades” &gt; “Cambiar Propietario”.</p>
-<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;<strong>Bloqueo:</strong> El sistema alerta: <em>“¡Alto! La unidad 5-B tiene deuda vencida de $1,000. No se puede procesar cambio simple.”</em></p>
-<p>&lt;![if !supportLists]&gt;4. &lt;![endif]&gt;<strong>Resolución:</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<em>Opción A:</em> Juan paga allí mismo.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<em>Opción B:</em> Pedro acuerda asumir la deuda (se descontó del precio del apto).</p>
-<p>&lt;![if !supportLists]&gt;5. &lt;![endif]&gt;<strong>Asunción:</strong> El Admin selecciona “Nuevo Propietario Asume Deuda”. Sube el documento de compra-venta.</p>
-<p>&lt;![if !supportLists]&gt;6. &lt;![endif]&gt;<strong>Ejecución:</strong> El sistema cambia el nombre a Pedro. La deuda de $1,000 sigue ahí.</p>
-<p>&lt;![if !supportLists]&gt;7. &lt;![endif]&gt;<strong>Cobranza:</strong> Al mes siguiente, el recibo sale a nombre de Pedro con el saldo arrastrado de Juan.</p>
+<p><strong>Venta:</strong> Juan vende el Apto 5-B a Pedro. Juan debe $1,000.</p>
+<p><strong>Registro:</strong> El Admin entra a “Unidades” &gt; “Cambiar Propietario”.</p>
+<p><strong>Bloqueo:</strong> El sistema alerta: <em>“¡Alto! La unidad 5-B tiene deuda vencida de $1,000. No se puede procesar cambio simple.”</em></p>
+<p><strong>Resolución:</strong></p>
+<p><em>Opción A:</em> Juan paga allí mismo.</p>
+<p><em>Opción B:</em> Pedro acuerda asumir la deuda (se descontó del precio del apto).</p>
+<p><strong>Asunción:</strong> El Admin selecciona “Nuevo Propietario Asume Deuda”. Sube el documento de compra-venta.</p>
+<p><strong>Ejecución:</strong> El sistema cambia el nombre a Pedro. La deuda de $1,000 sigue ahí.</p>
+<p><strong>Cobranza:</strong> Al mes siguiente, el recibo sale a nombre de Pedro con el saldo arrastrado de Juan.</p>
 <p><strong>B. Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend:</strong> Endpoint transfer_ownership(). Debe verificar Bill.balance &gt; 0.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Si Balance &gt; 0: Exige un token de autorización especial o un documento firmado (“Carta de Asunción de Deuda”).</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Frontend:</strong> Wizard de “Traspaso de Propiedad”.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Paso 1: Seleccionar Unidad.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Paso 2: Verificar Solvencia.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Si es Solvente: Pasa directo.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Si es Moroso: <strong>ALERTA ROJA</strong>. “¿El nuevo propietario asume la deuda de $500?”. Checkbox obligatorio legal.</p>
-<p>&lt;![if !supportLists]&gt;x) &lt;![endif]&gt;<strong>Gestión de Pólizas de Seguro Obligatorias (Art. 20, Literal d)</strong></p>
+<p><strong>Backend:</strong> Endpoint transfer_ownership(). Debe verificar Bill.balance &gt; 0.</p>
+<p>Si Balance &gt; 0: Exige un token de autorización especial o un documento firmado (“Carta de Asunción de Deuda”).</p>
+<p><strong>Frontend:</strong> Wizard de “Traspaso de Propiedad”.</p>
+<p>Paso 1: Seleccionar Unidad.</p>
+<p>Paso 2: Verificar Solvencia.</p>
+<p>Si es Solvente: Pasa directo.</p>
+<blockquote>
+<p>Si es Moroso: <strong>ALERTA ROJA</strong>. “¿El nuevo propietario asume la deuda de $500?”. Checkbox obligatorio legal.</p>
+</blockquote>
+<p><strong>Gestión de Pólizas de Seguro Obligatorias (Art. 20, Literal d)</strong></p>
 <p><strong>Referencia Legal:</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Art. 20, Literal d LPH: Es obligación taxativa del administrador <em>“Velar por que el inmueble esté asegurado contra incendio y terremoto…”</em>.</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>La Brecha: Ya hicimos la fianza del <em>Administrador</em>, pero no tenemos dónde guardar la Póliza del Edificio. Si ocurre un siniestro y la póliza estaba vencida por descuido del software, la responsabilidad civil recae sobre la plataforma por no alertar.</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Impacto: Crítico para la gestión de riesgo.</strong></p>
-<p><strong>Memoria Descriptiva:<br>
+<p><strong>Art. 20, Literal d LPH: Es obligación taxativa del administrador <em>“Velar por que el inmueble esté asegurado contra incendio y terremoto…”</em>.</strong></p>
+<p><strong>La Brecha: Ya hicimos la fianza del <em>Administrador</em>, pero no tenemos dónde guardar la Póliza del Edificio. Si ocurre un siniestro y la póliza estaba vencida por descuido del software, la responsabilidad civil recae sobre la plataforma por no alertar.</strong></p>
+<p><strong>Impacto: Crítico para la gestión de riesgo.</strong></p>
+<p><strong>Memoria Descriptiva:</strong><br>
 Módulo de gestión de riesgos que da cumplimiento a la obligación del administrador de mantener asegurado el inmueble. Permite el registro de las pólizas matrices (Incendio, Terremoto, Responsabilidad Civil) y monitorea su vigencia.<br>
-El sistema impide que el condominio quede desprotegido por olvido administrativo. Genera alertas tempranas de renovación y almacena digitalmente las condiciones de la póliza para consulta rápida en caso de siniestro (Botón de Pánico), facilitando la labor de los bomberos o ajustadores al tener la información de cobertura a la mano.</strong></p>
+El sistema impide que el condominio quede desprotegido por olvido administrativo. Genera alertas tempranas de renovación y almacena digitalmente las condiciones de la póliza para consulta rápida en caso de siniestro (Botón de Pánico), facilitando la labor de los bomberos o ajustadores al tener la información de cobertura a la mano.</p>
 <p><strong>User Journey:</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>1.</strong> &lt;![endif]&gt;<strong>Alerta: El sistema detecta que la Póliza de Incendio vence en 30 días.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>2.</strong> &lt;![endif]&gt;<strong>Acción: Envía correo al Corredor de Seguros registrado y al Presidente de la Junta: “Solicitar cotización de renovación”.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>3.</strong> &lt;![endif]&gt;<strong>Renovación: El Admin carga la nueva póliza.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>4.</strong> &lt;![endif]&gt;<strong>Carga: El sistema inserta automáticamente la prima del seguro en los Gastos Comunes del mes para asegurar su pago puntual.</strong></p>
+<p><strong>Alerta: El sistema detecta que la Póliza de Incendio vence en 30 días.</strong></p>
+<p><strong>Acción: Envía correo al Corredor de Seguros registrado y al Presidente de la Junta: “Solicitar cotización de renovación”.</strong></p>
+<p><strong>Renovación: El Admin carga la nueva póliza.</strong></p>
+<p><strong>Carga: El sistema inserta automáticamente la prima del seguro en los Gastos Comunes del mes para asegurar su pago puntual.</strong></p>
 <p><strong>B. Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Backend: Tarea programada de verificación de vigencia.</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Integración: Posible vínculo con el módulo de Gastos (para generar la renovación automática en Cuentas por Pagar).</strong></p>
-<p>&lt;![if !supportLists]&gt;y) &lt;![endif]&gt;<strong>Gestión de “Mejoras Voluptuarias” y Opt-Out (Art. 9 LPH)</strong></p>
+<p><strong>Backend: Tarea programada de verificación de vigencia.</strong></p>
+<p><strong>Integración: Posible vínculo con el módulo de Gastos (para generar la renovación automática en Cuentas por Pagar).</strong></p>
+<p><strong>Gestión de “Mejoras Voluptuarias” y Opt-Out (Art. 9 LPH)</strong></p>
 <p><strong>Referencia Legal:</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Art. 9 LPH: <em>“Las mejoras… que tengan carácter de voluptuarias [lujo innecesario]… requerirán el consentimiento de los propietarios”.</em> Y LO MÁS IMPORTANTE: <em>“Los disidentes no podrán ser obligados a contribuir… ni podrán servirse de ellas”</em>.</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>La Brecha: Tenemos “Gastos Sectorizados” (Por Torre), pero no tenemos “Gastos por Exclusión Individual”. Si se aprueba una piscina climatizada (lujo) y el Sr. Pérez vota en contra, la ley dice que no paga, pero el software actual le cobraría. Además, el software debe bloquearle el acceso a esa piscina (Control de Acceso).</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Impacto: Financiero y Operativo.</strong></p>
+<p><strong>Art. 9 LPH: <em>“Las mejoras… que tengan carácter de voluptuarias [lujo innecesario]… requerirán el consentimiento de los propietarios”.</em> Y LO MÁS IMPORTANTE: <em>“Los disidentes no podrán ser obligados a contribuir… ni podrán servirse de ellas”</em>.</strong></p>
+<p><strong>La Brecha: Tenemos “Gastos Sectorizados” (Por Torre), pero no tenemos “Gastos por Exclusión Individual”. Si se aprueba una piscina climatizada (lujo) y el Sr. Pérez vota en contra, la ley dice que no paga, pero el software actual le cobraría. Además, el software debe bloquearle el acceso a esa piscina (Control de Acceso).</strong></p>
+<p><strong>Impacto: Financiero y Operativo.</strong></p>
 <p><strong>B. Stack Tecnológico</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Integración: Conecta el Módulo Legal (Voto Negativo en Asamblea de Mejoras) con el Módulo de Facturación (No cobrar) y el Módulo de Seguridad (No dejar entrar)</strong></p>
-<p><strong>Memoria Descriptiva:<br>
+<p><strong>Integración:</strong> Conecta el Módulo Legal (Voto Negativo en Asamblea de Mejoras) con el Módulo de Facturación (No cobrar) y el Módulo de Seguridad (No dejar entrar)</p>
+<p>**Memoria Descriptiva: **<br>
 Motor lógico que gestiona el derecho a la disidencia en obras de lujo. Si una mejora es calificada como “Voluptuaria” en Asamblea, el sistema permite registrar a los propietarios “Disidentes”.<br>
-Automáticamente, el sistema realiza dos acciones:</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>1.</strong> &lt;![endif]&gt;<strong>Exención Financiera: Excluye a dichas unidades de cualquier cuota de inversión o mantenimiento relacionada con esa mejora.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>2.</strong> &lt;![endif]&gt;<strong>Bloqueo de Uso: Revoca los permisos de acceso (QR/Biometría) a dicha área o amenidad para los residentes de esas unidades, garantizando la equidad: “Quien no paga, no usa”.</strong></p>
-<p><strong>User Journey:</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>1.</strong> &lt;![endif]&gt;<strong>Votación: Se aprueba “Jacuzzi en la Azotea”. El Apto 1-A vota EN CONTRA y se acoge al Art. 9.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>2.</strong> &lt;![endif]&gt;<strong>Configuración: El Admin marca la obra como “Mejora Voluptuaria” y registra al 1-A como disidente.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>3.</strong> &lt;![endif]&gt;<strong>Facturación: Se genera la cuota “Construcción Jacuzzi”. Al 1-A le llega en $0.00.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>4.</strong> &lt;![endif]&gt;<strong>Uso: El hijo del Apto 1-A intenta abrir la puerta del Jacuzzi con su App.</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>5.</strong> &lt;![endif]&gt;<strong>Denegación: La App dice: “Acceso Restringido. Unidad disidente de esta mejora”.</strong></p>
+Automáticamente, el sistema realiza dos acciones:</p>
+<p><strong>Exención Financiera: Excluye a dichas unidades de cualquier cuota de inversión o mantenimiento relacionada con esa mejora.</strong></p>
+<p><strong>Bloqueo de Uso: Revoca los permisos de acceso (QR/Biometría) a dicha área o amenidad para los residentes de esas unidades, garantizando la equidad: “Quien no paga, no usa”.</strong></p>
+<p><strong>User Journey:</strong><br>
+<strong>Votación: Se aprueba “Jacuzzi en la Azotea”. El Apto 1-A vota EN CONTRA y se acoge al Art. 9.</strong></p>
+<p><strong>Configuración: El Admin marca la obra como “Mejora Voluptuaria” y registra al 1-A como disidente.</strong></p>
+<p><strong>Facturación: Se genera la cuota “Construcción Jacuzzi”. Al 1-A le llega en $0.00.</strong></p>
+<p><strong>Uso: El hijo del Apto 1-A intenta abrir la puerta del Jacuzzi con su App.</strong></p>
+<p><strong>Denegación: La App dice: “Acceso Restringido. Unidad disidente de esta mejora”.</strong></p>
 
