@@ -327,14 +327,14 @@ Entra al módulo Contable, selecciona el rango “Enero - Diciembre” y hace cl
 El sistema genera dos PDFs con membrete oficial, formato contable estándar y firma digital. María los imprime para la reunión.<br>
 Simultáneamente, el sistema detecta que hubo pagos en dólares y genera el reporte de IGTF acumulado para que el contador lo declare</p>
 <h1 id="bloque-3-administración-cobranza-y-legal-back-office"><strong>BLOQUE 3: ADMINISTRACIÓN, COBRANZA Y LEGAL (Back-Office)</strong></h1>
-<p><strong>Motor de Emisión Masiva y Gateway de Comunicaciones Automatizado (Omnicanalidad: WhatsApp, Email &amp; Push):</strong></p>
+<h2 id="motor-de-emisión-masiva-y-gateway-de-comunicaciones-automatizado-omnicanalidad-whatsapp-email--push"><strong>Motor de Emisión Masiva y Gateway de Comunicaciones Automatizado (Omnicanalidad: WhatsApp, Email &amp; Push):</strong></h2>
 <p><strong>Derivado de funciones analizadas:</strong> #6, #7, #12, #35, #79, #80, #82, #90.<br>
 Este módulo representa la evolución de la cobranza hacia una Automatización Desatendida con Identidad Propia y Tolerancia a Fallos. Su objetivo es generar documentos legales de alta definición y despacharlos simultáneamente por todos los canales digitales disponibles, priorizando la inmediatez (Push/WhatsApp) y la formalidad (Email), asegurando que el administrador tenga control total sobre la efectividad de la entrega sin riesgos técnicos_._</p>
-<p>Tecnología Aplicada y Arquitectura de Comunicaciones:</p>
+<p><strong>Tecnología Aplicada y Arquitectura de Comunicaciones:</strong></p>
 <p>Gestor de Notificaciones Push (Nativo): Integración con Firebase Cloud Messaging (FCM) a través del SDK de Expo Server. Al cerrar la facturación, el sistema detecta qué propietarios tienen la App instalada y envía una alerta nativa con Deep Linking (Enlace Profundo), lo que permite que al tocar la notificación, la App se abra directamente en la pantalla del Recibo del Mes, sin navegar por menús.</p>
-<p>Microservicio de WhatsApp (Gateway Multi-Tenant): Se implementará un backend independiente en Node.js (con librerías como Baileys o WPPConnect) orquestado por Docker que soporta “Sesiones por Entidad”. Esto ofrece flexibilidad total: el administrador puede decidir vincular su Línea Central para gestionar todos sus edificios, O vincular el Número Individual de cada condominio (escaneando el QR del teléfono de la Junta/Conserjería). Esto descentraliza el riesgo de bloqueo y garantiza que los vecinos reciban mensajes identificados con el nombre de su propio edificio.</p>
-<p>Canal Maestro de Notificaciones (SaaS Bot): Para las alertas técnicas críticas dirigidas al administrador (ej: “Tu sesión de WhatsApp se desconectó”, “Cola pausada por error de conexión”), se elimina el uso de SMS costosos. El sistema dispondrá de una Línea Oficial de WhatsApp del SaaS que actuará como “Bot de Operaciones”, enviando alertas en tiempo real al WhatsApp personal del administrador.</p>
-<p>Infraestructura de Email (High Deliverability &amp; Feedback Loops): Integración con AWS SES / SendGrid. Se implementará lógica de “Remitente Dinámico” (White-Labeling): el sistema inyecta encabezados técnicos (Reply-To, From) para que, a ojos del propietario, el correo provenga legítimamente de su condominio (ej: “Residencias El Sol”) y las respuestas lleguen al administrador. Además, se procesarán los Webhooks de Rebote (Bounces) para limpiar automáticamente la base de datos de correos inválidos.</p>
+<p><strong>Microservicio de WhatsApp (Gateway Multi-Tenant):</strong> Se implementará un backend independiente en Node.js (con librerías como Baileys o WPPConnect) orquestado por Docker que soporta “Sesiones por Entidad”. Esto ofrece flexibilidad total: el administrador puede decidir vincular su Línea Central para gestionar todos sus edificios, O vincular el Número Individual de cada condominio (escaneando el QR del teléfono de la Junta/Conserjería). Esto descentraliza el riesgo de bloqueo y garantiza que los vecinos reciban mensajes identificados con el nombre de su propio edificio.</p>
+<p><strong>Canal Maestro de Notificaciones (SaaS Bot):</strong> Para las alertas técnicas críticas dirigidas al administrador (ej: “Tu sesión de WhatsApp se desconectó”, “Cola pausada por error de conexión”), se elimina el uso de SMS costosos. El sistema dispondrá de una Línea Oficial de WhatsApp del SaaS que actuará como “Bot de Operaciones”, enviando alertas en tiempo real al WhatsApp personal del administrador.</p>
+<p><strong>Infraestructura de Email (High Deliverability &amp; Feedback Loops):</strong> Integración con AWS SES / SendGrid. Se implementará lógica de “Remitente Dinámico” (White-Labeling): el sistema inyecta encabezados técnicos (Reply-To, From) para que, a ojos del propietario, el correo provenga legítimamente de su condominio (ej: “Residencias El Sol”) y las respuestas lleguen al administrador. Además, se procesarán los Webhooks de Rebote (Bounces) para limpiar automáticamente la base de datos de correos inválidos.</p>
 <p>Generación de Documentos (PDF Engine): Uso de WeasyPrint (Python) para renderizar recibos usando HTML5 y CSS3 (Jinja2 Templates). A diferencia de los reportes rígidos tradicionales, esto permite diseños modernos y adaptables. Los archivos generados se suben automáticamente al Storage S3 con políticas de ciclo de vida, generando enlaces públicos temporales para su descarga_._</p>
 <p>Cola de Mensajería Inteligente y Resiliencia: Gestión de envíos mediante Celery + Redis con dos capas de protección:</p>
 <p>Humanización (Jitter): Pausas aleatorias entre envíos para evitar bloqueos por parte de Meta.</p>
@@ -344,33 +344,33 @@ Este módulo representa la evolución de la cobranza hacia una Automatización D
 <p>Identidad Flexible: El sistema se adapta al modelo operativo del cliente. Si el condominio tiene su propio celular, el sistema usa ese número. Si no, usa el de la administradora.</p>
 <p>Dashboard de Entregabilidad: El administrador visualiza un panel con semáforo por vecino: Verde (Entregado/Leído), Amarillo (Enviado sin confirmar), Rojo (Fallido/Rebotado), permitiendo reintentos selectivos por canales alternos.</p>
 <p>Diseño Bimonetario y Mobile-First: El propietario recibe no solo el PDF Fiscal para imprimir, sino una versión HTML Responsiva dentro de la App y Web para lectura rápida de su deuda en $ y Bs sin descargar archivos.</p>
-<p>Ejemplo Práctico de Uso:<br>
+<p>**Ejemplo Práctico de Uso: **<br>
 María configura “Residencias El Parque”. Selecciona “Vincular Dispositivo del Condominio” y escanea el QR con el teléfono de la conserjería. Al cerrar el mes, el sistema genera los recibos en la nube.<br>
 Inmediatamente, el vecino Pedro recibe una Notificación Push en su celular. Al tocarla, entra directo a su deuda. Segundos después, recibe un WhatsApp del número de “El Parque” y un Email formal.<br>
 A mitad del envío, el celular de la conserjería pierde señal. El “Circuit Breaker” pausa la cola y el “Bot de MasCondominios” escribe al celular personal de María: “Alerta: Conexión perdida en El Parque. Envío pausado”. María reactiva el teléfono y el sistema reanuda.<br>
 Al finalizar, María revisa el Dashboard, ve que 3 correos rebotaron (Rojo) y decide contactar a esos vecinos por llamada.</p>
-<p><strong>Motor de Gestión de Morosidad Configurable y Cobranza Asistida (Rules Engine, Kanban &amp; Approval Workflow):</strong></p>
+<h2 id="motor-de-gestión-de-morosidad-configurable-y-cobranza-asistida-rules-engine-kanban--approval-workflow"><strong>Motor de Gestión de Morosidad Configurable y Cobranza Asistida (Rules Engine, Kanban &amp; Approval Workflow):</strong></h2>
 <p>Derivado de funciones analizadas: #8, #9, #17, #23, #48, #84, #94, #114.<br>
 Este módulo transforma la cobranza en un proceso estructurado, visual y jurídicamente seguro. Su objetivo es proporcionar herramientas potentes de cálculo y seguimiento (tipo CRM), pero delegando el 100% de la configuración de reglas y la ejecución final de sanciones al Administrador, protegiendo al SaaS de responsabilidades legales.</p>
-<p>Tecnología Aplicada:</p>
-<p>Motor de Reglas Dinámicas (Django JSONField): En lugar de lógica “dura”, cada Condominio tendrá un archivo de configuración donde el administrador define sus propios parámetros: días de gracia, % de interés, montos de multas y servicios a bloquear. Esto permite flexibilidad total por edificio.</p>
-<p>Máquina de Estados (State Machine): El Backend implementa una lógica de transición de estados configurable: Corriente → Vencido → Mora Crítica → Legal.</p>
-<p>Cola de Aprobación (Staging Area): El sistema Celery Beat evalúa las reglas diariamente y genera “Acciones Sugeridas” (ej: aplicar multa, generar carta) que quedan en estado PENDING_APPROVAL hasta que el administrador las confirma, evitando automatizaciones peligrosas no supervisadas.</p>
-<p>Interfaz Kanban (React DnD): Sustitución de las listas planas por un Tablero Visual interactivo. El administrador gestiona los casos críticos arrastrando tarjetas entre columnas (ej: de “Por Llamar” a “Compromiso de Pago”), disparando actualizaciones de estatus en segundo plano.</p>
-<p>Bloqueo Selectivo (Feature Toggles): Sistema de permisos dinámicos en la App que restringe el acceso a amenidades (reservas, votaciones) en tiempo real según el estatus de solvencia del usuario y la configuración del condominio.</p>
-<p>Sistema de Notificaciones Administrativas (Notification Hub): Arquitectura de doble vía para informar al administrador sin saturarlo:</p>
-<p>WebSocket (In-App): Centro de notificaciones en el Dashboard Web que se actualiza en tiempo real.</p>
-<p>Daily Digest (SaaS Bot): El “Bot de WhatsApp del SaaS” envía un único resumen diario (Morning Briefing) con las tareas acumuladas pendientes de aprobación.</p>
+<p><strong>Tecnología Aplicada:</strong></p>
+<p><strong>Motor de Reglas Dinámicas (Django JSONField):</strong> En lugar de lógica “dura”, cada Condominio tendrá un archivo de configuración donde el administrador define sus propios parámetros: días de gracia, % de interés, montos de multas y servicios a bloquear. Esto permite flexibilidad total por edificio.</p>
+<p><strong>Máquina de Estados (State Machine):</strong> El Backend implementa una lógica de transición de estados configurable: Corriente → Vencido → Mora Crítica → Legal.</p>
+<p><strong>Cola de Aprobación (Staging Area):</strong> El sistema Celery Beat evalúa las reglas diariamente y genera “Acciones Sugeridas” (ej: aplicar multa, generar carta) que quedan en estado PENDING_APPROVAL hasta que el administrador las confirma, evitando automatizaciones peligrosas no supervisadas.</p>
+<p><strong>Interfaz Kanban (React DnD):</strong> Sustitución de las listas planas por un Tablero Visual interactivo. El administrador gestiona los casos críticos arrastrando tarjetas entre columnas (ej: de “Por Llamar” a “Compromiso de Pago”), disparando actualizaciones de estatus en segundo plano.</p>
+<p><strong>Bloqueo Selectivo (Feature Toggles):</strong> Sistema de permisos dinámicos en la App que restringe el acceso a amenidades (reservas, votaciones) en tiempo real según el estatus de solvencia del usuario y la configuración del condominio.</p>
+<p><strong>Sistema de Notificaciones Administrativas (Notification Hub):</strong> Arquitectura de doble vía para informar al administrador sin saturarlo:</p>
+<p><strong>WebSocket (In-App):</strong> Centro de notificaciones en el Dashboard Web que se actualiza en tiempo real.</p>
+<p><strong>Daily Digest</strong> (SaaS Bot): El “Bot de WhatsApp del SaaS” envía un único resumen diario (Morning Briefing) con las tareas acumuladas pendientes de aprobación.</p>
 <p><strong>Memoria Descriptiva del Alcance:</strong></p>
 <p>Parametrización Total (Responsabilidad Delegada): El administrador define las reglas del juego y acepta el descargo de responsabilidad. El sistema ejecuta estrictamente lo configurado.</p>
 <p><strong>Cálculo Automático, Disparo Manual:</strong> El sistema calcula intereses y redacta borradores de cartas legales automáticamente, pero requiere el “Clic de Aprobación” humano antes de enviar nada al vecino.</p>
 <p><strong>Gestión de Convenios:</strong> Herramienta para formalizar acuerdos de refinanciamiento digital, congelando la mora antigua mientras se cumplan las nuevas cuotas.</p>
 <p><strong>Cartelera de Morosos Virtual:</strong> Generación automática del listado de deudores (PDF o Vista Pública en App) con opciones de privacidad configurables para fomentar la transparencia comunitaria.</p>
-<p>Ejemplo Práctico de Uso: A las 8:00 AM, el “Bot MasCondominios” escribe a María: “Buenos días. Tienes 3 casos críticos en Residencias El Sol”.<br>
+<p><strong>Ejemplo Práctico de Uso:</strong> A las 8:00 AM, el “Bot MasCondominios” escribe a María: “Buenos días. Tienes 3 casos críticos en Residencias El Sol”.<br>
 María entra al Dashboard y ve el Tablero Kanban. La tarjeta del vecino Luis está en la columna “Mora Crítica (+90 días)” con una alerta roja.<br>
 El sistema le sugiere: “Acción: Aplicar multa y enviar Carta Extrajudicial”. María revisa, hace clic en “Aprobar” y el sistema ejecuta el envío del PDF y el bloqueo de la App de Luis.<br>
 Horas después, Luis llama. Acuerdan un pago fraccionado. María entra al sistema, crea un “Convenio de Pago” y arrastra la tarjeta de Luis a la columna “En Acuerdo”, deteniendo las alertas automáticas.</p>
-<p><strong>Kiosco de Autoservicio Legal y Validación Documental (LegalTech):</strong></p>
+<h2 id="kiosco-de-autoservicio-legal-y-validación-documental-legaltech"><strong>Kiosco de Autoservicio Legal y Validación Documental (LegalTech):</strong></h2>
 <p><strong>Funcionalidad Exclusiva (Innovación Propia):</strong> Este módulo automatiza la emisión de documentos legales recurrentes, eliminando la carga operativa del administrador y el tiempo de espera del propietario. Introduce un mecanismo de seguridad anti-fraude vital para trámites en Notarías y Bancos.</p>
 <p><strong>Tecnología Aplicada:</strong></p>
 <p>Firma Digital y QR de Verificación: Los documentos generados (PDF) no llevan “sello húmedo” (que se puede falsificar con Photoshop). Llevan un Código QR Único Perenne. Al ser escaneado por un tercero (ej: el funcionario del Banco o el Notario), el QR redirige a una URL pública de validación (<a href="http://mascondominios.com/verify/">mascondominios.com/verify/</a>…) que confirma: “El documento es auténtico y el propietario está SOLVENTE al día de hoy”.</p>
@@ -381,8 +381,8 @@ Horas después, Luis llama. Acuerdan un pago fraccionado. María entra al sistem
 <p>Autorización de Mudanza/Materiales: Formato pre-llenado para presentar en portería, vinculado al módulo de seguridad.</p>
 <p><strong>Ejemplo Práctico:</strong><br>
 Juan necesita vender su apartamento. Está en la Notaría y le piden la Solvencia. Entra a la App, paga su deuda pendiente y presiona “Emitir Solvencia”. El sistema genera el PDF con un QR. El Notario escanea el QR con su celular y ve en pantalla: “Certificado Válido. Inmueble Solvente”. Juan no tuvo que llamar a María</p>
-<p><strong>BLOQUE 4: OPERACIONES FÍSICAS, SEGURIDAD Y STAFF (Facility Management)</strong></p>
-<p><strong>Ecosistema de Seguridad Integral, Control de Acceso y Logística (Hardware Agnostic, Biometrics &amp; GSM-IoT):</strong></p>
+<h1 id="bloque-4-operaciones-físicas-seguridad-y-staff-facility-management"><strong>BLOQUE 4: OPERACIONES FÍSICAS, SEGURIDAD Y STAFF (Facility Management)</strong></h1>
+<h2 id="ecosistema-de-seguridad-integral-control-de-acceso-y-logística-hardware-agnostic-biometrics--gsm-iot"><strong>Ecosistema de Seguridad Integral, Control de Acceso y Logística (Hardware Agnostic, Biometrics &amp; GSM-IoT):</strong></h2>
 <p>Derivado de funciones analizadas: #60, #61, #67, #68, #70, #75, #77. Este módulo blinda la seguridad física del condominio. Su objetivo es digitalizar la garita de vigilancia ofreciendo una solución híbrida y escalable: funciona perfectamente con tecnología básica (celular gama media y portones GSM “tontos”) pero tiene la capacidad de orquestar hardware avanzado (Cámaras LPR/Biometría) si el edificio cuenta con ellos.</p>
 <p>Tecnología Aplicada:</p>
 <p><strong>Criptografía Offline (QR Seguro):</strong> Para garantizar el control de acceso incluso sin internet en la vigilancia, los pases QR generados en la App contienen una firma criptográfica (HMAC-SHA256) con fecha de expiración. La App de Vigilancia valida matemáticamente la autenticidad sin conectar con el servidor.</p>
@@ -391,7 +391,7 @@ Juan necesita vender su apartamento. Está en la Notaría y le piden la Solvenci
 <p><strong>Reconocimiento de Voz y LPR:</strong> Integración de Web Speech API para dictado de bitácora y Endpoints API para recibir texto de cámaras lectoras de placas.</p>
 <p>Geolocalización Real-Time: Uso del GPS para el Botón de Pánico.</p>
 <p><strong>Memoria Descriptiva del Alcance:</strong></p>
-<p><strong>1.</strong> <strong>Control de Acceso Híbrido (Cerebro y Músculo):</strong></p>
+<p><strong>Control de Acceso Híbrido (Cerebro y Músculo):</strong></p>
 <p>Nivel Básico (Celular): El vigilante usa la App para escanear QRs o registrar entradas manualmente usando Dictado por Voz.</p>
 <p>Nivel Hardware (GSM/Biometría): El SaaS actúa como “Cerebro Central”. Sincroniza automáticamente los permisos. Si un vecino paga su deuda, el sistema envía el comando al Portón GSM para agregarlo a la lista blanca y al Lector Biométrico para activar su huella.</p>
 <p><strong>Soberanía del Administrador (Reglas de Bloqueo):</strong> El sistema permite configurar reglas estrictas (ej: “Bloquear acceso vehicular a morosos &gt; 60 días”). El sistema ejecuta esta regla automáticamente, enviando los comandos de bloqueo al hardware pertinente, pero siempre bajo la política definida por el administrador.</p>
@@ -399,12 +399,12 @@ Juan necesita vender su apartamento. Está en la Notaría y le piden la Solvenci
 <p><strong>Logística de Paquetería Segura:</strong> Registro de paquetes con foto. El sistema genera un Token Híbrido (QR + PIN Numérico) que el vecino debe presentar para el retiro, garantizando la entrega segura incluso si baja sin teléfono.</p>
 <p><strong>Ejemplo Práctico de Uso:</strong> El vecino Luis (que estaba moroso) paga su deuda en la App a las 3:00 PM. El sistema concilia el pago.<br>
 A las 3:01 PM, el SaaS envía una orden a la App Gateway de la garita, la cual envía un SMS automático al Portón GSM: “#ADD#LUIS#”. Luis llega a las 3:05 PM, llama al portón y este le abre. Simultáneamente, llega un delivery para María. El vigilante registra el paquete dictando: “Caja pequeña de Amazon”. María recibe un Token QR. Al bajar, su teléfono se quedó sin batería, pero ella le dicta el PIN numérico de respaldo al vigilante, quien valida en su App y entrega el paquete.</p>
-<p><strong>Logística de Servicios Públicos y Suministros (Utility Dashboard):</strong></p>
+<h2 id="logística-de-servicios-públicos-y-suministros-utility-dashboard"><strong>Logística de Servicios Públicos y Suministros (Utility Dashboard):</strong></h2>
 <p>Funcionalidad Exclusiva (Innovación Propia). Diseñado específicamente para la crisis de servicios en Venezuela. Permite gestionar la incertidumbre del suministro de agua, gas y electricidad, mejorando la calidad de vida.</p>
 <p>Tecnología Aplicada:</p>
 <p>Alertas Push Segmentadas: Notificaciones específicas que ignoran la configuración de “No Molestar” (si el SO lo permite) para avisos críticos como “Llegó el Agua”.</p>
 <p>Cronograma Interactivo: Calendario visual sincronizado con la App.</p>
-<p>Memoria Descriptiva del Alcance:</p>
+<p><strong>Memoria Descriptiva del Alcance:</strong></p>
 <p>Semáforo del Agua: Widget en la pantalla principal de la App que indica el estatus actual: 🟢 Hay Agua (Calle) / 🟡 Hay Agua (Tanque) / 🔴 Sin Agua. El conserje o administrador actualiza esto con un clic.</p>
 <ol start="2">
 <li>
@@ -414,11 +414,11 @@ A las 3:01 PM, el SaaS envía una orden a la App Gateway de la garita, la cual e
 <p>Bitácora de Cisternas: Registro y auditoría de camiones cisterna (cuántos entraron, costo y litros), cruzado con la cuota especial si aplica.</p>
 </li>
 </ol>
-<p>Ejemplo Práctico: Es sábado. Llega el agua de la calle. El conserje abre la llave de paso y presiona en su App Lite: “Activar Suministro”. A todos los vecinos les llega una alerta: “💧 Hay Agua de Calle. Aproveche para llenar”.<br>
+<p><strong>Ejemplo Práctico:</strong> Es sábado. Llega el agua de la calle. El conserje abre la llave de paso y presiona en su App Lite: “Activar Suministro”. A todos los vecinos les llega una alerta: “💧 Hay Agua de Calle. Aproveche para llenar”.<br>
 Días después, se anuncia operativo de Gas. Juan entra a la App e indica: “Tengo 1 bombona mediana”. María descarga la lista: “Necesitamos transporte para 50 bombonas medianas”.</p>
-<p><strong>Telemetría IoT, Gestión de Activos Físicos y Control de Inventarios (Facility Management &amp; Smart Stock):</strong></p>
+<h2 id="telemetría-iot-gestión-de-activos-físicos-y-control-de-inventarios-facility-management--smart-stock"><strong>Telemetría IoT, Gestión de Activos Físicos y Control de Inventarios (Facility Management &amp; Smart Stock):</strong></h2>
 <p>Funcionalidad Exclusiva (Innovación Propia). Este módulo integra la gestión logística completa del edificio. Su objetivo es controlar el ciclo de vida de TODA la infraestructura (Maquinaria, Áreas Verdes, Piscinas) y auditar el uso de los Insumos y Herramientas (Stock). Se distingue por ofrecer vistas diferenciadas: control milimétrico para la administración y transparencia de servicio para la comunidad.</p>
-<p>Tecnología Aplicada:</p>
+<p><strong>Tecnología Aplicada:</strong></p>
 <p>Persistencia Offline (WatermelonDB): Dado que los cuartos de bombas y sótanos (donde se hacen los mantenimientos) suelen no tener señal, la App de Gestión (para el conserje/técnico) utilizará la base de datos local WatermelonDB. Esto permite llenar los Checklists de Inspección y registrar movimientos de inventario sin internet, sincronizando con el servidor (Push/Pull) apenas el dispositivo recupere conexión.</p>
 <p>Modelado de Datos Dinámico (Django JSONField): Para los formularios de inspección, no usaremos tablas rígidas. Usaremos campos JSON en PostgreSQL para permitir que el administrador cree “Plantillas de Mantenimiento” personalizadas (ej: el checklist de una “Piscina” es diferente al de un “Ascensor”).</p>
 <p>Protocolo MQTT (IoT Broker): (Se mantiene) Conexión ligera para sensores de hardware (Nivel de agua, Voltaje) que reportan datos en tiempo real.</p>
@@ -439,7 +439,7 @@ Nota: El vecino NO ve el inventario de bombillos ni el costo del cloro (para evi
 <p>El Mantenimiento (Offline): El piscinero baja al sótano (sin señal). Abre la App, escanea el QR de la bomba. Llena el checklist: “Filtros limpiados, Cloro aplicado”. La App guarda los datos localmente. Al subir al lobby, el teléfono detecta Wifi y sincroniza.</p>
 <p>La Visión del Admin: María recibe la alerta: “Mantenimiento Piscina completado”. El sistema descuenta automáticamente 2kg de cloro del inventario virtual y alerta: “Stock de cloro bajo (Quedan 3kg)”.</p>
 <p>La Visión del Vecino: Juan entra a su App y ve el icono de la Piscina en Verde con un check: “Mantenimiento realizado hace 10 minutos”. Decide bajar a bañarse con su familia, satisfecho con la gestión.</p>
-<p><strong>Gestión de Fuerza Laboral, Asistencia Biométrica y Planificación Operativa (Workforce Management &amp; Geofencing):</strong></p>
+<h2 id="gestión-de-fuerza-laboral-asistencia-biométrica-y-planificación-operativa-workforce-management--geofencing"><strong>Gestión de Fuerza Laboral, Asistencia Biométrica y Planificación Operativa (Workforce Management &amp; Geofencing):</strong></h2>
 <p>Funcionalidad Exclusiva (Innovación Propia).<br>
 Este módulo resuelve el problema de la supervisión remota. Permite al administrador diseñar un “Plan Maestro de Trabajo” (Rutinas de Limpieza, Rondas de Seguridad, Horarios) y auditar su cumplimiento en tiempo real mediante geolocalización y pruebas digitales, garantizando que el personal cumpla sus funciones sin necesidad de un supervisor físico presente.</p>
 <p>Tecnología Aplicada:</p>
@@ -474,7 +474,7 @@ Este módulo resuelve el problema de la supervisión remota. Permite al administ
 <p>Configuración: María crea la tarea recurrente: “Ronda de Seguridad Nocturna” para el Vigilante (cada hora, de 10 PM a 5 AM). Requisito: Escanear QR en Estacionamiento y QR en Azotea.</p>
 <p>Ejecución: El Vigilante llega a las 10:00 PM. La App le avisa: “Hora de Ronda”. Va al estacionamiento, escanea el QR pegado en la pared. Sube a la azotea, escanea el segundo QR. La tarea se marca en verde.</p>
 <p>Supervisión: María, desde su casa, ve en su Dashboard que la ronda de las 10 PM se completó. A las 11 PM, el vigilante se duerme y no escanea. El sistema envía una alerta al celular de María: “Fallo de Ronda de Seguridad”.</p>
-<p><strong>Motor de Nómina Condominial y Compensación Híbrida (Payroll Lite &amp; Multi-Currency):</strong></p>
+<h2 id="motor-de-nómina-condominial-y-compensación-híbrida-payroll-lite--multi-currency"><strong>Motor de Nómina Condominial y Compensación Híbrida (Payroll Lite &amp; Multi-Currency):</strong></h2>
 <p>Derivado de funciones analizadas: #41, #42, #43, #53 (Re-evaluadas).<br>
 Este módulo cierra el ciclo laboral. Toma la data de asistencia del Módulo XIV y la convierte en dinero. Está diseñado específicamente para la realidad venezolana actual, donde el conserje y el vigilante reciben una mezcla de Salario en Bolívares (Ley) + Bonificaciones en Divisas (Incentivos), automatizando la emisión de recibos que suelen ser un dolor de cabeza manual.</p>
 <p>Tecnología Aplicada:</p>
@@ -506,8 +506,8 @@ El sistema calcula:</p>
 <p>Deducción IVSS.<br>
 María revisa y confirma. El sistema genera el recibo PDF, se lo envía a Juan al celular y registra el gasto en la Contabilidad (Módulo IX) automáticamente.</p>
 <p>Limitación de Responsabilidad (Disclaimer): El sistema NO calcula Prestaciones Sociales acumuladas, Fideicomisos ni Liquidaciones de despido. Para esos cálculos delicados y de largo plazo, el sistema exporta la data histórica a Excel para que el Contador Laboral externo realice el cálculo legal certificado.</p>
-<p><strong>BLOQUE 5: GOBERNANZA, COMUNIDAD Y PROVEEDORES (Social &amp; SRM)</strong></p>
-<p><strong>Ecosistema de Autogestión Vecinal, Democracia Digital y Mantenimiento (App &amp; Web):</strong></p>
+<h1 id="bloque-5-gobernanza-comunidad-y-proveedores-social--srm"><strong>BLOQUE 5: GOBERNANZA, COMUNIDAD Y PROVEEDORES (Social &amp; SRM)</strong></h1>
+<h2 id="ecosistema-de-autogestión-vecinal-democracia-digital-y-mantenimiento-app--web"><strong>Ecosistema de Autogestión Vecinal, Democracia Digital y Mantenimiento (App &amp; Web):</strong></h2>
 <p>Derivado de funciones analizadas: #10, #24, #25, #63, #64, #72, #73, #91.<br>
 Este módulo centraliza la experiencia del usuario final y moderniza la convivencia. Su objetivo es doble: canalizar formalmente las incidencias y sugerencias (clasificándolas visualmente para no mezclar “peras con manzanas”) y digitalizar la toma de decisiones con herramientas legales, siempre bajo el control estricto de las políticas definidas por el Administrador.</p>
 <p><strong>Tecnología Aplicada:</strong></p>
