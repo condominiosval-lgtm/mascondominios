@@ -157,35 +157,35 @@ La Lógica de Negocio: (Multi-tenant y la estrategia de Dólar Base / Bolívar V
 <h3 id="lógica-de-negocio-precios-dinámicos-por-volumen-y-gestión-de-saldos-dynamic-volume-pricing"><strong>Lógica de Negocio: Precios Dinámicos por Volumen y Gestión de Saldos (Dynamic Volume Pricing):</strong></h3>
 <p><strong>Estrategia de Monetización y Arquitectura:</strong> Este módulo reemplaza los planes estáticos tradicionales por un algoritmo de cobro basado en el uso real. El objetivo es reducir la fricción de entrada para clientes pequeños y maximizar la retención de clientes grandes mediante descuentos automáticos por volumen. Además, introduce una “Lógica de Billetera” para manejar ajustes de contrato sin traumas financieros.</p>
 <p><strong>Tecnología Aplicada (Stack):</strong></p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Frontend (React + Vite): Implementación de State Management reactivo. El componente de “Slider de Precios” no espera al servidor; calcula el costo en milisegundos usando lógica de cliente (Math.floor sobre los rangos de precios) y multiplica por la tasa del día (ExchangeRate) almacenada en el contexto de la aplicación, brindando feedback visual inmediato sin recargas.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Backend (Django + Signals): El servidor actúa como el “Juez Financiero”. Antes de procesar cualquier cambio de capacidad, ejecuta una validación de integridad (SQL Count): verifica que el usuario no esté intentando reducir su plan por debajo de la cantidad de inmuebles que ya tiene activos en la base de datos.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Base de Datos (PostgreSQL): Uso de tablas relacionales para las escalas (PlanTier) y campos de saldo (credit_balance) en la tabla del inquilino, permitiendo auditoría contable precisa de los sobrantes.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;Definición de Actores y Reglas de Escala:</p>
-<p>A) El Administrador Independiente (Retail):</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Unidad de Cobro: Por Inmueble (Apartamento/Local).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Interfaz: Slider continuo (de 1 a 500+).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Lógica de Escala:</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Tier 1 (1-20 unidades): Precio Base (ej: $1.00).</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Tier 2 (21-50 unidades): Descuento Leve (ej: $0.80).</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Tier 3 (51+ unidades): Descuento Mayor (ej: $0.50).</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Propósito: Incentivar al administrador pequeño a crecer dentro de la plataforma.</p>
-<p>B) La Comunidad Autogestionada (Single-Tenant):</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Unidad de Cobro: Por Inmueble.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Restricción Dura: Este perfil tiene un bloqueo a nivel de código (TenantLimit = 1). El sistema le permite ajustar la capacidad de <em>su</em> edificio, pero inhabilita la opción de crear un segundo edificio.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Propósito: Mantener el control sobre usuarios no profesionales.</p>
-<p>C) La Empresa Administradora (Wholesale/Mayorista):</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Unidad de Cobro: Por “Slot” de Edificio Completo.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Condición de Entrada: Mínimo 5 condominios para activar este perfil.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Interfaz: Slider de “Cantidad de Condominios”.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Lógica B2B: Paga una tarifa plana por edificio (ej: $15/edificio) independientemente de si el edificio tiene 20 o 100 aptos.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Propósito: Simplificar la facturación corporativa y captar a las grandes administradoras (“Ballenas”).</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;Política de Ajustes (Upgrade/Downgrade) y Billetera Virtual:<br>
+<p><strong>Frontend (React + Vite):</strong> Implementación de State Management reactivo. El componente de “Slider de Precios” no espera al servidor; calcula el costo en milisegundos usando lógica de cliente (Math.floor sobre los rangos de precios) y multiplica por la tasa del día (ExchangeRate) almacenada en el contexto de la aplicación, brindando feedback visual inmediato sin recargas.</p>
+<p><strong>Backend (Django + Signals):</strong> El servidor actúa como el “Juez Financiero”. Antes de procesar cualquier cambio de capacidad, ejecuta una validación de integridad (SQL Count): verifica que el usuario no esté intentando reducir su plan por debajo de la cantidad de inmuebles que ya tiene activos en la base de datos.</p>
+<p><strong>Base de Datos (PostgreSQL):</strong> Uso de tablas relacionales para las escalas (PlanTier) y campos de saldo (credit_balance) en la tabla del inquilino, permitiendo auditoría contable precisa de los sobrantes.</p>
+<h2 id="definición-de-actores-y-reglas-de-escala"><strong>Definición de Actores y Reglas de Escala:</strong></h2>
+<p>###<strong>A) El Administrador Independiente (Retail):</strong></p>
+<p>Unidad de Cobro: Por Inmueble (Apartamento/Local).</p>
+<p>Interfaz: Slider continuo (de 1 a 500+).</p>
+<p>Lógica de Escala:</p>
+<p>Tier 1 (1-20 unidades): Precio Base (ej: $1.00).</p>
+<p>Tier 2 (21-50 unidades): Descuento Leve (ej: $0.80).</p>
+<p>Tier 3 (51+ unidades): Descuento Mayor (ej: $0.50).</p>
+<p>Propósito: Incentivar al administrador pequeño a crecer dentro de la plataforma.</p>
+<p>###<strong>B) La Comunidad Autogestionada (Single-Tenant):</strong></p>
+<p>Unidad de Cobro: Por Inmueble.</p>
+<p>Restricción Dura: Este perfil tiene un bloqueo a nivel de código (TenantLimit = 1). El sistema le permite ajustar la capacidad de <em>su</em> edificio, pero inhabilita la opción de crear un segundo edificio.</p>
+<p>Propósito: Mantener el control sobre usuarios no profesionales.</p>
+<h2 id="c-la-empresa-administradora-wholesalemayorista"><strong>C) La Empresa Administradora (Wholesale/Mayorista):</strong></h2>
+<p>Unidad de Cobro: Por “Slot” de Edificio Completo.</p>
+<p>Condición de Entrada: Mínimo 5 condominios para activar este perfil.</p>
+<p>Interfaz: Slider de “Cantidad de Condominios”.</p>
+<p>Lógica B2B: Paga una tarifa plana por edificio (ej: $15/edificio) independientemente de si el edificio tiene 20 o 100 aptos.</p>
+<p>Propósito: Simplificar la facturación corporativa y captar a las grandes administradoras (“Ballenas”).</p>
+<p>Política de Ajustes (Upgrade/Downgrade) y Billetera Virtual:<br>
 Dada la complejidad de realizar devoluciones bancarias en el sistema financiero local, se establece la siguiente lógica de “Cero Reembolsos”:</p>
-<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;Escenario de Upgrade (Crecimiento):</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Situación:</em> El usuario aumenta su capacidad a mitad de mes.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Acción:</em> El sistema calcula el diferencial prorrateado.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Cobro:</em> Se genera una orden inmediata a Banco Plaza por el monto exacto de la diferencia.</p>
-<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;Escenario de Downgrade (Reducción):</p>
+<p>Escenario de Upgrade (Crecimiento):</p>
+<p><em>Situación:</em> El usuario aumenta su capacidad a mitad de mes.</p>
+<p><em>Acción:</em> El sistema calcula el diferencial prorrateado.</p>
+<p><em>Cobro:</em> Se genera una orden inmediata a Banco Plaza por el monto exacto de la diferencia.</p>
+<p>Escenario de Downgrade (Reducción):</p>
 <p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Situación:</em> El usuario reduce su capacidad (ej: perdió clientes).</p>
 <p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Acción:</em> El sistema valida que haya eliminado los inmuebles sobrantes. Calcula el monto no consumido del mes.</p>
 <p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Cobro:</em> NULO. No se devuelve dinero.</p>
