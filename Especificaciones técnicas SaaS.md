@@ -35,15 +35,21 @@ extensions:
 <li><a href="#tecnolog%C3%ADa-a-aplicarse-en-la-app-nativa-android--ios">Tecnología a aplicarse en la App Nativa</a></li>
 <li><a href="#reportes-en-la-app-m%C3%B3vil">Reportes en la App Móvil</a></li>
 <li><a href="#infraestructura-de-comunicaci%C3%B3n-y-mantenimiento">Infraestructura de Comunicación y Mantenimiento</a></li>
-<li><a href="#consideraciones-t%C3%A9cnicas-cr%C3%ADticas-y-protocolos-de-despliegue">Consideraciones Técnicas Críticas y Despliegue</a></li>
+<li><a href="#consideraciones-t%C3%A9cnicas-cr%C3%ADticas-y-protocolos-de-despliegue">Consideraciones Técnicas Críticas y Despliegue</a>
+<ul>
 <li><a href="#interoperabilidad-cross-origin-cors">Interoperabilidad Cross-Origin (CORS)</a></li>
 <li><a href="#conformidad-normativa-en-tiendas-de-aplicaciones-ota-compliance">Conformidad Normativa (OTA Compliance)</a></li>
 <li><a href="#coherencia-de-esquemas-de-datos-schema-parity">Coherencia de Esquemas de Datos</a></li>
-<li><a href="#resumen-del-ecosistema-saas">Resumen del ecosistema SaaS</a></li>
-<li><a href="#especificaciones-funcionales-detalladas-y-l%C3%B3gica-de-implementaci%C3%B3n">Especificaciones Funcionales Detalladas</a></li>
 </ul>
 </li>
+<li><a href="#resumen-del-ecosistema-saas">Resumen del ecosistema SaaS</a></li>
+</ul>
+</li>
+<li><a href="#especificaciones-funcionales-detalladas-y-l%C3%B3gica-de-implementaci%C3%B3n">Especificaciones Funcionales Detalladas</a>
+<ul>
 <li><a href="#inventario-de-funciones-analizadas-referencia">INVENTARIO DE FUNCIONES ANALIZADAS</a></li>
+</ul>
+</li>
 </ol>
 <h1 id="objetivo-general-del-desarrollo">Objetivo general del desarrollo:</h1>
 <p>El objetivo general de este desarrollo es la creación de un ecosistema SaaS bajo el dominio <a href="http://mascondominios.com.ve">mascondominios.com.ve</a>, el cual albergará una Landing Page que promocionará un software para administración de condominios en la República Bolivariana de Venezuela. En términos de SEO, la Landing Page tendrá una máxima relevancia, ya que será la página encargada de promover la conversión de un visitante (cliente potencial) a un cliente registrado (usuario) que adquiera un plan para usar el SaaS.</p>
