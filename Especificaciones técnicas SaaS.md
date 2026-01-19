@@ -526,8 +526,8 @@ Este módulo centraliza la experiencia del usuario final y moderniza la conviven
 </ol>
 <p>Reglas de Asamblea: El administrador configura los “Toggles”: ¿Permitir acceso a morosos? (Si/No), ¿Tipo de Voto? (1x1 / Por Alícuota). El sistema obedece ciegamente esta configuración.</p>
 <p>Sub-módulo de Orquestación de Asambleas Híbridas (Zoom/Meet API Wrapper &amp; BYOL):</p>
-<p><strong>Funcionalidad de Integración Crítica y Gobernanza Digital.</strong><br>
-Se eleva la gestión de videollamadas a una <strong>Integración Server-to-Server (S2S)</strong> mediante el modelo <strong>BYOL (Bring Your Own License)</strong>. El sistema actúa como un orquestador seguro que encapsula la complejidad de las APIs de terceros (Zoom/Google Meet), permitiendo al Administrador controlar el ciclo de vida de la reunión (Crear, Iniciar, Finalizar) y monitorear el quórum sin compartir credenciales sensibles con el personal operativo.</p>
+<h2 id="funcionalidad-de-integración-crítica-y-gobernanza-digital."><strong>Funcionalidad de Integración Crítica y Gobernanza Digital.</strong></h2>
+<p>Se eleva la gestión de videollamadas a una <strong>Integración Server-to-Server (S2S)</strong> mediante el modelo <strong>BYOL (Bring Your Own License)</strong>. El sistema actúa como un orquestador seguro que encapsula la complejidad de las APIs de terceros (Zoom/Google Meet), permitiendo al Administrador controlar el ciclo de vida de la reunión (Crear, Iniciar, Finalizar) y monitorear el quórum sin compartir credenciales sensibles con el personal operativo.</p>
 <p><strong>Tecnología Aplicada y Stack de Seguridad:</strong></p>
 <p><strong>Protocolo de Autenticación (OAuth 2.0):</strong> No se almacenan usuarios ni contraseñas. Se implementa un flujo de autorización estándar (Authorization Code Flow) para obtener y renovar <em>Access Tokens</em> y <em>Refresh Tokens</em> directamente con los proveedores (Zoom/Google).</p>
 <p><strong>Cifrado en Reposo (Encryption at Rest):</strong> Los tokens almacenados en la base de datos se cifran utilizando la librería cryptography de Python (implementación <strong>Fernet/AES-256-CBC</strong>). Las llaves de descifrado residen en variables de entorno del servidor, nunca en la base de datos.</p>
@@ -565,7 +565,7 @@ Si está solvente, la App abre Zoom automáticamente.<br>
 <strong>Detalle clave:</strong> Pedro NO tuvo que escribir su nombre. En el TV del salón, María ve aparecer un recuadro que dice <strong>“5-B Pedro Pérez”</strong>.</p>
 <p><strong>Fase 4: El Quórum (Sistema):</strong><br>
 Automáticamente, el contador en la pantalla de María sube: <em>“Quórum: 35% (Online) + 10% (Presencial Check-in Manual) = 45%”</em>.</p>
-<p><strong>Motor de Carta Consulta Digital (Procedimiento Art. 23 LPH)</strong></p>
+<h2 id="motor-de-carta-consulta-digital-procedimiento-art.-23-lph"><strong>Motor de Carta Consulta Digital (Procedimiento Art. 23 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 23 LPH: <em>“Las consultas a los propietarios sobre los asuntos de la administración… se harán por escrito… determinando un plazo prudencial [mínimo 8 días]…”</em>.</strong></p>
 <p><strong>Implicación Crítica: Una “Encuesta” en la App es informal (como un grupo de WhatsApp). Una “Carta Consulta” es un procedimiento jurídico estricto. Si no se respeta el formato, la notificación y el plazo de espera, la decisión (ej. pintar el edificio) es nula. El software debe distinguir entre “Preguntar opinión” (Encuesta) y “Tomar decisión vinculante sin asamblea” (Carta Consulta).</strong></p>
@@ -585,7 +585,7 @@ El módulo garantiza el derecho a la defensa y la información, obligando a adju
 <p><strong>Task Scheduler (Celery):</strong> Tarea CloseConsultation() que se ejecuta automáticamente al vencer el deadline_date, impidiendo votos tardíos y generando el Acta de Escrutinio.</p>
 <p><strong>Frontend (React):</strong></p>
 <p><strong>Vista Legal:</strong> No es una UI de votación “gamificada”. Es una vista formal tipo contrato donde el usuario lee el texto completo y “Firma” su decisión.</p>
-<p><strong>Gestión de Voto Salvado y Protección de Responsabilidad:</strong></p>
+<h2 id="gestión-de-voto-salvado-y-protección-de-responsabilidad"><strong>Gestión de Voto Salvado y Protección de Responsabilidad:</strong></h2>
 <p><strong>Art. 202 Código Civil (Supletorio a la LPH):</strong> Permite a un miembro de una corporación/asamblea eximirse de responsabilidad por una decisión dañina o ilegal si manifiesta su voto en contra y <em>razona</em> su disenso. <strong>Implicación Crítica:</strong> Si la Asamblea decide ilegalmente “No pagarle prestaciones al conserje”, y el conserje demanda, todos pagan… excepto los que salvaron su voto. El software debe permitir esta protección jurídica. Un simple botón “No” no basta.</p>
 <p><strong>Memoria Descriptiva:</strong><br>
 Funcionalidad transversal a los módulos de Asamblea, Encuestas y Carta Consulta que implementa la figura jurídica del “Voto Salvado” o Disidente. Permite a los propietarios dejar constancia expresa y razonada de su oposición a una medida, protegiendo su patrimonio personal ante futuras demandas o responsabilidades civiles derivadas de decisiones comunitarias erróneas.<br>
@@ -617,7 +617,7 @@ El sistema asegura que este razonamiento no se pierda en un chat, sino que quede
 <p><strong>Stack Tecnológico</strong></p>
 <p><strong>Frontend:</strong> Lógica condicional en el formulario. Al seleccionar “Salvar Voto”, se despliega un Textarea obligatorio: <em>“Por favor explique el motivo legal o técnico de su voto salvado para que conste en acta”</em>.</p>
 <p><strong>Backend:</strong> El generador de Actas (PDF) debe tener una sección específica: <em>“Votos Salvados: El propietario de la Unidad 5-B salvó su voto alegando: [Texto del usuario]”</em>.</p>
-<p><strong>Generador de Carteles de Convocatoria y Certificación (Art. 22 LPH)</strong></p>
+<h2 id="generador-de-carteles-de-convocatoria-y-certificación-art.-22-lph"><strong>Generador de Carteles de Convocatoria y Certificación (Art. 22 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
 <p><strong>Art. 22 LPH:</strong> <em>“La convocatoria… se hará mediante avisos… publicados en la prensa o fijados en la entrada… con tres (3) días de anticipación por lo menos.”</em></p>
 <p><strong>Implicación Crítica:</strong> Una notificación Push no basta. Si un vecino impugna la asamblea diciendo “Yo no vi el celular”, y no hay cartel físico, la asamblea se anula. El software debe generar el “Cartel Físico” para imprimir.</p>
@@ -641,8 +641,8 @@ Incluye un flujo de certificación forense: el sistema no considera “Convocada
 <p>Opción B (Cartelera Unidireccional): Solo el administrador publica, los vecinos solo ven y dan “Me gusta”. Esto previene conflictos tóxicos según la cultura del edificio.</p>
 <p>Ejemplo Práctico de Uso: El vecino Pedro ve una filtración grave a las 11 PM. Abre la App, crea un Ticket tipo “Mantenimiento”, selecciona prioridad “Emergencia” y sube la foto.<br>
 En el Dashboard de María, el ticket aparece resaltado en Rojo al tope de la lista. María lo abre y presiona “Delegar a Plomero”. Se abre su WhatsApp con la foto y se la envía al Sr. Luis (Plomero). Al día siguiente, María convoca Asamblea. Configura el Muro Social en “Modo Solo Lectura” para evitar peleas previas. En la Asamblea, usa el Micrófono para dictar el Acta. Al finalizar, sella el PDF y lo distribuye con un clic.</p>
-<p><strong>Gestión de Proyectos y Recaudación de Cuotas Especiales (Crowdfunding Interno):<br>
-<em>Funcionalidad Exclusiva (Innovación Propia).</em></strong></p>
+<h2 id="gestión-de-proyectos-y-recaudación-de-cuotas-especiales-crowdfunding-interno">**Gestión de Proyectos y Recaudación de Cuotas Especiales (Crowdfunding Interno):</h2>
+<p><em>Funcionalidad Exclusiva (Innovación Propia).</em>**</p>
 <p>Este módulo separa las finanzas ordinarias (gasto mensual) de las inversiones mayores (pozos, ascensores, pintura). Aplica la psicología de las plataformas de Crowdfunding (financiamiento colectivo) para incentivar el aporte vecinal.</p>
 <p>Tecnología Aplicada:</p>
 <p><strong>Contabilidad de Proyectos (Project Accounting):</strong> Creación de centros de costos temporales aislados. El dinero que entra para “El Pozo” no se mezcla con el de “Vigilancia”.</p>
@@ -654,8 +654,8 @@ En el Dashboard de María, el ticket aparece resaltado en Rojo al tope de la lis
 <p>Transparencia de Ejecución: Una vez recaudado, el administrador sube las fotos del avance de la obra en la misma ficha, cerrando el ciclo de confianza.</p>
 <p><strong>Ejemplo Práctico:</strong><br>
 <em>Se quemó el motor del portón. María crea el Proyecto “Motor Nuevo” ($1.000) dividido en 2 cuotas de $10 por apartamento. A Juan le llega una notificación nueva (distinta al condominio). Entra a la App, ve la foto del motor quemado y la barra de progreso en 0%. Paga su cuota. La barra sube. Cuando llega al 100%, el sistema libera los fondos contablemente para que María pague</em></p>
-<p><strong>Ecosistema SRM: Gestión de Proveedores, Licitaciones Transparentes y Adjudicación Democrática:</strong> Funcionalidad Administrativa, Fiscal y de Gobernanza.<br>
-Este módulo constituye un SRM (Supplier Relationship Management) integral. Su objetivo es profesionalizar la contratación de servicios, blindar legalmente las decisiones de gasto (Cumplimiento LPH) y ofrecer mecanismos de democracia digital para decisiones de alto impacto. Transforma una simple lista de contactos en un motor de licitaciones auditable.</p>
+<h2 id="ecosistema-srm-gestión-de-proveedores-licitaciones-transparentes-y-adjudicación-democrática-funcionalidad-administrativa-fiscal-y-de-gobernanza."><strong>Ecosistema SRM: Gestión de Proveedores, Licitaciones Transparentes y Adjudicación Democrática:</strong> Funcionalidad Administrativa, Fiscal y de Gobernanza.</h2>
+<p>Este módulo constituye un SRM (Supplier Relationship Management) integral. Su objetivo es profesionalizar la contratación de servicios, blindar legalmente las decisiones de gasto (Cumplimiento LPH) y ofrecer mecanismos de democracia digital para decisiones de alto impacto. Transforma una simple lista de contactos en un motor de licitaciones auditable.</p>
 <p><strong>Tecnología Aplicada:</strong></p>
 <p>Gestor Documental Seguro (AWS S3): Almacenamiento encriptado de expedientes legales (RIF, Registro Mercantil, Solvencias) y propuestas económicas (Cotizaciones PDF).</p>
 <p>Motor de Asignación Polimórfica: El sistema de Tickets implementa una lógica de despacho flexible que permite asignar incidencias a entidades heterogéneas: Personal Interno (Conserje), Proveedor Externo (Empresa) o Cola de Espera.</p>
@@ -671,11 +671,9 @@ Este módulo constituye un SRM (Supplier Relationship Management) integral. Su o
 <p>Comparador Inteligente: El administrador visualiza las opciones lado a lado. El sistema resalta en verde la opción más económica y en rojo las alertas (ej: “Sin Garantía”).</p>
 <p><strong>Mecanismos de Adjudicación (La Toma de Decisión):<br>
 El sistema ofrece dos vías para cerrar la licitación:</strong></p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Vía A (Directa/Junta): El administrador presiona “Adjudicar” sobre un proveedor. El sistema cierra el concurso, notifica al ganador y guarda una instantánea inmutable de la comparativa como auditoría.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;Vía B (Democrática/Asamblea Virtual): Para decisiones delicadas, el administrador presiona “Someter a Votación”. El sistema genera una encuesta automática donde los vecinos ven los PDFs y precios, y votan directamente desde su App. Al cerrar la votación, el sistema adjudica al ganador de la mayoría.</p>
-<blockquote>
-<p><strong>Despacho de Servicios (Ticket Dispatch):</strong></p>
-</blockquote>
+<p>Vía A (Directa/Junta): El administrador presiona “Adjudicar” sobre un proveedor. El sistema cierra el concurso, notifica al ganador y guarda una instantánea inmutable de la comparativa como auditoría.</p>
+<p>Vía B (Democrática/Asamblea Virtual): Para decisiones delicadas, el administrador presiona “Someter a Votación”. El sistema genera una encuesta automática donde los vecinos ven los PDFs y precios, y votan directamente desde su App. Al cerrar la votación, el sistema adjudica al ganador de la mayoría.</p>
+<h2 id="despacho-de-servicios-ticket-dispatch"><strong>Despacho de Servicios (Ticket Dispatch):</strong></h2>
 <p>Integración nativa con el Módulo de Tickets. Al reportarse una falla, el administrador puede generar una “Orden de Servicio” digital que se envía automáticamente vía WhatsApp/Email al proveedor adjudicado, incluyendo fotos y ubicación.</p>
 <p>Ejemplo Práctico de Uso (El Ciclo Completo):<br>
 El Problema: El motor del portón eléctrico se quemó (Costo estimado: $600).</p>
