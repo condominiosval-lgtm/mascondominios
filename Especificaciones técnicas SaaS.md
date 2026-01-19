@@ -974,4 +974,49 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><strong>DB Principal:</strong> PostgreSQL con extensión schemas.</p>
 <p><strong>Hot Storage (S3):</strong> Bucket para imágenes y PDFs de recibos recientes (Privado).</p>
 <p><strong>Cold Storage (S3 Archive):</strong> Bucket barato para Logs de auditoría de +24 meses.</p>
+<h1 id="anexos"><strong>ANEXOS:</strong></h1>
+<h2 id="anexo-1-código-del-diagrama-erd-mermaid---versión-final-consolidada"><strong>ANEXO 1: CÓDIGO DEL DIAGRAMA ERD (MERMAID) - VERSIÓN FINAL CONSOLIDADA</strong></h2>
+<h3 id="🟠-grupo-1-público-5-tablas"><strong>🟠 GRUPO 1: PÚBLICO (5 Tablas)</strong></h3>
+<p>User</p>
+<p>Tenant</p>
+<p>PlanCatalog</p>
+<p>SaaSPayment</p>
+<p>IntegrationConfig</p>
+<p>###<strong>🔵 GRUPO 2: IDENTIDAD (2 Tablas)</strong></p>
+<p>TenantUserRelation</p>
+<p>TenantProfile</p>
+<h3 id="🟢-grupo-3-finanzas-11-tablas"><strong>🟢 GRUPO 3: FINANZAS (11 Tablas)</strong></h3>
+<p>BillingPeriod</p>
+<p>Bill</p>
+<p>BillItem (Esta es clave, verifica que esté)</p>
+<p>Transaction</p>
+<p>Payment</p>
+<p>Account</p>
+<p>Supplier</p>
+<p>TaxRetention</p>
+<p>BankRule</p>
+<p>ExchangeRate</p>
+<p>PaymentAgreement</p>
+<h3 id="🔵-grupo-4-operaciones-13-tablas"><strong>🔵</strong> <strong>GRUPO 4: OPERACIONES (13 Tablas)</strong></h3>
+<p>Property</p>
+<p>Ticket</p>
+<p>Reservation</p>
+<p>Amenity</p>
+<p>Poll</p>
+<p>Vote</p>
+<p>LegalDocument</p>
+<p>AccessLog</p>
+<p>GuestInvitation</p>
+<p>PanicAlert</p>
+<p>Parcel</p>
+<p>Vehicle</p>
+<p>Pet</p>
+<h3 id="🟣-grupo-5-rrhh-y-activos-7-tablas"><strong>🟣 GRUPO 5: RRHH Y ACTIVOS (7 Tablas)</strong></h3>
+<p>EmployeeProfile</p>
+<p>WorkShift</p>
+<p>PayrollReceipt</p>
+<p>Asset</p>
+<p>InventoryItem</p>
+<p>InventoryLog</p>
+<p>Project</p>
 
