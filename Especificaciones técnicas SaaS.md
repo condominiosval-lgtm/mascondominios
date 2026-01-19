@@ -18,9 +18,16 @@ extensions:
 <li><a href="#detalles-inherentes-al-saas">Detalles inherentes al SaaS</a>
 <ul>
 <li><a href="#modelo-de-suscripci%C3%B3n-y-perfilamiento-del-administrador">Modelo de Suscripción y Perfilamiento del Administrador</a></li>
-<li><a href="#gesti%C3%B3n-de-identidad-operativa-y-personal-de-staff-non-billable-users">Gestión de Identidad Operativa y Personal de Staff (Non-Billable Users)</a></li>
+<li><a href="#gesti%C3%B3n-de-identidad-operativa-y-personal-de-staff-non-billable-users">Gestión de Identidad Operativa y Personal de Staff</a></li>
 <li><a href="#arquitectura-de-polimorfismo-de-roles-y-conmutaci%C3%B3n-de-contexto-context-switching">Arquitectura de Polimorfismo de Roles y Conmutación de Contexto</a></li>
 <li><a href="#gesti%C3%B3n-de-n%C3%BAcleo-familiar-y-co-responsabilidad-digital-delegaci%C3%B3n-de-identidad">Gestión de Núcleo Familiar y Co-Responsabilidad Digital</a></li>
+<li><a href="#precisi%C3%B3n-num%C3%A9rica-gesti%C3%B3n-cambiaria-e-integridad-financiera">Precisión numérica, Gestión cambiaria e Integridad financiera</a></li>
+<li><a href="#seguridad">Seguridad</a></li>
+<li><a href="#ia-y-manejo-de-datos">IA y Manejo de datos</a></li>
+<li><a href="#framework-a-ser-utilizado-en-el-saas-y-librer%C3%ADas-clave">Framework a ser utilizado en el SaaS y librerías clave</a></li>
+<li><a href="#gesti%C3%B3n-de-archivos-multimedia-media-handling">Gestión de Archivos Multimedia (Media Handling)</a></li>
+<li><a href="#frontend-web-saas-y-web-m%C3%B3vil">Frontend Web (SaaS y Web Móvil)</a></li>
+<li><a href="#aseguramiento-de-la-calidad-qa-y-testing">Aseguramiento de la Calidad (QA y Testing)</a></li>
 </ul>
 </li>
 </ol>
