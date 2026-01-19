@@ -599,7 +599,8 @@ Este módulo centraliza la experiencia del usuario final y moderniza la conviven
 <p><strong>Impacto en Arquitectura de Datos (ERD y Diccionario):</strong></p>
 <p><strong>Entidad Afectada:</strong> Tabla <strong>IntegrationConfig</strong> (Esquema Público).</p>
 <p><strong>Definición del Payload (config_data JSONB):</strong> Aunque la tabla ya existe en el ERD V6.3, se define estrictamente la estructura interna del campo JSON para este módulo:</p>
-<p>codeJSON</p>
+<pre><code>codeJSON
+</code></pre>
 <p>{</p>
 <p>“provider”: “zoom”,</p>
 <p>“account_email”: <a href="mailto:%22admin@condominio.com">"admin@condominio.com</a>",</p>
