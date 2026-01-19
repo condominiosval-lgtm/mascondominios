@@ -186,42 +186,42 @@ Dada la complejidad de realizar devoluciones bancarias en el sistema financiero 
 <p><em>Acción:</em> El sistema calcula el diferencial prorrateado.</p>
 <p><em>Cobro:</em> Se genera una orden inmediata a Banco Plaza por el monto exacto de la diferencia.</p>
 <p>Escenario de Downgrade (Reducción):</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Situación:</em> El usuario reduce su capacidad (ej: perdió clientes).</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Acción:</em> El sistema valida que haya eliminado los inmuebles sobrantes. Calcula el monto no consumido del mes.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Cobro:</em> NULO. No se devuelve dinero.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Crédito:</em> El monto sobrante se abona al campo credit_balance (Billetera) del Tenant.</p>
-<p>&lt;![if !supportLists]&gt;§ &lt;![endif]&gt;<em>Futuro:</em> La próxima renovación tomará el dinero de la Billetera primero antes de pedir dinero al Banco.</p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;Ejemplos Prácticos de Uso:</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Caso Práctico 1 (Error de Usuario - Upgrade):<br>
+<p><em>Situación:</em> El usuario reduce su capacidad (ej: perdió clientes).</p>
+<p><em>Acción:</em> El sistema valida que haya eliminado los inmuebles sobrantes. Calcula el monto no consumido del mes.</p>
+<p><em>Cobro:</em> NULO. No se devuelve dinero.</p>
+<p><em>Crédito:</em> El monto sobrante se abona al campo credit_balance (Billetera) del Tenant.</p>
+<p><em>Futuro:</em> La próxima renovación tomará el dinero de la Billetera primero antes de pedir dinero al Banco.</p>
+<p>Ejemplos Prácticos de Uso:</p>
+<p>Caso Práctico 1 (Error de Usuario - Upgrade):<br>
 María quería contratar 100 apartamentos, pero por error seleccionó 90 y pagó. Al darse cuenta, entra en pánico.<br>
 <em>Solución:</em> María mueve el slider de 90 a 100. El sistema le muestra un mensaje verde: “Solo pagarás la diferencia: $3.50”. María paga el monto pequeño con un SMS y su plan queda corregido al instante. Sin llamadas a soporte.</p>
-<p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;Caso Práctico 2 (La Empresa Mayorista - Downgrade):<br>
+<p>Caso Práctico 2 (La Empresa Mayorista - Downgrade):<br>
 La empresa “TuCasa C.A.” pagó por 20 edificios ($300). Este mes perdieron 2 contratos y bajan el slider a 18 edificios.<br>
 <em>Solución:</em> El sistema le indica: “Cambio aceptado. Tienes un saldo a favor de $30.00. Tu próxima factura será más barata”. El sistema guarda esos $30 en la base de datos y los descuenta automáticamente en la renovación del mes siguiente.</p>
-<p>&lt;![if !supportLists]&gt;<strong>ii)</strong> &lt;![endif]&gt;<strong>Funcionalidad Administrativa Crítica.</strong></p>
+<h3 id="funcionalidad-administrativa-crítica."><strong>Funcionalidad Administrativa Crítica.</strong></h3>
 <p>Este módulo gestiona la viabilidad financiera del propio SaaS. Se diferencia de la competencia por su enfoque en la <strong>“Eficiencia Operativa Masiva”</strong>: permite a las grandes administradoras gestionar y pagar múltiples suscripciones simultáneamente, eliminando la fatiga de pagos individuales repetitivos. Además, implementa una estrategia de cobranza preventiva (Dunning Strategy) para minimizar la suspensión del servicio.</p>
-<p>&lt;![if !supportLists]&gt;iii) &lt;![endif]&gt;<strong>Tecnología Aplicada y Protocolo de Seguridad:</strong></p>
-<p>&lt;![if !supportLists]&gt;iv) &lt;![endif]&gt;<strong>Motor de Notificaciones Proactivas:</strong> Un cronograma automatizado (Celery Beat) monitorea las fechas de corte y ejecuta una “Cascada de Avisos Omnicanal” (Email T-5 días → Push T-3 días → WhatsApp T-1 día) con enlaces profundos directos al módulo de pago.</p>
-<p>&lt;![if !supportLists]&gt;v) &lt;![endif]&gt;<strong>Lógica de Agregación de Pagos (Shopping Cart Logic):</strong> El sistema permite agrupar múltiples deudas de distintos inquilinos (Tenants) en una única transacción financiera, distribuyendo posteriormente la aprobación a cada entidad individual.</p>
-<p>&lt;![if !supportLists]&gt;vi) &lt;![endif]&gt;<strong>Protocolo C2P (Debit-Push):</strong> Integración Host-to-Host con Banco Plaza. La validación se realiza exclusivamente vía OTP (SMS), garantizando que el SaaS nunca almacena datos sensibles bancarios.</p>
-<p>&lt;![if !supportLists]&gt;vii) &lt;![endif]&gt;<strong>Reactivación en Lote (Batch Activation):</strong> Al recibir el código de éxito del banco, el sistema ejecuta una actualización masiva en base de datos, reactivando instantáneamente todos los condominios seleccionados en la operación.</p>
-<p>&lt;![if !supportLists]&gt;viii) &lt;![endif]&gt;<strong>Memoria Descriptiva del Alcance: Ciclo de Alertas Inteligentes:</strong> El administrador recibe avisos previos con un “Link Mágico”. Al pulsarlo, no necesita navegar; el sistema lo lleva directo a su estado de cuenta.</p>
-<p>&lt;![if !supportLists]&gt;ix) &lt;![endif]&gt;<strong>Panel de Renovación Masiva (Bulk Renewal):</strong> Se habilita una interfaz tipo “Carrito de Compras” donde el Administrador visualiza todos sus condominios (Vencidos y Por Vencer). Puede marcar casillas de selección (Checkboxes) para elegir cuáles pagar.</p>
-<p>&lt;![if !supportLists]&gt;x) &lt;![endif]&gt;<strong>Transacción Única:</strong> El sistema suma los montos seleccionados (ej: 10 condominios x Tarifa Base) y presenta un monto total unificado. Se solicita la validación C2P (Cédula + Telf + SMS) <strong>una sola vez</strong>.</p>
-<p>&lt;![if !supportLists]&gt;xi) &lt;![endif]&gt;<strong>Distribución Contable:</strong> Aunque el dinero entra en una sola transacción a la cuenta del SaaS, el sistema genera internamente X facturas individuales, una para cada condominio, manteniendo la contabilidad segregada y ordenada.</p>
-<p>&lt;![if !supportLists]&gt;<strong>xii)</strong> &lt;![endif]&gt;<strong>Ejemplo Práctico de Uso (El Escenario “Pago Masivo”):</strong></p>
+<p><strong>Tecnología Aplicada y Protocolo de Seguridad:</strong></p>
+<p><strong>Motor de Notificaciones Proactivas:</strong> Un cronograma automatizado (Celery Beat) monitorea las fechas de corte y ejecuta una “Cascada de Avisos Omnicanal” (Email T-5 días → Push T-3 días → WhatsApp T-1 día) con enlaces profundos directos al módulo de pago.</p>
+<p><strong>Lógica de Agregación de Pagos (Shopping Cart Logic):</strong> El sistema permite agrupar múltiples deudas de distintos inquilinos (Tenants) en una única transacción financiera, distribuyendo posteriormente la aprobación a cada entidad individual.</p>
+<p><strong>Protocolo C2P (Debit-Push):</strong> Integración Host-to-Host con Banco Plaza. La validación se realiza exclusivamente vía OTP (SMS), garantizando que el SaaS nunca almacena datos sensibles bancarios.</p>
+<p><strong>Reactivación en Lote (Batch Activation):</strong> Al recibir el código de éxito del banco, el sistema ejecuta una actualización masiva en base de datos, reactivando instantáneamente todos los condominios seleccionados en la operación.</p>
+<p><strong>Memoria Descriptiva del Alcance: Ciclo de Alertas Inteligentes:</strong> El administrador recibe avisos previos con un “Link Mágico”. Al pulsarlo, no necesita navegar; el sistema lo lleva directo a su estado de cuenta.</p>
+<p><strong>Panel de Renovación Masiva (Bulk Renewal):</strong> Se habilita una interfaz tipo “Carrito de Compras” donde el Administrador visualiza todos sus condominios (Vencidos y Por Vencer). Puede marcar casillas de selección (Checkboxes) para elegir cuáles pagar.</p>
+<p><strong>Transacción Única:</strong> El sistema suma los montos seleccionados (ej: 10 condominios x Tarifa Base) y presenta un monto total unificado. Se solicita la validación C2P (Cédula + Telf + SMS) <strong>una sola vez</strong>.</p>
+<p><strong>Distribución Contable:</strong> Aunque el dinero entra en una sola transacción a la cuenta del SaaS, el sistema genera internamente X facturas individuales, una para cada condominio, manteniendo la contabilidad segregada y ordenada.</p>
+<p><strong>Ejemplo Práctico de Uso (El Escenario “Pago Masivo”):</strong></p>
 <p><strong>El Usuario:</strong> “Administradora Caribe”, una empresa que gestiona 50 edificios usando tu software. <strong>La Situación:</strong> Es día 30 y se vencen las suscripciones de 10 edificios simultáneamente. <strong>El Problema (Sin esta función):</strong> La encargada tendría que hacer 10 operaciones bancarias, esperar 10 mensajes de texto con códigos distintos y gastar 40 minutos pagando uno por uno.</p>
 <p><strong>La Solución (Con MasCondominios):</strong> La encargada recibe un WhatsApp: <em>“Atención: 10 condominios vencen hoy. Toca aquí para gestionar”</em>. Entra al enlace y ve el <strong>“Panel de Renovaciones”</strong>. Aparece una lista con los 10 edificios marcados. El sistema muestra: <strong>“Total a Pagar: 5.000,00 Bs”</strong> (La suma de los 10 planes). Ella confirma, ingresa sus datos de Banco Plaza una sola vez y recibe <strong>UN SOLO código SMS</strong>. Al ingresar el código, el sistema procesa el pago único y muestra: <strong>“¡Éxito! Se han renovado 10 suscripciones por 30 días”</strong>.<br>
 <strong>Resultado:</strong> Gestión realizada en 45 segundos. Cliente feliz y fidelizado.</p>
-<p>&lt;![if !supportLists]&gt;b) &lt;![endif]&gt;<strong>Gestión de Unidades de Uso Común (Conserjería - Art. 5 LPH)</strong></p>
+<h2 id="gestión-de-unidades-de-uso-común-conserjería---art.-5-lph"><strong>Gestión de Unidades de Uso Común (Conserjería - Art. 5 LPH)</strong></h2>
 <p><strong>Referencia Legal:</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Art. 5 LPH: Los apartamentos de conserjería son “Cosas Comunes”. No tienen dueño individual. Son inalienables.</strong></p>
-<p>&lt;![if !supportLists]&gt;· &lt;![endif]&gt;<strong>Implicación Crítica: No se les puede cobrar condominio (se estarían cobrando a sí mismos) y no tienen voto. Si el sistema trata al “Apto Conserjería” como una unidad normal con deuda, distorsiona las finanzas.</strong></p>
-<p><strong>Memoria Descriptiva:<br>
+<p><strong>Art. 5 LPH: Los apartamentos de conserjería son “Cosas Comunes”. No tienen dueño individual. Son inalienables.</strong></p>
+<p><strong>Implicación Crítica: No se les puede cobrar condominio (se estarían cobrando a sí mismos) y no tienen voto. Si el sistema trata al “Apto Conserjería” como una unidad normal con deuda, distorsiona las finanzas.</strong></p>
+<p><strong>Memoria Descriptiva:</strong><br>
 Lógica de exclusión fiscal y política para inmuebles que son propiedad de la comunidad (Apartamento de Conserjería, Salón de Fiestas con nomenclatura propia). El sistema identifica estas unidades y las aísla de los procesos de cobro y votación.<br>
-Impide la generación errónea de deuda a la propia comunidad (Auto-cobro) y asegura que estas unidades no diluyan el quórum en las asambleas, garantizando que el 100% de la base de votación corresponda a propietarios reales.</strong></p>
+Impide la generación errónea de deuda a la propia comunidad (Auto-cobro) y asegura que estas unidades no diluyan el quórum en las asambleas, garantizando que el 100% de la base de votación corresponda a propietarios reales.</p>
 <p><strong>User Journey (Flujo de Exclusión):</strong></p>
-<p>&lt;![if !supportLists]&gt;<strong>1.</strong> &lt;![endif]&gt;<strong>Carga: El Admin carga las unidades. Carga “Apto Conserjería”.</strong></p>
+<p><strong>Carga: El Admin carga las unidades. Carga “Apto Conserjería”.</strong></p>
 <p>&lt;![if !supportLists]&gt;<strong>2.</strong> &lt;![endif]&gt;<strong>Marcado: Activa el switch “Es Área Común / Conserjería”.</strong></p>
 <p>&lt;![if !supportLists]&gt;<strong>3.</strong> &lt;![endif]&gt;<strong>Efecto:</strong></p>
 <p>&lt;![if !supportLists]&gt;o &lt;![endif]&gt;<strong>Al generar recibos masivos, el sistema salta esta unidad.</strong></p>
