@@ -222,7 +222,7 @@ La Lógica de Negocio: (Multi-tenant y la estrategia de Dólar Base / Bolívar V
 <p><strong>Backend (Django + Signals):</strong> El servidor actúa como el “Juez Financiero”. Antes de procesar cualquier cambio de capacidad, ejecuta una validación de integridad (SQL Count): verifica que el usuario no esté intentando reducir su plan por debajo de la cantidad de inmuebles que ya tiene activos en la base de datos.</p>
 <p><strong>Base de Datos (PostgreSQL):</strong> Uso de tablas relacionales para las escalas (PlanTier) y campos de saldo (credit_balance) en la tabla del inquilino, permitiendo auditoría contable precisa de los sobrantes.</p>
 <h2 id="definición-de-actores-y-reglas-de-escala"><strong>Definición de Actores y Reglas de Escala:</strong></h2>
-<p>###<strong>A) El Administrador Independiente (Retail):</strong></p>
+<h3 id="a-el-administrador-independiente-retail"><strong>A) El Administrador Independiente (Retail):</strong></h3>
 <p>Unidad de Cobro: Por Inmueble (Apartamento/Local).</p>
 <p>Interfaz: Slider continuo (de 1 a 500+).</p>
 <p>Lógica de Escala:</p>
@@ -230,7 +230,7 @@ La Lógica de Negocio: (Multi-tenant y la estrategia de Dólar Base / Bolívar V
 <p>Tier 2 (21-50 unidades): Descuento Leve (ej: $0.80).</p>
 <p>Tier 3 (51+ unidades): Descuento Mayor (ej: $0.50).</p>
 <p>Propósito: Incentivar al administrador pequeño a crecer dentro de la plataforma.</p>
-<p>###<strong>B) La Comunidad Autogestionada (Single-Tenant):</strong></p>
+<h3 id="b-la-comunidad-autogestionada-single-tenant"><strong>B) La Comunidad Autogestionada (Single-Tenant):</strong></h3>
 <p>Unidad de Cobro: Por Inmueble.</p>
 <p>Restricción Dura: Este perfil tiene un bloqueo a nivel de código (TenantLimit = 1). El sistema le permite ajustar la capacidad de <em>su</em> edificio, pero inhabilita la opción de crear un segundo edificio.</p>
 <p>Propósito: Mantener el control sobre usuarios no profesionales.</p>
