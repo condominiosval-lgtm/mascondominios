@@ -15,6 +15,14 @@ extensions:
 <li><a href="#resumen-de-tecnolog%C3%ADas-a-usarse-en-la-landing-page">Resumen de tecnologías a usarse en la landing page</a></li>
 </ul>
 </li>
+<li><a href="#detalles-inherentes-al-saas">Detalles inherentes al SaaS</a>
+<ul>
+<li><a href="#modelo-de-suscripci%C3%B3n-y-perfilamiento-del-administrador">Modelo de Suscripción y Perfilamiento del Administrador</a></li>
+<li><a href="#gesti%C3%B3n-de-identidad-operativa-y-personal-de-staff-non-billable-users">Gestión de Identidad Operativa y Personal de Staff (Non-Billable Users)</a></li>
+<li><a href="#arquitectura-de-polimorfismo-de-roles-y-conmutaci%C3%B3n-de-contexto-context-switching">Arquitectura de Polimorfismo de Roles y Conmutación de Contexto</a></li>
+<li><a href="#gesti%C3%B3n-de-n%C3%BAcleo-familiar-y-co-responsabilidad-digital-delegaci%C3%B3n-de-identidad">Gestión de Núcleo Familiar y Co-Responsabilidad Digital</a></li>
+</ul>
+</li>
 </ol>
 <h1 id="objetivo-general-del-desarrollo">Objetivo general del desarrollo:</h1>
 <p>El objetivo general de este desarrollo es la creación de un ecosistema SaaS bajo el dominio <a href="http://mascondominios.com.ve">mascondominios.com.ve</a>, el cual albergará una Landing Page que promocionará un software para administración de condominios en la República Bolivariana de Venezuela. En términos de SEO, la Landing Page tendrá una máxima relevancia, ya que será la página encargada de promover la conversión de un visitante (cliente potencial) a un cliente registrado (usuario) que adquiera un plan para usar el SaaS.</p>
