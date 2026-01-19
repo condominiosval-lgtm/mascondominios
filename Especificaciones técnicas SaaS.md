@@ -59,7 +59,9 @@ extensions:
 </li>
 <li><a href="#definici%C3%B3n-de-actores-y-reglas-de-escala">Definición de Actores y Reglas de Escala</a>
 <ul>
-<li><a href="#c-la-empresa-administradora-wholesalemayorista">C) La Empresa Administradora</a></li>
+<li><a href="#a-el-administrador-independiente-retail">A) El Administrador Independiente (Retail)</a></li>
+<li><a href="#b-la-comunidad-autogestionada-single-tenant">B) La Comunidad Autogestionada (Single-Tenant)</a></li>
+<li><a href="#c-la-empresa-administradora-wholesalemayorista">C) La Empresa Administradora (Wholesale/Mayorista)</a></li>
 </ul>
 </li>
 <li><a href="#funcionalidad-administrativa-cr%C3%ADtica">Funcionalidad Administrativa Crítica</a></li>
