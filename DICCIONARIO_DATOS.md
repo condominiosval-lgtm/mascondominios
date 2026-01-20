@@ -4,7 +4,7 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 
 ---
 
-## 🟠 GRUPO 1: ESQUEMA PÚBLICO (Shared Schema)
+## 🟠 GRUPO 1: CORE SAAS (Esquema Público)
 *Gestión de acceso, configuración global y facturación del SaaS.*
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
@@ -12,117 +12,147 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | **User** | `id` | UUID | PK | Identificador único global. | Un mismo User puede acceder a N Condominios. |
 | | `email` | String | UK | Correo electrónico (Login). | Validación estricta de formato. |
 | | `password_hash` | String | | Contraseña encriptada. | Algoritmo Argon2 o PBKDF2. |
-| | `national_id` | String | | Cédula o Pasaporte. | Formato V-12345678. |
-| | `phone_number` | String | | Teléfono celular. | Formato E.164 (+58...). Vital para WhatsApp. |
 | **Tenant** | `id` | UUID | PK | Identificador del Edificio. | |
 | | `schema_name` | String | UK | Nombre técnico de la BD. | Ej: `res_el_sol`. Sin espacios. |
 | | `is_active` | Boolean | | Kill-switch administrativo. | Si es False, nadie entra al edificio (Mora SaaS). |
 | | `trial_ends_at` | DateTime | | Fecha fin de la prueba. | Vital para el contador regresivo. |
-| | `purchased_capacity`| Integer | | Capacidad contratada. | **NUEVO:** Límite máximo de unidades (aptos). |
-| | `credit_balance` | Decimal | | Billetera Virtual (Bs). | **NUEVO:** Saldo a favor por Downgrades/Sobrepagos. |
+| | `purchased_capacity`| Integer | | Capacidad contratada. | Límite máximo de unidades (aptos). |
+| | `credit_balance` | Decimal | | Billetera Virtual (Bs). | Saldo a favor por Downgrades/Sobrepagos. |
 | **PlanCatalog** | `name` | String | | Tipo de Cliente. | Ej: "Administrador (Retail)", "Empresa (Wholesale)". |
-| **PlanTier** | `min_qty` | Integer | | Rango mínimo del escalón. | Ej: 1 unidad. |
-| | `max_qty` | Integer | | Rango máximo del escalón. | Ej: 50 unidades. |
+| | `is_active` | Boolean | | Disponibilidad. | Si el plan se puede vender. |
+| **PlanTier** | `min_qty` | Integer | | Rango mínimo. | Ej: 1 unidad. |
+| | `max_qty` | Integer | | Rango máximo. | Ej: 50 unidades. |
 | | `unit_price_usd` | Decimal | | Precio por unidad. | Ej: 0.50 USD para este rango. |
-| | `plan_id` | UUID | FK | Vínculo al tipo de cliente. | Define qué tabla de precios se aplica. |
+| | `plan_id` | UUID | FK | Vínculo al plan. | Define qué tabla de precios se aplica. |
 | **SaaSPayment** | `amount_bs` | Decimal | | Monto cobrado al Admin. | Tasa BCV del momento del pago. |
-| | `plaza_transaction_id`| String | | Ref. Banco Plaza. | **NO ES ÚNICA.** Permite Pago Masivo. |
-| | `status` | Enum | | Estado del flujo C2P. | `PENDING_OTP`, `APPROVED`, `FAILED`. |
-| **IntegrationConfig**| `service` | Enum | | Tipo de servicio externo. | `WHATSAPP`, `EMAIL`, `BIOMETRIC`. |
-| | `config_data` | JSONB | | Credenciales cifradas. | Tokens, Session IDs, IPs de cámaras. |
+| | `plaza_transaction_id`| String | | Ref. Banco Plaza. | Permite Pago Masivo. |
+| | `created_at` | DateTime | | Fecha registro. | Auditoría. |
+| **IntegrationConfig**| `service` | Enum | | Tipo servicio externo. | `WHATSAPP`, `EMAIL`, `BIOMETRIC`. |
+| | `api_key` | String | | Token de API. | Credencial externa. |
+| | `webhook_url` | String | | Endpoint de respuesta. | Para recibir eventos (ej. WhatsApp). |
 
 ---
 
-## 🔵 GRUPO 2: IDENTIDAD LOCAL (Polimorfismo & Staff)
+## 🔵 GRUPO 2: IDENTIDAD (Roles y Perfiles)
 *Resolución de roles: "Sandra Admin/Dueña" y "Pedro Vigilante".*
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **TenantProfile** | `id` | UUID | PK | Identidad local. | Perfil dentro de este edificio específico. |
-| | `user_id` | UUID | FK | Quién es la persona. | Link al `User` global. |
 | | `role` | Enum | | Rol funcional. | `ADMIN`, `PROPIETARIO`, `INQUILINO`, `STAFF`. |
-| | `property_id` | UUID | FK | Unidad asociada. | **OPCIONAL.** Vacío si es STAFF o ADMIN externo. |
-| | `is_primary_owner`| Boolean | | Titularidad del voto. | True = Vota en asambleas. False = Co-habitante. |
-| **TenantUserRelation**| `is_global_admin` | Boolean | | Permiso de pago SaaS. | True si este usuario paga la suscripción al Software. |
+| | `is_primary_owner`| Boolean | | Titularidad del voto. | True = Vota en asambleas. |
+| | `phone_number` | String | | Teléfono contacto. | Vital para notificaciones. |
+| **TenantUserRelation**| `is_global_admin` | Boolean | | Permiso pago SaaS. | True si este usuario paga la suscripción. |
+| | `joined_at` | DateTime | | Fecha vinculación. | Histórico. |
 
 ---
 
-## 🟢 GRUPO 3: MOTOR FINANCIERO Y PROVEEDORES
-*Cuentas por cobrar, pagar, impuestos y legalidad financiera.*
+## 🟢 GRUPO 3: FINANZAS COMPLEJAS & PROVEEDORES
+*Cuentas por cobrar, pagar, impuestos, licitaciones y contratos.*
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| **Supplier** | `is_special_taxpayer`| Boolean | | ¿Contribuyente Especial? | Vital para retención de IVA (75%/100%). |
-| | `is_public_directory`| Boolean | | Visibilidad Marketplace. | True = Aparece en la App Vecinos de otros edf. |
-| | `rating_avg` | Decimal | | Promedio Estrellas (1-5). | Calculado en base a `SupplierRating`. |
-| **LeaseContract** | `client_name` | String | | Nombre Cliente. | Ej: Movistar/Digitel (Alquiler Azoteas). |
-| | `monthly_fee_usd` | Decimal | | Canon Mensual. | Genera cuentas por cobrar automáticas (Ingreso Propio). |
-| | `contract_end` | Date | | Fin Contrato. | Alerta de renovación para no perder ingresos. |
-| **BiddingProcess** | `title` | String | PK | Título de Licitación. | Ej: "Reparación Portón". |
-| | `status` | Enum | | Estado. | `OPEN`, `CLOSED`, `AWARDED`. |
-| **BiddingQuote** | `amount_usd` | Decimal | | Monto ofertado. | Precio del presupuesto. |
-| | `pdf_url` | String | | Archivo cotización (S3). | Evidencia de transparencia. |
-| | `is_winner` | Boolean | | ¿Fue adjudicado? | Solo uno puede ser True por proceso. |
-| | `supplier_id` | UUID | FK | Quién cotiza. | Enlace al proveedor. |
-| **Bill** | `total_amount_usd` | Decimal | | Deuda total del mes. | Suma de todos los `BillItem`. |
-| **BillItem** | `description` | String | | Concepto del cobro. | Ej: "Alicuota Condominio", "Cuota Pozo". |
-| | `project_id` | UUID | FK | Vínculo a Proyectos. | Opcional. Si existe, el dinero va a ese fondo. |
-| | `distribution_group_id`| UUID | FK | **(NUEVO)** Grupo Gasto. | Si es NULL = General. Si tiene ID = Sectorizado (Art. 11 LPH). |
-| **DistributionGroup** | `total_relative_aliquot`| Decimal | | **(NUEVO)** Suma Alícuotas. | Base para recalcular el 100% interno de una Torre. |
-| **Expense** | `pdf_url` | String | | **(NUEVO)** Factura Escaneada.| Soporte visual del gasto (Cuentas por Pagar). |
-| | `is_public_to_residents`| Boolean | | Transparencia. | Si es True, el vecino puede ver el PDF (Art. 20 LPH). |
-| | `supplier_id` | UUID | FK | Proveedor. | Quién emitió la factura. |
-| **Transaction** | `rate_applied` | Decimal | | Tasa del dólar (Snapshot).| Valor exacto al momento de la operación. Inmutable. |
-| | `supplier_id` | UUID | FK | Proveedor (Gasto). | Opcional. Solo para egresos. |
-| **Payment** | `reference_number` | String | UK* | Referencia Bancaria. | **CONSTRAINT:** Unicidad por `(reference + property_id)`. |
-| | `proof_file_url` | String | | Foto del capture (S3). | Requerido para conciliación manual. |
-| **BankRule** | `keyword_pattern` | String | | Patrón de IA. | Ej: "PAGO MOVIL PEDRO". Auto-concilia pagos. |
-| **PaymentAgreement** | `frozen_debt` | Decimal | | Deuda Congelada. | Deja de generar intereses al firmar. |
-| **TaxRetention** | `type` | Enum | | Tipo de impuesto. | `ISLR` o `IVA`. Genera TXT para Seniat. |
-| **BuildingInsurance** | `expiry_date` | Date | | **(NUEVO)** Fin Póliza. | Alerta obligatoria Art. 20d. (Incendio/Terremoto). |
-| **AmenityExclusion** | `property_id` | UUID | FK | **(NUEVO)** Disidente. | Vecino que no paga/usa mejoras suntuarias (Art. 9). |
+| **Account** | `current_balance` | Decimal | | Saldo en Libros. | Saldo contable actual. |
+| | `currency` | Enum | | Moneda de la cuenta. | USD o VES. |
+| **BillingPeriod** | `is_closed` | Boolean | | Estado del mes. | Si es True, no acepta más gastos. |
+| **Bill** | `total_amount_usd` | Decimal | | Deuda total mes. | Suma de items. |
+| | `status` | Enum | | Estado factura. | `PAID`, `UNPAID`, `PARTIAL`. |
+| **BillItem** | `distribution_group_id`| UUID | FK | Grupo de Gasto. | Si es NULL = General. Si tiene ID = Sectorizado. |
+| **DistributionGroup** | `total_relative_aliquot`| Decimal | | Suma Alícuotas. | Base para recalcular el 100% interno. |
+| **Transaction** | `rate_applied` | Decimal | | Tasa Snapshot. | Valor del dólar al momento exacto. |
+| | `amount_bs` | Decimal | | Monto Moneda Local. | Lo que entró al banco. |
+| | `amount_usd` | Decimal | | Monto Divisa Base. | Valor contable. |
+| **Payment** | `reference_number` | String | UK* | Ref. Bancaria. | Unicidad compuesta. |
+| **PaymentAgreement** | `frozen_debt` | Decimal | | Deuda Congelada. | Deja de generar intereses. |
+| | `installments` | Integer | | Nro Cuotas. | Cantidad de partes. |
+| **BankRule** | `keyword_pattern` | String | | Patrón IA. | Auto-conciliación. |
+| **ExchangeRate** | `rate` | Decimal | | Valor Tasa. | BCV o Paralelo. |
+| | `source` | String | | Fuente. | Ej. "BCV Oficial". |
+| **TaxRetention** | `type` | Enum | | Impuesto. | ISLR/IVA. |
+| | `proof_doc_url` | String | | Comprobante PDF. | Para enviar al proveedor. |
+| **AmenityExclusion** | `reason` | String | | Motivo. | Ej: "Voto Salvado en Asamblea". |
+| **LeaseContract** | `client_name` | String | | Nombre Cliente. | Ej: Movistar/Digitel. |
+| | `client_rif` | String | | RIF Jurídico. | Para facturación. |
+| | `monthly_fee_usd` | Decimal | | Canon Mensual. | Genera cuentas por cobrar automáticas. |
+| | `payment_day` | Integer | | Día de Corte. | Ej: Los días 05. |
+| | `contract_end` | Date | | Fin Contrato. | Alerta de renovación. |
+| **Expense** | `amount` | Decimal | | Monto Gasto. | Total a pagar. |
+| | `invoice_number` | String | | Nro Factura. | Control fiscal. |
+| | `pdf_url` | String | | Factura Escaneada.| Soporte visual (Transparencia). |
+| | `is_public_to_residents`| Boolean | | Visibilidad. | True = Vecino puede ver el PDF. |
+| | `status` | Enum | | Estado Pago. | `PENDING`, `PAID`. |
+| **Supplier** | `is_special_taxpayer`| Boolean | | Contribuyente Esp. | Define retención IVA. |
+| **BiddingProcess** | `status` | Enum | | Estado. | `OPEN`, `CLOSED`, `AWARDED`. |
+| **BiddingQuote** | `is_winner` | Boolean | | Ganador. | Oferta seleccionada. |
 
 ---
 
-## 🔵 GRUPO 4: OPERACIONES, LEGAL Y GOBIERNO (LPH)
-*Gestión operativa, reputación, accesos y cumplimiento legal.*
+## 🔵 GRUPO 4: OPERACIONES & ASAMBLEAS
+*Vida diaria, seguridad y participación.*
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| **SupplierRating** | `stars` | Integer | | Puntuación (1-5). | Valoración del vecino sobre un servicio. |
-| | `comment` | Text | | Reseña escrita. | Opinión pública. |
-| **Ticket** | `assigned_supplier_id`| UUID | FK | Despacho a Externo. | **NUEVO:** Enviar ticket a proveedor (Orden Servicio). |
-| | `evidence_photos` | JSONB | | Fotos incidencia. | Array de URLs. |
-| **Property** | `aliquot` | Decimal | | % de participación. | Precisión de 6 decimales (10,6). |
-| | `is_common_area` | Boolean | | **(NUEVO)** ¿Conserjería? | Si es True, no paga recibos ni vota (Art. 5). |
-| **GuestInvitation** | `qr_token` | String | UK | Token del QR. | Único y con caducidad (`valid_until`). |
-| **AccessLog** | `invitation_id` | UUID | FK | Origen del acceso. | Link a la invitación si entró con QR. |
-| **PanicAlert** | `gps_location` | JSONB | | Coordenadas GPS. | `{lat, long}` de donde se pulsó el botón. |
-| **Parcel** | `pickup_code` | String | | PIN de retiro. | Se entrega al guardia para retirar paquete. |
-| **Vehicle/Pet** | `plate_number` | String | UK | Placa / Nombre. | Control de acceso y censo. |
-| **Assembly** | `topic` | String | | **(NUEVO)** Motivo. | Ej: "Aprobación Presupuesto". |
-| | `billboard_proof_url` | String | | Foto Cartel. | Evidencia de convocatoria física (Art. 22 LPH). |
-| | `zoom_link` | String | | Enlace Virtual. | Para asistencia remota (Híbrida). |
-| | `quorum_current` | Decimal | | % Asistencia. | Suma de alícuotas presentes. |
-| **CondoConstitution** | `fiscal_year_start` | Integer | | **(NUEVO)** Inicio Fiscal. | Configuración según Documento de Condominio (Art. 26). |
-| **AdministratorBond** | `doc_url` | String | | **(NUEVO)** Fianza PDF. | Garantía del Admin (Art. 19). Si vence, alerta roja. |
-| **BoardPosition** | `role_type` | Enum | | **(NUEVO)** Jerarquía. | `PRINCIPAL` o `SUPLENTE` (Art. 24). |
-| **LegalBook** | `notary_ref` | String | | **(NUEVO)** Datos Notaría. | Datos del sellado físico del libro (Art. 20). |
-| **LegalConsultation** | `legal_text` | Text | | **(NUEVO)** Carta Consulta. | Exposición de motivos formal (Art. 23). |
-| **ConsultationResponse** | `vote_type` | Enum | | **(NUEVO)** Tipo Voto. | Incluye `DISSENTING` (Voto Salvado con razonamiento). |
-| **OwnershipTransfer** | `debt_at_transfer` | Decimal | | **(NUEVO)** Deuda Previa. | Auditoría de traspaso (Art. 13). |
-| **LegalCase** | `case_number` | String | | **(NUEVO)** N° Expediente. | Art. 21. Seguimiento de litigios en tribunales. |
+| **Property** | `is_common_area` | Boolean | | ¿Conserjería? | Si es True, no paga recibos ni vota. |
+| | `aliquot` | Decimal | | % Participación. | Peso del voto y deuda. |
+| **OwnershipTransfer** | `debt_at_transfer` | Decimal | | Deuda Previa. | Auditoría al vender. |
+| **Reservation** | `status` | Enum | | Estado. | `CONFIRMED`, `CANCELLED`. |
+| **Amenity** | `is_luxury` | Boolean | | ¿Suntuario? | Permite Opt-out (Art. 9 LPH). |
+| **Ticket** | `status` | Enum | | Estado. | `OPEN`, `IN_PROGRESS`, `RESOLVED`. |
+| **SupplierRating** | `stars` | Integer | | Estrellas. | 1 a 5. |
+| **AccessLog** | `visitor_id_doc` | String | | Cédula Visita. | Registro de seguridad. |
+| **GuestInvitation** | `expires_at` | DateTime | | Vencimiento. | Validez del QR. |
+| **PanicAlert** | `gps_coords` | String | | Ubicación. | Georeferencia SOS. |
+| **Assembly** | `topic` | String | | Motivo. | Ej: "Presupuesto 2026". |
+| | `zoom_link` | String | | URL Video. | Para asistencia remota. |
+| | `billboard_proof_url` | String | | Foto Cartel. | Evidencia física (Art. 22 LPH). |
+| | `quorum_current` | Decimal | | Quórum %. | Suma de alícuotas presentes. |
+| **Poll** | `end_date` | Date | | Cierre. | Fecha límite. |
+| **Vote** | `choice` | Enum | | Opción. | Selección del usuario. |
+| **Parcel** | `pickup_code` | String | | Token Retiro. | PIN de seguridad. |
+| **Vehicle** | `plate_number` | String | | Placa. | Control acceso. |
+| **Pet** | `breed` | String | | Raza. | Censo mascotas. |
 
 ---
 
-## 🟣 GRUPO 5: RRHH E INFRAESTRUCTURA
-*Nómina, Mantenimiento y Activos.*
+## 🩷 GRUPO 5: LEGAL Y GOBIERNO (Compliance LPH)
+*Estructuras legales obligatorias en Venezuela.*
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| **EmployeeProfile** | `base_salary_bs` | Decimal | | Sueldo de Ley. | En Bolívares. |
-| **WorkShift** | `gps_verified` | Boolean | | Geocerca. | True si fichó dentro del perímetro. |
-| | `tenant_profile_id` | UUID | FK | Empleado. | Debe tener rol `STAFF`. |
-| **Asset** | `qr_code` | String | UK | Etiqueta Activo Fijo. | Pegada en bombas/ascensores para mtto. |
-| **InventoryItem** | `reorder_point` | Int | | Alerta de Stock. | Si baja de X, avisa al admin. |
-| **Project** | `goal_amount` | Decimal | | Meta Crowdfunding. | Monto objetivo para ejecutar la obra. |
+| **CondoConstitution** | `fiscal_year_start` | Integer | | Inicio Fiscal. | Mes de inicio contable. |
+| | `reserve_fund_pct` | Decimal | | % Reserva. | Mínimo legal. |
+| **AdministratorBond** | `amount` | Decimal | | Monto Garantía. | Cobertura fianza (Art. 19). |
+| | `expiry_date` | Date | | Vencimiento. | Alerta bloqueante. |
+| | `doc_url` | String | | PDF Fianza. | Evidencia. |
+| **BuildingInsurance** | `policy_number` | String | | Nro Póliza. | Seguro Edificio (Art. 20d). |
+| | `type` | Enum | | Tipo. | `INCENDIO`, `TERREMOTO`. |
+| **BoardTerm** | `status` | Enum | | Estado Junta. | `ACTIVE`, `EXPIRED`. |
+| **BoardPosition** | `role_type` | Enum | | Jerarquía. | `PRINCIPAL`, `SUPLENTE`. |
+| | `tenant_profile_id` | UUID | FK | Miembro. | Quién ocupa el cargo. |
+| **LegalCase** | `case_number` | String | | Nro Expediente. | Litigios en tribunales. |
+| | `amount_claimed` | Decimal | | Cuantía. | Monto en disputa. |
+| **LegalConsultation** | `legal_text` | String | | Carta Consulta. | Texto formal (Art. 23). |
+| | `deadline_date` | Date | | Plazo. | Mínimo 8 días. |
+| **ConsultationResponse**| `vote_type` | Enum | | Voto Cualificado.| `APPROVE`, `REJECT`, `DISSENTING`. |
+| | `dissent_reason` | String | | Razón Voto. | Obligatorio si salva el voto. |
+| **LegalBook** | `current_folio` | Integer | | Foliado. | Pág física actual. |
+| | `notary_ref` | String | | Datos Notaría. | Sellado del libro. |
+| **LegalDocument** | `type` | Enum | | Tipo Doc. | `SOLVENCIA`, `CARTA_RESIDENCIA`. |
+
+---
+
+## 🟣 GRUPO 6: RRHH & ACTIVOS
+*Gestión de personal e infraestructura física.*
+
+| Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
+| :--- | :--- | :--- | :---: | :--- | :--- |
+| **Asset** | `qr_code` | String | UK | Código QR. | Pegado en el equipo físico. |
+| | `status` | Enum | | Estado. | `OPERATIONAL`, `BROKEN`. |
+| **WorkShift** | `gps_verified` | Boolean | | Geocerca. | True si fichó en sitio. |
+| | `check_in` | DateTime | | Entrada. | Hora de llegada. |
+| **EmployeeProfile** | `base_salary_bs` | Decimal | | Sueldo Base. | Para cálculo prestaciones. |
+| **PayrollReceipt** | `total_paid` | Decimal | | Neto a Pagar. | Monto final. |
+| **InventoryItem** | `current_stock` | Integer | | Existencia. | Cantidad real. |
+| **InventoryLog** | `quantity_change` | Integer | | Movimiento. | +Entrada / -Salida (FIFO). |
+| **Project** | `goal_amount` | Decimal | | Meta. | Objetivo recaudación. |
+| | `current_amount` | Decimal | | Recaudado. | Progreso real. |
