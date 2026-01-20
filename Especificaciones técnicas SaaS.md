@@ -1020,7 +1020,10 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p>InventoryItem</p>
 <p>InventoryLog</p>
 <p>Project</p>
-<h3 id="🔗-documentación-de-datos">🔗 Documentación de Datos</h3>
+<h3 id="documentación-de-datos">Documentación de Datos</h3>
 <p>Para ver el modelo de base de datos completo e interactivo, haz clic aquí:<br>
 👉 <strong><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/ERD_DATABASE.md">Ver Diagrama ERD Completo (Base de Datos)</a></strong></p>
+<h3 id="diccionario-de-datos">Diccionario de Datos</h3>
+<p>Hemos separado el detalle técnico de atributos y reglas de negocio en un documento maestro.<br>
+👉 <strong><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/DICCIONARIO_DATOS.md">Ver Diccionario de Datos Completo (Tablas)</a></strong></p>
 
