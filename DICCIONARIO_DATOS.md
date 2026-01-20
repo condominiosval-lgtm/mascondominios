@@ -54,17 +54,23 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **Account** | `current_balance` | Decimal | | Saldo en Libros. | Saldo contable actual. |
+| | `name` | String | | Nombre Cuenta. | Ej: "Banco Mercantil", "Caja Chica". |
 | | `currency` | Enum | | Moneda de la cuenta. | USD o VES. |
 | **BillingPeriod** | `is_closed` | Boolean | | Estado del mes. | Si es True, no acepta más gastos. |
+| | `name` | String | | Nombre Ciclo. | Ej: "Enero 2026". |
+| | `start_date` | Date | | Inicio. | Fecha apertura. |
+| | `end_date` | Date | | Fin. | Fecha corte. |
 | **Bill** | `total_amount_usd` | Decimal | | Deuda total mes. | Suma de items. |
 | | `code` | String | | Código Visual. | Ej: "REC-2026-001". |
 | | `due_date` | Date | | Vencimiento. | Fecha límite para pagar sin mora. |
 | | `status` | Enum | | Estado factura. | `PAID`, `UNPAID`, `PARTIAL`. |
 | **BillItem** | `distribution_group_id`| UUID | FK | Grupo de Gasto. | Si es NULL = General. Si tiene ID = Sectorizado. |
 | **DistributionGroup** | `total_relative_aliquot`| Decimal | | Suma Alícuotas. | Base para recalcular el 100% interno. |
+| | `name` | String | | Nombre Grupo. | Ej: "Torre A". |
 | **Transaction** | `rate_applied` | Decimal | | Tasa Snapshot. | Valor del dólar al momento exacto. |
 | | `amount_bs` | Decimal | | Monto Moneda Local. | Lo que entró al banco. |
 | | `amount_usd` | Decimal | | Monto Divisa Base. | Valor contable. |
+| | `reference` | String | | Referencia. | Identificador del movimiento. |
 | **Payment** | `reference_number` | String | UK* | Ref. Bancaria. | Unicidad compuesta. |
 | **PaymentAgreement** | `frozen_debt` | Decimal | | Deuda Congelada. | Deja de generar intereses. |
 | | `installments` | Integer | | Nro Cuotas. | Cantidad de partes. |
@@ -99,13 +105,15 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| **Property** | `code` | String | UK | Código Unidad. | Ej: "1-A", "PH-1", "LOCAL-2". |
+| **Property** | `code` | String | UK | Código Unidad. | Ej: "1-A", "PH-1". |
 | | `is_common_area` | Boolean | | ¿Conserjería? | Si es True, no paga recibos ni vota. |
 | | `aliquot` | Decimal | | % Participación. | Peso del voto y deuda. |
 | **OwnershipTransfer** | `debt_at_transfer` | Decimal | | Deuda Previa. | Auditoría al vender. |
 | **Reservation** | `status` | Enum | | Estado. | `CONFIRMED`, `CANCELLED`. |
 | **Amenity** | `is_luxury` | Boolean | | ¿Suntuario? | Permite Opt-out (Art. 9 LPH). |
 | **Ticket** | `status` | Enum | | Estado. | `OPEN`, `IN_PROGRESS`, `RESOLVED`. |
+| | `subject` | String | | Asunto. | Título breve del problema. |
+| | `description` | Text | | Detalle. | Explicación completa del vecino. |
 | **SupplierRating** | `stars` | Integer | | Estrellas. | 1 a 5. |
 | **AccessLog** | `visitor_id_doc` | String | | Cédula Visita. | Registro de seguridad. |
 | **GuestInvitation** | `expires_at` | DateTime | | Vencimiento. | Validez del QR. |
@@ -145,9 +153,11 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `deadline_date` | Date | | Plazo. | Mínimo 8 días. |
 | **ConsultationResponse**| `vote_type` | Enum | | Voto Cualificado.| `APPROVE`, `REJECT`, `DISSENTING`. |
 | | `dissent_reason` | String | | Razón Voto. | Obligatorio si salva el voto. |
-| **LegalBook** | `current_folio` | Integer | | Foliado. | Pág física actual. |
+| **LegalBook** | `name` | String | | Nombre Libro. | Ej: "Libro de Actas 2". |
+| | `current_folio` | Integer | | Foliado. | Pág física actual. |
 | | `notary_ref` | String | | Datos Notaría. | Sellado del libro. |
 | **LegalDocument** | `type` | Enum | | Tipo Doc. | `SOLVENCIA`, `CARTA_RESIDENCIA`. |
+| | `url` | String | | Archivo PDF. | Enlace al documento generado. |
 
 ---
 
@@ -157,12 +167,19 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **Asset** | `qr_code` | String | UK | Código QR. | Pegado en el equipo físico. |
+| | `name` | String | | Nombre Equipo. | Ej: "Bomba Agua 1". |
 | | `status` | Enum | | Estado. | `OPERATIONAL`, `BROKEN`. |
 | **WorkShift** | `gps_verified` | Boolean | | Geocerca. | True si fichó en sitio. |
 | | `check_in` | DateTime | | Entrada. | Hora de llegada. |
+| | `check_out` | DateTime | | Salida. | Hora de fin de turno. |
 | **EmployeeProfile** | `base_salary_bs` | Decimal | | Sueldo Base. | Para cálculo prestaciones. |
+| | `job_title` | String | | Cargo. | Ej: "Conserje", "Vigilante". |
 | **PayrollReceipt** | `total_paid` | Decimal | | Neto a Pagar. | Monto final. |
-| **InventoryItem** | `current_stock` | Integer | | Existencia. | Cantidad real. |
+| | `pay_date` | Date | | Fecha Pago. | Día de la nómina. |
+| **InventoryItem** | `name` | String | | Nombre Item. | Ej: "Cloro", "Bombillos". |
+| | `current_stock` | Integer | | Existencia. | Cantidad real. |
 | **InventoryLog** | `quantity_change` | Integer | | Movimiento. | +Entrada / -Salida (FIFO). |
-| **Project** | `goal_amount` | Decimal | | Meta. | Objetivo recaudación. |
+| | `reason` | String | | Motivo. | Ej: "Limpieza Piscina". |
+| **Project** | `name` | String | | Título. | Ej: "Pintura Fachada". |
+| | `goal_amount` | Decimal | | Meta. | Objetivo recaudación. |
 | | `current_amount` | Decimal | | Recaudado. | Progreso real. |
