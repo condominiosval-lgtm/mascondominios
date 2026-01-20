@@ -4,8 +4,6 @@ extensions:
 
 ---
 
-<hr>
-<h2 id="mermaid-true">mermaid: true</h2>
 <h1 id="tabla-de-contenidos">Tabla de Contenidos</h1>
 <ol>
 <li><a href="#objetivo-general-del-desarrollo">Objetivo general del desarrollo</a></li>
@@ -123,6 +121,12 @@ extensions:
 <li><a href="#esquema-3-infraestructura-f%C3%ADsica-devops">ESQUEMA 3: Infraestructura Física</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#anexos">ANEXOS</a>
+<ul>
+<li><a href="#anexo-1-diagrama-entidad-relaci%C3%B3n-erd">ANEXO 1: DIAGRAMA ENTIDAD RELACIÓN (ERD)</a></li>
+<li><a href="#anexo-2-diccionario-de-datos-maestro-texto">ANEXO 2: DICCIONARIO DE DATOS MAESTRO (TEXTO)</a></li>
 </ul>
 </li>
 </ol>
@@ -1026,4 +1030,206 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <h3 id="diccionario-de-datos">Diccionario de Datos</h3>
 <p>Hemos separado el detalle técnico de atributos y reglas de negocio en un documento maestro.<br>
 👉 <strong><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/DICCIONARIO_DATOS.md">Ver Diccionario de Datos Completo (Tablas)</a></strong></p>
+<h1 id="diagramas-de-secuencia-lógico"><strong>Diagramas de secuencia Lógico</strong></h1>
+<h3 id="📂-archivo-1-flujos01_core_plataforma.md">📂 Archivo 1: flujos/01_CORE_PLATAFORMA.md</h3>
+<p>(Todo lo que es Acceso, Configuración y Cobro del SaaS)[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+<ul>
+<li>
+<p><strong>Función 1:</strong> Calculadora de Precios Interactiva.</p>
+</li>
+<li>
+<p><strong>Función 2:</strong> Fallback Estático.</p>
+</li>
+<li>
+<p><strong>Función 3:</strong> Login Global.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 4:</strong> Perfilamiento de Usuario.</p>
+</li>
+<li>
+<p><strong>Función 5:</strong> Switch de Contexto.</p>
+</li>
+<li>
+<p><strong>Función 6:</strong> Gestión de Núcleo Familiar.</p>
+</li>
+<li>
+<p><strong>Función 7:</strong> Gestión de Staff Operativo.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 8:</strong> Precios Dinámicos por Volumen.</p>
+</li>
+<li>
+<p><strong>Función 9:</strong> Suscripción por Entidad.</p>
+</li>
+<li>
+<p><strong>Función 10:</strong> Billetera Virtual SaaS.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 11:</strong> Renovación Masiva.</p>
+</li>
+<li>
+<p><strong>Función 12:</strong> Pasarela C2P Banco Plaza.</p>
+</li>
+</ul>
+<hr>
+<h3 id="📂-archivo-2-flujos02_finanzas_contabilidad.md">📂 Archivo 2: flujos/02_FINANZAS_CONTABILIDAD.md</h3>
+<p>(El corazón financiero: Dinero, Bancos e Impuestos)[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+<ul>
+<li>
+<p><strong>Función 13:</strong> Economía Bimonetaria.</p>
+</li>
+<li>
+<p><strong>Función 14:</strong> Oráculo de Tasas.</p>
+</li>
+<li>
+<p><strong>Función 15:</strong> Indexación Dinámica de Deuda.</p>
+</li>
+<li>
+<p><strong>Función 16:</strong> Conciliación Bancaria Híbrida.</p>
+</li>
+<li>
+<p><strong>Función 17:</strong> Taquilla de Cobro Manual.</p>
+</li>
+<li>
+<p><strong>Función 18:</strong> Validación Anti-Fraude.</p>
+</li>
+<li>
+<p><strong>Función 19:</strong> Gestión de Fondos Virtuales.</p>
+</li>
+<li>
+<p><strong>Función 20:</strong> Contabilidad Doble Partida.</p>
+</li>
+<li>
+<p><strong>Función 21:</strong> Motor Fiscal (ISLR/IVA).[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 22:</strong> Generación de Estados Financieros.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+</ul>
+<hr>
+<h3 id="📂-archivo-3-flujos03_admin_cobranza.md">📂 Archivo 3: flujos/03_ADMIN_COBRANZA.md</h3>
+<p>(Herramientas de gestión diaria y legal)[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+<ul>
+<li>
+<p><strong>Función 23:</strong> Gateway Omnicanal (Push/Email).[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 24:</strong> Microservicio WhatsApp Multi-Tenant.</p>
+</li>
+<li>
+<p><strong>Función 25:</strong> Bot de Operaciones.</p>
+</li>
+<li>
+<p><strong>Función 26:</strong> Tablero Kanban de Cobranza.</p>
+</li>
+<li>
+<p><strong>Función 27:</strong> Motor de Reglas de Morosidad.</p>
+</li>
+<li>
+<p><strong>Función 28:</strong> Gestor de Convenios de Pago.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 29:</strong> Cartelera Virtual de Morosos.</p>
+</li>
+<li>
+<p><strong>Función 30:</strong> Kiosco de Autoservicio Legal.</p>
+</li>
+<li>
+<p><strong>Función 31:</strong> Motor de Emisión y Validación QR.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 32:</strong> Bloqueo Automático de Documentos.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+</ul>
+<hr>
+<h3 id="📂-archivo-4-flujos04_operaciones_seguridad.md">📂 Archivo 4: flujos/04_OPERACIONES_SEGURIDAD.md</h3>
+<p>(El mundo físico: Puertas, Agua y Empleados)[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+<ul>
+<li>
+<p><strong>Función 33:</strong> Validación Offline (QR Acceso).[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>] (Nota: En el texto aparece sin número explícito antes de la 34, verifica que copies el diagrama “Validación Offline”).</p>
+</li>
+<li>
+<p><strong>Función 34:</strong> Pasarela GSM (Portones).[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 35:</strong> Sincronización Biométrica.</p>
+</li>
+<li>
+<p><strong>Función 36:</strong> Bitácora de Visitas (Voz).</p>
+</li>
+<li>
+<p><strong>Función 37:</strong> Botón de Pánico Enterprise.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 38:</strong> Gestión de Paquetería.</p>
+</li>
+<li>
+<p><strong>Función 39:</strong> Semáforo de Servicios Públicos. (Nota: En el texto aparece como título sin número, justo antes de la 40).</p>
+</li>
+<li>
+<p><strong>Función 40:</strong> Bitácora de Cisternas.</p>
+</li>
+<li>
+<p><strong>Función 41:</strong> Gestión de Activos Fijos.</p>
+</li>
+<li>
+<p><strong>Función 42:</strong> Control de Inventarios.</p>
+</li>
+<li>
+<p><strong>Función 43:</strong> Planificador de Rutinas.</p>
+</li>
+<li>
+<p><strong>Función 44:</strong> Control de Asistencia (Geofencing).[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 45:</strong> Motor de Nómina Híbrida.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 46:</strong> Emisión de Recibos Digitales.</p>
+</li>
+</ul>
+<hr>
+<h3 id="📂-archivo-5-flujos05_comunidad_gobernanza.md">📂 Archivo 5: flujos/05_COMUNIDAD_GOBERNANZA.md</h3>
+<p>(La relación con el vecino y proveedores)</p>
+<ul>
+<li>
+<p><strong>Función 47:</strong> Sistema de Tickets PQRS.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 48:</strong> Asignación Externa (WhatsApp Work Order).[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 49:</strong> Votaciones y Encuestas.</p>
+</li>
+<li>
+<p><strong>Función 50:</strong> Asambleas Híbridas.</p>
+</li>
+<li>
+<p><strong>Función 51:</strong> Libro de Actas con Dictado.</p>
+</li>
+<li>
+<p><strong>Función 52:</strong> Crowdfunding Interno.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 53:</strong> Cuotas Extraordinarias.</p>
+</li>
+<li>
+<p><strong>Función 54:</strong> Directorio con Semáforo Fiscal.</p>
+</li>
+<li>
+<p><strong>Función 55:</strong> Comparador de Presupuestos.</p>
+</li>
+<li>
+<p><strong>Función 56:</strong> Adjudicación Democrática.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 57:</strong> Dashboard Analítico.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>] (Nota: Aparece como título sin número antes de la 58).</p>
+</li>
+<li>
+<p><strong>Función 58:</strong> Normalización Financiera.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+<li>
+<p><strong>Función 59:</strong> Health Score del Edificio.[<a href="https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2Fcondominiosval-lgtm%2Fmascondominios%2Fblob%2Fmaster%2FTEMP_DIAGRAMAS.md">1</a>]</p>
+</li>
+</ul>
 
