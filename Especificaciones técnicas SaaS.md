@@ -1,10 +1,11 @@
 ---
 extensions:
-  markdown:
-    toc: true
+  mermaid: true
 
 ---
 
+<hr>
+<h2 id="mermaid-true">mermaid: true</h2>
 <h1 id="tabla-de-contenidos">Tabla de Contenidos</h1>
 <ol>
 <li><a href="#objetivo-general-del-desarrollo">Objetivo general del desarrollo</a></li>
@@ -982,7 +983,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p>PlanCatalog</p>
 <p>SaaSPayment</p>
 <p>IntegrationConfig</p>
-<p>###<strong>🔵 GRUPO 2: IDENTIDAD (2 Tablas)</strong></p>
+<h3 id="🔵-grupo-2-identidad-2-tablas"><strong>🔵 GRUPO 2: IDENTIDAD (2 Tablas)</strong></h3>
 <p>TenantUserRelation</p>
 <p>TenantProfile</p>
 <h3 id="🟢-grupo-3-finanzas-11-tablas"><strong>🟢 GRUPO 3: FINANZAS (11 Tablas)</strong></h3>
@@ -1019,4 +1020,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p>InventoryItem</p>
 <p>InventoryLog</p>
 <p>Project</p>
+<h3 id="🔗-documentación-de-datos">🔗 Documentación de Datos</h3>
+<p>Para ver el modelo de base de datos completo e interactivo, haz clic aquí:<br>
+👉 <strong><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/ERD_DATABASE.md">Ver Diagrama ERD Completo (Base de Datos)</a></strong></p>
 
