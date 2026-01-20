@@ -18,6 +18,7 @@ erDiagram
         UUID id PK
         string email
         string password_hash
+        datetime last_login
     }
     Tenant {
         UUID id PK
@@ -148,6 +149,28 @@ erDiagram
         string reason
     }
     
+    %% --- INSERCIÓN QUIRÚRGICA: Tablas Financieras Faltantes ---
+    LeaseContract {
+        UUID id PK
+        string client_name
+        string client_rif
+        string description
+        decimal monthly_fee_usd
+        int payment_day
+        date contract_end
+        boolean is_active
+    }
+    Expense {
+        UUID id PK
+        string description
+        decimal amount
+        string invoice_number
+        string pdf_url
+        boolean is_public_to_residents
+        enum status
+        UUID supplier_id FK
+    }
+
     %% Sub-Modulo Proveedores y Compras
     Supplier {
         UUID id PK
@@ -171,7 +194,7 @@ erDiagram
         UUID supplier_id FK
     }
 
-    class Account,BillingPeriod,Bill,BillItem,DistributionGroup,Transaction,Payment,PaymentAgreement,BankRule,ExchangeRate,TaxRetention,AmenityExclusion,Supplier,BiddingProcess,BiddingQuote financeFill
+    class Account,BillingPeriod,Bill,BillItem,DistributionGroup,Transaction,Payment,PaymentAgreement,BankRule,ExchangeRate,TaxRetention,AmenityExclusion,LeaseContract,Expense,Supplier,BiddingProcess,BiddingQuote financeFill
 
     %% =======================================================
     %% GRUPO 4: OPERACIONES
@@ -228,6 +251,18 @@ erDiagram
         datetime triggered_at
         string gps_coords
     }
+    
+    %% --- INSERCIÓN QUIRÚRGICA: Tabla Asamblea Faltante ---
+    Assembly {
+        UUID id PK
+        string topic
+        datetime date
+        enum status
+        string zoom_link
+        string billboard_proof_url
+        decimal quorum_current
+    }
+
     Poll {
         UUID id PK
         string title
@@ -254,7 +289,7 @@ erDiagram
         string breed
     }
 
-    class Property,OwnershipTransfer,Reservation,Amenity,Ticket,SupplierRating,AccessLog,GuestInvitation,PanicAlert,Poll,Vote,Parcel,Vehicle,Pet opsFill
+    class Property,OwnershipTransfer,Reservation,Amenity,Ticket,SupplierRating,AccessLog,GuestInvitation,PanicAlert,Assembly,Poll,Vote,Parcel,Vehicle,Pet opsFill
 
     %% =======================================================
     %% GRUPO 5: LEGAL Y GOBIERNO (DETALLADO)
@@ -390,6 +425,13 @@ erDiagram
     Property ||--o{ AmenityExclusion : "bloqueado en"
     Transaction ||--o{ TaxRetention : "retenciones"
     
+    %% --- INSERCIÓN QUIRÚRGICA: Relaciones Faltantes ---
+    Tenant ||--o{ LeaseContract : "arrienda areas"
+    LeaseContract ||--o{ Bill : "genera cobro"
+    Tenant ||--o{ Expense : "registra gasto"
+    Supplier ||--o{ Expense : "emite factura"
+    Transaction ||--o{ Expense : "paga factura"
+    
     Supplier ||--o{ BiddingQuote : "cotiza"
     BiddingProcess ||--|{ BiddingQuote : "licitacion"
     Supplier ||--o{ Transaction : "pago a proveedor"
@@ -406,9 +448,11 @@ erDiagram
     Property ||--o{ Vehicle : "estaciona"
     Property ||--o{ Pet : "dueño"
     Property ||--o{ Parcel : "paqueteria"
-    TenantProfile ||--o{ Poll : "participa"
-    Poll ||--o{ Vote : "resultados"
     TenantProfile ||--o{ PanicAlert : "SOS"
+
+    %% --- INSERCIÓN QUIRÚRGICA: Relación Asamblea ---
+    Tenant ||--o{ Assembly : "convoca"
+    Assembly ||--o{ Vote : "votacion en vivo"
 
     Tenant ||--|| CondoConstitution : "reglamento"
     Tenant ||--o{ BoardTerm : "periodos junta"
