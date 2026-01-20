@@ -161,4 +161,4 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | **InventoryItem** | `current_stock` | Integer | | Existencia. | Cantidad real. |
 | **InventoryLog** | `quantity_change` | Integer | | Movimiento. | +Entrada / -Salida (FIFO). |
 | **Project** | `goal_amount` | Decimal | | Meta. | Objetivo recaudación. |
-| | `current_amount` | Decimal | | Recaudado. | Progreso real. ||
+| | `current_amount` | Decimal | | Recaudado. | Progreso real. |
