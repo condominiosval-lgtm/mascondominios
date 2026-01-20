@@ -1091,10 +1091,13 @@ Automáticamente, el sistema realiza dos acciones:</p>
 </ul>
 <h2 id="operaciones_seguridad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/04_OPERACIONES_SEGURIDAD.md">04_OPERACIONES_SEGURIDAD.md</a></h2>
 <h3 id="contenido-3">Contenido</h3>
-<p>&lt;![endif]–&gt; <strong>Función 33:</strong> Validación Offline (QR Acceso).[[<br>
-&lt;![endif]–&gt; <strong>Función 34:</strong> Pasarela GSM (Portones).[[<br>
-&lt;![endif]–&gt;</p>
 <ul>
+<li>
+<p><strong>Función 33:</strong> Validación Offline (QR Acceso).</p>
+</li>
+<li>
+<p><strong>Función 34:</strong> Pasarela GSM (Portones).</p>
+</li>
 <li>
 <p><strong>Función 35:</strong> Sincronización Biométrica.</p>
 </li>
@@ -1102,7 +1105,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><strong>Función 36:</strong> Bitácora de Visitas (Voz).</p>
 </li>
 <li>
-<p><strong>Función 37:</strong> Botón de Pánico Enterprise.[[</p>
+<p><strong>Función 37:</strong> Botón de Pánico Enterprise.</p>
 </li>
 <li>
 <p><strong>Función 38:</strong> Gestión de Paquetería.</p>
