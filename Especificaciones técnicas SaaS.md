@@ -976,4 +976,8 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><strong>Cold Storage (S3 Archive):</strong> Bucket barato para Logs de auditoría de +24 meses.</p>
 <h1 id="anexos"><strong>ANEXOS:</strong></h1>
 <h2 id="anexo-1-código-del-diagrama-erd-mermaid---versión-final-consolidada"><strong>ANEXO 1: CÓDIGO DEL DIAGRAMA ERD (MERMAID) - VERSIÓN FINAL CONSOLIDADA</strong></h2>
+<h1 id="esquema-erd">Esquema ERD</h1>
+<p><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/ERD_DATABASE.md?plain=1">Enlace al esquema de relaciones</a></p>
+<h1 id="diccionario">Diccionario</h1>
+<p><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/DICCIONARIO_DATOS.md?plain=1">Enlace al Diccionario</a></p>
 
