@@ -1021,4 +1021,5 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><strong>Función 12:</strong> Pasarela C2P Banco Plaza.</p>
 </li>
 </ul>
+<h2 id="finanzas_contabilidad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/02_FINANZAS_CONTABILIDAD.md">02_FINANZAS_CONTABILIDAD.md</a></h2>
 
