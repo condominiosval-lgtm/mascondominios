@@ -25,7 +25,7 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `unit_price_usd` | Decimal | | Precio por unidad. | Ej: 0.50 USD para este rango. |
 | | `plan_id` | UUID | FK | Vínculo al plan. | Define qué tabla de precios se aplica. |
 | **SaaSPayment** | `amount_bs` | Decimal | | Monto cobrado al Admin. | Tasa BCV del momento del pago. |
-| | `plaza_transaction_id`| String | | Ref. Banco Plaza. | Permite Pago Masivo. |
+| | `plaza_transaction_id`| String | | Ref. Banco Plaza. | **NO ES ÚNICA.** Permite Pago Masivo. |
 | | `created_at` | DateTime | | Fecha registro. | Auditoría. |
 | **IntegrationConfig**| `service` | Enum | | Tipo servicio externo. | `WHATSAPP`, `EMAIL`, `BIOMETRIC`. |
 | | `api_key` | String | | Token de API. | Credencial externa. |
@@ -73,14 +73,18 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | **AmenityExclusion** | `reason` | String | | Motivo. | Ej: "Voto Salvado en Asamblea". |
 | **LeaseContract** | `client_name` | String | | Nombre Cliente. | Ej: Movistar/Digitel. |
 | | `client_rif` | String | | RIF Jurídico. | Para facturación. |
+| | `description` | String | | Descripción. | Ej: "Antena Torre A". |
 | | `monthly_fee_usd` | Decimal | | Canon Mensual. | Genera cuentas por cobrar automáticas. |
 | | `payment_day` | Integer | | Día de Corte. | Ej: Los días 05. |
 | | `contract_end` | Date | | Fin Contrato. | Alerta de renovación. |
+| | `is_active` | Boolean | | Estado. | Contrato vigente o finalizado. |
 | **Expense** | `amount` | Decimal | | Monto Gasto. | Total a pagar. |
+| | `description` | String | | Detalle. | Ej: "Compra de cloro". |
 | | `invoice_number` | String | | Nro Factura. | Control fiscal. |
 | | `pdf_url` | String | | Factura Escaneada.| Soporte visual (Transparencia). |
 | | `is_public_to_residents`| Boolean | | Visibilidad. | True = Vecino puede ver el PDF. |
 | | `status` | Enum | | Estado Pago. | `PENDING`, `PAID`. |
+| | `supplier_id` | UUID | FK | Proveedor. | Quién emitió la factura. |
 | **Supplier** | `is_special_taxpayer`| Boolean | | Contribuyente Esp. | Define retención IVA. |
 | **BiddingProcess** | `status` | Enum | | Estado. | `OPEN`, `CLOSED`, `AWARDED`. |
 | **BiddingQuote** | `is_winner` | Boolean | | Ganador. | Oferta seleccionada. |
@@ -103,6 +107,8 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | **GuestInvitation** | `expires_at` | DateTime | | Vencimiento. | Validez del QR. |
 | **PanicAlert** | `gps_coords` | String | | Ubicación. | Georeferencia SOS. |
 | **Assembly** | `topic` | String | | Motivo. | Ej: "Presupuesto 2026". |
+| | `date` | DateTime | | Fecha/Hora. | Cuándo ocurre la asamblea. |
+| | `status` | Enum | | Estado. | `SCHEDULED`, `OPEN`, `CLOSED`. |
 | | `zoom_link` | String | | URL Video. | Para asistencia remota. |
 | | `billboard_proof_url` | String | | Foto Cartel. | Evidencia física (Art. 22 LPH). |
 | | `quorum_current` | Decimal | | Quórum %. | Suma de alícuotas presentes. |
@@ -155,4 +161,4 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | **InventoryItem** | `current_stock` | Integer | | Existencia. | Cantidad real. |
 | **InventoryLog** | `quantity_change` | Integer | | Movimiento. | +Entrada / -Salida (FIFO). |
 | **Project** | `goal_amount` | Decimal | | Meta. | Objetivo recaudación. |
-| | `current_amount` | Decimal | | Recaudado. | Progreso real. |
+| | `current_amount` | Decimal | | Recaudado. | Progreso real. ||
