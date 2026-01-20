@@ -2,6 +2,12 @@
 
 A continuación se detalla la estructura de datos, tipos y reglas de negocio para cada entidad del sistema SaaS **Más Condominios**.
 
+> **⚠️ NOTA TÉCNICA (Sincronización):**
+> Para soportar la arquitectura **Offline-First**, todas las tablas incluyen automáticamente:
+> *   `created_at` (Creación).
+> *   `updated_at` (Edición).
+> *   `deleted_at` (Borrado Lógico).
+
 ---
 
 ## 🟠 GRUPO 1: CORE SAAS (Esquema Público)
@@ -15,10 +21,14 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `last_login` | DateTime | | Último Acceso. | Control de seguridad. |
 | **Tenant** | `id` | UUID | PK | Identificador del Edificio. | |
 | | `schema_name` | String | UK | Nombre técnico de la BD. | Ej: `res_el_sol`. Sin espacios. |
+| | `name` | String | | Nombre Comercial. | Ej: "Residencias El Sol". |
 | | `is_active` | Boolean | | Kill-switch administrativo. | Si es False, nadie entra al edificio (Mora SaaS). |
 | | `trial_ends_at` | DateTime | | Fecha fin de la prueba. | Vital para el contador regresivo. |
 | | `purchased_capacity`| Integer | | Capacidad contratada. | Límite máximo de unidades (aptos). |
 | | `credit_balance` | Decimal | | Billetera Virtual (Bs). | Saldo a favor por Downgrades/Sobrepagos. |
+| **Domain** | `domain` | String | PK | URL de Acceso. | Ej: `elsol.mascondominios.com`. |
+| | `is_primary` | Boolean | | Principal. | True para el dominio canónico. |
+| | `tenant_id` | UUID | FK | Vínculo Tenant. | Relación padre. |
 | **PlanCatalog** | `name` | String | | Tipo de Cliente. | Ej: "Administrador (Retail)", "Empresa (Wholesale)". |
 | | `is_active` | Boolean | | Disponibilidad. | Si el plan se puede vender. |
 | **PlanTier** | `min_qty` | Integer | | Rango mínimo. | Ej: 1 unidad. |
@@ -34,17 +44,24 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 
 ---
 
-## 🔵 GRUPO 2: IDENTIDAD (Roles y Perfiles)
-*Resolución de roles: "Sandra Admin/Dueña" y "Pedro Vigilante".*
+## 🔵 GRUPO 2: IDENTIDAD & UNIDADES (Esquema Tenant)
+*Perfiles, Unidades y Derechos de Propiedad.*
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **TenantProfile** | `id` | UUID | PK | Identidad local. | Perfil dentro de este edificio específico. |
 | | `role` | Enum | | Rol funcional. | `ADMIN`, `PROPIETARIO`, `INQUILINO`, `STAFF`. |
-| | `is_primary_owner`| Boolean | | Titularidad del voto. | True = Vota en asambleas. |
 | | `phone_number` | String | | Teléfono contacto. | Vital para notificaciones. |
-| **TenantUserRelation**| `is_global_admin` | Boolean | | Permiso pago SaaS. | True si este usuario paga la suscripción. |
-| | `joined_at` | DateTime | | Fecha vinculación. | Histórico. |
+| **Unit** | `id` | UUID | PK | Inmueble. | Antes "Property". |
+| | `name` | String | | Nombre/Número. | Ej: "1-A", "PH-2". |
+| | `aliquot` | Decimal | | Alícuota %. | Peso para deuda y votos. |
+| | `tower_section` | String | | Torre/Sección. | Agrupación física. |
+| | `is_common_area` | Boolean | | Es Área Común. | Si es True, no paga recibos. |
+| **UnitOwner** | `id` | UUID | PK | Relación Propiedad. | Tabla intermedia (Muchos a Muchos). |
+| | `unit_id` | UUID | FK | Unidad. | |
+| | `profile_id` | UUID | FK | Dueño. | |
+| | `ownership_percent`| Decimal | | % Propiedad. | Para votos fraccionados. |
+| | `is_responsible` | Boolean | | Recibe Cobro. | Quién paga el recibo. |
 
 ---
 
@@ -64,6 +81,7 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `code` | String | | Código Visual. | Ej: "REC-2026-001". |
 | | `due_date` | Date | | Vencimiento. | Fecha límite para pagar sin mora. |
 | | `status` | Enum | | Estado factura. | `PAID`, `UNPAID`, `PARTIAL`. |
+| | `unit_id` | UUID | FK | Unidad Deudora. | Relación corregida (Antes Property). |
 | **BillItem** | `distribution_group_id`| UUID | FK | Grupo de Gasto. | Si es NULL = General. Si tiene ID = Sectorizado. |
 | **DistributionGroup** | `total_relative_aliquot`| Decimal | | Suma Alícuotas. | Base para recalcular el 100% interno. |
 | | `name` | String | | Nombre Grupo. | Ej: "Torre A". |
@@ -83,6 +101,7 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | **TaxRetention** | `type` | Enum | | Impuesto. | ISLR/IVA. |
 | | `proof_doc_url` | String | | Comprobante PDF. | Para enviar al proveedor. |
 | **AmenityExclusion** | `reason` | String | | Motivo. | Ej: "Voto Salvado en Asamblea". |
+| | `unit_id` | UUID | FK | Unidad. | Relación corregida. |
 | **LeaseContract** | `client_name` | String | | Nombre Cliente. | Ej: Movistar/Digitel. |
 | | `client_rif` | String | | RIF Jurídico. | Para facturación. |
 | | `description` | String | | Descripción. | Ej: "Antena Torre A". |
@@ -109,15 +128,14 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| **Property** | `code` | String | UK | Código Unidad. | Ej: "1-A", "PH-1". |
-| | `is_common_area` | Boolean | | ¿Conserjería? | Si es True, no paga recibos ni vota. |
-| | `aliquot` | Decimal | | % Participación. | Peso del voto y deuda. |
 | **OwnershipTransfer** | `debt_at_transfer` | Decimal | | Deuda Previa. | Auditoría al vender. |
 | | `transfer_date` | Date | | Fecha Traspaso. | Cambio de titularidad. |
+| | `old_owner_id` | UUID | FK | Vendedor. | Perfil anterior. |
 | **Reservation** | `status` | Enum | | Estado. | `CONFIRMED`, `CANCELLED`. |
 | **Amenity** | `is_luxury` | Boolean | | ¿Suntuario? | Permite Opt-out (Art. 9 LPH). |
 | | `reserve_cost` | Decimal | | Costo Uso. | Tarifa de alquiler. |
 | **Ticket** | `status` | Enum | | Estado. | `OPEN`, `IN_PROGRESS`, `RESOLVED`. |
+| | `type` | Enum | | Tipo. | `RECLAMO`, `SUGERENCIA`. |
 | | `subject` | String | | Asunto. | Título breve del problema. |
 | | `description` | Text | | Detalle. | Explicación completa del vecino. |
 | **SupplierRating** | `stars` | Integer | | Estrellas. | 1 a 5. |
@@ -132,6 +150,7 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `quorum_current` | Decimal | | Quórum %. | Suma de alícuotas presentes. |
 | **Poll** | `end_date` | Date | | Cierre. | Fecha límite. |
 | **Vote** | `choice` | Enum | | Opción. | Selección del usuario. |
+| | `unit_id` | UUID | FK | Unidad. | Quién ejerce el voto. |
 | **Parcel** | `pickup_code` | String | | Token Retiro. | PIN de seguridad. |
 | **Vehicle** | `plate_number` | String | | Placa. | Control acceso. |
 | **Pet** | `breed` | String | | Raza. | Censo mascotas. |
