@@ -1022,4 +1022,36 @@ Automáticamente, el sistema realiza dos acciones:</p>
 </li>
 </ul>
 <h2 id="finanzas_contabilidad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/02_FINANZAS_CONTABILIDAD.md">02_FINANZAS_CONTABILIDAD.md</a></h2>
+<ul>
+<li>
+<p><strong>Función 13:</strong> Economía Bimonetaria.</p>
+</li>
+<li>
+<p><strong>Función 14:</strong> Oráculo de Tasas.</p>
+</li>
+<li>
+<p><strong>Función 15:</strong> Indexación Dinámica de Deuda.</p>
+</li>
+<li>
+<p><strong>Función 16:</strong> Conciliación Bancaria Híbrida.</p>
+</li>
+<li>
+<p><strong>Función 17:</strong> Taquilla de Cobro Manual.</p>
+</li>
+<li>
+<p><strong>Función 18:</strong> Validación Anti-Fraude.</p>
+</li>
+<li>
+<p><strong>Función 19:</strong> Gestión de Fondos Virtuales.</p>
+</li>
+<li>
+<p><strong>Función 20:</strong> Contabilidad Doble Partida.</p>
+</li>
+<li>
+<p><strong>Función 21:</strong> Motor Fiscal (ISLR/IVA)</p>
+</li>
+<li>
+<p><strong>Función 22:</strong> Generación de Estados Financieros.</p>
+</li>
+</ul>
 
