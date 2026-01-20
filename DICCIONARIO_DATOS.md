@@ -12,6 +12,7 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | **User** | `id` | UUID | PK | Identificador único global. | Un mismo User puede acceder a N Condominios. |
 | | `email` | String | UK | Correo electrónico (Login). | Validación estricta de formato. |
 | | `password_hash` | String | | Contraseña encriptada. | Algoritmo Argon2 o PBKDF2. |
+| | `last_login` | DateTime | | Último Acceso. | Control de seguridad. |
 | **Tenant** | `id` | UUID | PK | Identificador del Edificio. | |
 | | `schema_name` | String | UK | Nombre técnico de la BD. | Ej: `res_el_sol`. Sin espacios. |
 | | `is_active` | Boolean | | Kill-switch administrativo. | Si es False, nadie entra al edificio (Mora SaaS). |
@@ -56,6 +57,8 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `currency` | Enum | | Moneda de la cuenta. | USD o VES. |
 | **BillingPeriod** | `is_closed` | Boolean | | Estado del mes. | Si es True, no acepta más gastos. |
 | **Bill** | `total_amount_usd` | Decimal | | Deuda total mes. | Suma de items. |
+| | `code` | String | | Código Visual. | Ej: "REC-2026-001". |
+| | `due_date` | Date | | Vencimiento. | Fecha límite para pagar sin mora. |
 | | `status` | Enum | | Estado factura. | `PAID`, `UNPAID`, `PARTIAL`. |
 | **BillItem** | `distribution_group_id`| UUID | FK | Grupo de Gasto. | Si es NULL = General. Si tiene ID = Sectorizado. |
 | **DistributionGroup** | `total_relative_aliquot`| Decimal | | Suma Alícuotas. | Base para recalcular el 100% interno. |
@@ -96,7 +99,8 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 
 | Entidad | Atributo | Tipo | Clave | Descripción | Reglas de Negocio |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| **Property** | `is_common_area` | Boolean | | ¿Conserjería? | Si es True, no paga recibos ni vota. |
+| **Property** | `code` | String | UK | Código Unidad. | Ej: "1-A", "PH-1", "LOCAL-2". |
+| | `is_common_area` | Boolean | | ¿Conserjería? | Si es True, no paga recibos ni vota. |
 | | `aliquot` | Decimal | | % Participación. | Peso del voto y deuda. |
 | **OwnershipTransfer** | `debt_at_transfer` | Decimal | | Deuda Previa. | Auditoría al vender. |
 | **Reservation** | `status` | Enum | | Estado. | `CONFIRMED`, `CANCELLED`. |
