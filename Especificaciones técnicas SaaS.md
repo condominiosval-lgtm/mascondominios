@@ -1055,4 +1055,38 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><strong>Función 22:</strong> Generación de Estados Financieros.</p>
 </li>
 </ul>
+<h2 id="admin_cobranza.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/03_ADMIN_COBRANZA.md">03_ADMIN_COBRANZA.md</a></h2>
+<h3 id="contenido-2">Contenido</h3>
+<ul>
+<li>
+<p><strong>Función 23:</strong> Gateway Omnicanal (Push/Email).[[</p>
+</li>
+<li>
+<p><strong>Función 24:</strong> Microservicio WhatsApp Multi-Tenant.</p>
+</li>
+<li>
+<p><strong>Función 25:</strong> Bot de Operaciones.</p>
+</li>
+<li>
+<p><strong>Función 26:</strong> Tablero Kanban de Cobranza.</p>
+</li>
+<li>
+<p><strong>Función 27:</strong> Motor de Reglas de Morosidad.</p>
+</li>
+<li>
+<p><strong>Función 28:</strong> Gestor de Convenios de Pago</p>
+</li>
+<li>
+<p><strong>Función 29:</strong> Cartelera Virtual de Morosos.</p>
+</li>
+<li>
+<p><strong>Función 30:</strong> Kiosco de Autoservicio Legal.</p>
+</li>
+<li>
+<p><strong>Función 31:</strong> Motor de Emisión y Validación QR.</p>
+</li>
+<li>
+<p><strong>Función 32:</strong> Bloqueo Automático de Documentos.</p>
+</li>
+</ul>
 
