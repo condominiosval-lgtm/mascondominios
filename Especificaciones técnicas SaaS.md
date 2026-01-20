@@ -980,4 +980,45 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/ERD_DATABASE.md?plain=1">Enlace al esquema de relaciones</a></p>
 <h1 id="diccionario">Diccionario</h1>
 <p><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/DICCIONARIO_DATOS.md?plain=1">Enlace al Diccionario</a></p>
+<h1 id="esquemas-logicos">Esquemas Logicos</h1>
+<h2 id="core_plataforma.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/01_CORE_PLATAFORMA.md">01_CORE_PLATAFORMA.md</a></h2>
+<h3 id="contenido">Contenido</h3>
+<ul>
+<li>
+<p><strong>Función 1:</strong> Calculadora de Precios Interactiva.</p>
+</li>
+<li>
+<p><strong>Función 2:</strong> Fallback Estático.</p>
+</li>
+<li>
+<p><strong>Función 3:</strong> Login Global.</p>
+</li>
+<li>
+<p><strong>Función 4:</strong> Perfilamiento de Usuario.</p>
+</li>
+<li>
+<p><strong>Función 5:</strong> Switch de Contexto.</p>
+</li>
+<li>
+<p><strong>Función 6:</strong> Gestión de Núcleo Familiar.</p>
+</li>
+<li>
+<p><strong>Función 7:</strong> Gestión de Staff Operativo.</p>
+</li>
+<li>
+<p><strong>Función 8:</strong> Precios Dinámicos por Volumen.</p>
+</li>
+<li>
+<p><strong>Función 9:</strong> Suscripción por Entidad.</p>
+</li>
+<li>
+<p><strong>Función 10:</strong> Billetera Virtual SaaS.</p>
+</li>
+<li>
+<p><strong>Función 11:</strong> Renovación Masiva.</p>
+</li>
+<li>
+<p><strong>Función 12:</strong> Pasarela C2P Banco Plaza.</p>
+</li>
+</ul>
 
