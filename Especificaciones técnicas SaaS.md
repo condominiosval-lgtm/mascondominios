@@ -6,115 +6,100 @@ extensions:
 
 <h1 id="tabla-de-contenidos">Tabla de Contenidos</h1>
 <ol>
-<li><a href="#objetivo-general-del-desarrollo">Objetivo general del desarrollo</a></li>
-<li><a href="#detalles-inherentes-a-la-landing-page">Detalles inherentes a la Landing Page</a>
+<li><a href="#1-objetivo-general-del-desarrollo">1. Objetivo general del desarrollo</a></li>
+<li><a href="#2-detalles-inherentes-a-la-landing-page">2. Detalles inherentes a la Landing Page</a>
 <ul>
 <li><a href="#detalles-de-las-pesta%C3%B1as-que-contendr%C3%A1-la-landing-page">Detalles de las pestañas que contendrá la landing page</a></li>
-<li><a href="#detalles-de-las-funciones-que-realizar%C3%A1-la-landing-page-y-sus-secciones">Detalles de las funciones que realizará la landing page y sus secciones</a></li>
-<li><a href="#resumen-de-tecnolog%C3%ADas-a-usarse-en-la-landing-page">Resumen de tecnologías a usarse en la landing page</a></li>
+<li><a href="#detalles-de-las-funciones-que-realizar%C3%A1-la-landing-page-y-sus-secciones">Detalles de las funciones que realizará la landing page</a></li>
+<li><a href="#resumen-de-tecnolog%C3%ADas-a-usarse-en-la-landing-page">Resumen de tecnologías a usarse</a></li>
 </ul>
 </li>
-<li><a href="#detalles-inherentes-al-saas">Detalles inherentes al SaaS</a>
+<li><a href="#3-detalles-inherentes-al-saas">3. Detalles inherentes al SaaS</a>
 <ul>
-<li><a href="#modelo-de-suscripci%C3%B3n-y-perfilamiento-del-administrador">Modelo de Suscripción y Perfilamiento del Administrador</a></li>
-<li><a href="#gesti%C3%B3n-de-identidad-operativa-y-personal-de-staff-non-billable-users">Gestión de Identidad Operativa y Personal de Staff (Non-Billable Users)</a></li>
-<li><a href="#arquitectura-de-polimorfismo-de-roles-y-conmutaci%C3%B3n-de-contexto-context-switching">Arquitectura de Polimorfismo de Roles y Conmutación de Contexto</a></li>
-<li><a href="#gesti%C3%B3n-de-n%C3%BAcleo-familiar-y-co-responsabilidad-digital-delegaci%C3%B3n-de-identidad">Gestión de Núcleo Familiar y Co-Responsabilidad Digital</a></li>
-<li><a href="#precisi%C3%B3n-num%C3%A9rica-gesti%C3%B3n-cambiaria-e-integridad-financiera">Precisión numérica, Gestión cambiaria e Integridad financiera</a></li>
+<li><a href="#modelo-de-suscripci%C3%B3n-y-perfilamiento-del-administrador">Modelo de Suscripción y Perfilamiento</a></li>
+<li><a href="#gesti%C3%B3n-de-identidad-operativa-y-personal-de-staff-non-billable-users">Gestión de Identidad Operativa (Staff)</a></li>
+<li><a href="#arquitectura-de-polimorfismo-de-roles-y-conmutaci%C3%B3n-de-contexto-context-switching">Arquitectura de Polimorfismo de Roles</a></li>
+<li><a href="#gesti%C3%B3n-de-n%C3%BAcleo-familiar-y-co-responsabilidad-digital-delegaci%C3%B3n-de-identidad">Gestión de Núcleo Familiar</a></li>
+<li><a href="#precisi%C3%B3n-num%C3%A9rica-gesti%C3%B3n-cambiaria-e-integridad-financiera">Precisión numérica y Gestión cambiaria</a></li>
 <li><a href="#seguridad">Seguridad</a></li>
 <li><a href="#ia-y-manejo-de-datos">IA y Manejo de datos</a></li>
-<li><a href="#framework-a-ser-utilizado-en-el-saas-y-librer%C3%ADas-clave">Framework a ser utilizado en el SaaS y librerías clave</a></li>
-<li><a href="#gesti%C3%B3n-de-archivos-multimedia-media-handling">Gestión de Archivos Multimedia (Media Handling)</a></li>
-<li><a href="#frontend-web-saas-y-web-m%C3%B3vil">Frontend Web (SaaS y Web Móvil)</a></li>
-<li><a href="#aseguramiento-de-la-calidad-qa-y-testing">Aseguramiento de la Calidad (QA y Testing)</a></li>
+<li><a href="#framework-a-ser-utilizado-en-el-saas-y-librer%C3%ADas-clave">Framework y librerías</a></li>
+<li><a href="#gesti%C3%B3n-de-archivos-multimedia-media-handling">Gestión de Archivos Multimedia</a></li>
+<li><a href="#frontend-web-saas-y-web-m%C3%B3vil">Frontend Web</a></li>
+<li><a href="#aseguramiento-de-la-calidad-qa-y-testing">Aseguramiento de la Calidad (QA)</a></li>
 </ul>
 </li>
-<li><a href="#detalles-inherentes-a-la-app-nativa">Detalles inherentes a la App nativa</a>
+<li><a href="#4-detalles-inherentes-a-la-app-nativa">4. Detalles inherentes a la App nativa</a>
 <ul>
-<li><a href="#tecnolog%C3%ADa-a-aplicarse-en-la-app-nativa-android--ios">Tecnología a aplicarse en la App Nativa (Android / iOS)</a></li>
+<li><a href="#tecnolog%C3%ADa-a-aplicarse-en-la-app-nativa-android--ios">Tecnología a aplicarse</a></li>
 <li><a href="#reportes-en-la-app-m%C3%B3vil">Reportes en la App Móvil</a></li>
-<li><a href="#infraestructura-de-comunicaci%C3%B3n-y-mantenimiento">Infraestructura de Comunicación y Mantenimiento</a></li>
-<li><a href="#consideraciones-t%C3%A9cnicas-cr%C3%ADticas-y-protocolos-de-despliegue">Consideraciones Técnicas Críticas y Protocolos de Despliegue</a>
+<li><a href="#infraestructura-de-comunicaci%C3%B3n-y-mantenimiento">Infraestructura de Comunicación</a></li>
+<li><a href="#consideraciones-t%C3%A9cnicas-cr%C3%ADticas-y-protocolos-de-despliegue">Consideraciones Técnicas Críticas</a></li>
+</ul>
+</li>
+<li><a href="#5-especificaciones-funcionales-detalladas-y-l%C3%B3gica-de-implementaci%C3%B3n">5. Especificaciones Funcionales Detalladas</a>
 <ul>
-<li><a href="#interoperabilidad-cross-origin-cors">Interoperabilidad Cross-Origin (CORS)</a></li>
-<li><a href="#conformidad-normativa-en-tiendas-de-aplicaciones-ota-compliance">Conformidad Normativa en Tiendas de Aplicaciones (OTA Compliance)</a></li>
-<li><a href="#coherencia-de-esquemas-de-datos-schema-parity">Coherencia de Esquemas de Datos (Schema Parity)</a></li>
-</ul>
-</li>
-<li><a href="#resumen-del-ecosistema-saas">Resumen del ecosistema SaaS</a></li>
-</ul>
-</li>
-<li><a href="#especificaciones-funcionales-detalladas-y-l%C3%B3gica-de-implementaci%C3%B3n">Especificaciones Funcionales Detalladas y Lógica de Implementación</a>
+<li><a href="#inventario-de-funciones-analizadas-referencia">Inventario de Funciones</a></li>
+<li><a href="#bloque-1-estrategia-de-negocio-y-monetizaci%C3%B3n-saas-core">BLOQUE 1: ESTRATEGIA DE NEGOCIO (SaaS Core)</a>
 <ul>
-<li><a href="#inventario-de-funciones-analizadas-referencia">INVENTARIO DE FUNCIONES ANALIZADAS (REFERENCIA)</a></li>
+<li><a href="#pasarela-de-cobro-saas-motor-de-retenci%C3%B3n-y-facturaci%C3%B3n-consolidada-banco-plaza-c2p">Pasarela de Cobro y Facturación Consolidada</a></li>
+<li><a href="#definici%C3%B3n-de-actores-y-reglas-de-escala">Definición de Actores y Escala</a></li>
+<li><a href="#gesti%C3%B3n-de-unidades-de-uso-com%C3%BAn-conserjer%C3%ADa---art-5-lph">Gestión de Unidades y Conserjería</a></li>
+<li><a href="#digitalizaci%C3%B3n-del-documento-de-condominio-reglas-constitucionales---art-26-lph">Digitalización del Documento de Condominio</a></li>
 </ul>
 </li>
-<li><a href="#bloque-1-estrategia-de-negocio-y-monetizaci%C3%B3n-saas-core">BLOQUE 1: ESTRATEGIA DE NEGOCIO Y MONETIZACIÓN (SaaS Core)</a>
+<li><a href="#bloque-2-el-n%C3%BAcleo-financiero-y-contable-fintech-engine">BLOQUE 2: EL NÚCLEO FINANCIERO (FinTech Engine)</a>
 <ul>
-<li><a href="#pasarela-de-cobro-saas-motor-de-retenci%C3%B3n-y-facturaci%C3%B3n-consolidada-banco-plaza-c2p">Pasarela de Cobro SaaS, Motor de Retención y Facturación Consolidada</a>
+<li><a href="#diferenciaci%C3%B3n-estricta-de-gastos-por-cosas-comunes-limitadas-art-5-y-art-11-lph">Diferenciación Estricta de Gastos</a></li>
+<li><a href="#conciliaci%C3%B3n-bancaria-h%C3%ADbrida-y-gesti%C3%B3n-de-ingresos-motor-ia--taquilla-manual--preparaci%C3%B3n-h2h">Conciliación Bancaria Híbrida</a></li>
+<li><a href="#indexaci%C3%B3n-din%C3%A1mica-de-deuda-y-visualizaci%C3%B3n-bimonetaria-motor-de-tasa-flotante">Indexación Dinámica de Deuda</a></li>
+<li><a href="#gesti%C3%B3n-de-fondos-y-cuentas-virtuales-arquitectura-multi-ledger">Gestión de Fondos y Cuentas</a></li>
+<li><a href="#motor-de-contabilidad-fiscal-nativa-automatizaci%C3%B3n-tributaria-y-reportes-financieros-erp-integrado--tax-engine">Motor de Contabilidad Fiscal</a></li>
+</ul>
+</li>
+<li><a href="#bloque-3-administraci%C3%B3n-cobranza-y-legal-back-office">BLOQUE 3: ADMINISTRACIÓN Y LEGAL (Back-Office)</a>
 <ul>
-<li><a href="#l%C3%B3gica-de-negocio-precios-din%C3%A1micos-por-volumen-y-gesti%C3%B3n-de-saldos-dynamic-volume-pricing">Lógica de Negocio: Precios Dinámicos por Volumen</a></li>
+<li><a href="#motor-de-emisi%C3%B3n-masiva-y-gateway-de-comunicaciones-automatizado-omnicanalidad-whatsapp-email--push">Motor de Emisión Masiva Omnicanal</a></li>
+<li><a href="#motor-de-gesti%C3%B3n-de-morosidad-configurable-y-cobranza-asistida-rules-engine-kanban--approval-workflow">Gestión de Morosidad</a></li>
+<li><a href="#kiosco-de-autoservicio-legal-y-validaci%C3%B3n-documental-legaltech">Kiosco de Autoservicio Legal</a></li>
 </ul>
 </li>
-<li><a href="#definici%C3%B3n-de-actores-y-reglas-de-escala">Definición de Actores y Reglas de Escala</a>
-<ul>
-<li><a href="#a-el-administrador-independiente-retail">A) El Administrador Independiente (Retail)</a></li>
-<li><a href="#b-la-comunidad-autogestionada-single-tenant">B) La Comunidad Autogestionada (Single-Tenant)</a></li>
-<li><a href="#c-la-empresa-administradora-wholesalemayorista">C) La Empresa Administradora (Wholesale/Mayorista)</a></li>
-</ul>
-</li>
-<li><a href="#funcionalidad-administrativa-cr%C3%ADtica">Funcionalidad Administrativa Crítica</a></li>
-<li><a href="#gesti%C3%B3n-de-unidades-de-uso-com%C3%BAn-conserjer%C3%ADa---art-5-lph">Gestión de Unidades de Uso Común (Conserjería - Art. 5 LPH)</a></li>
-<li><a href="#digitalizaci%C3%B3n-del-documento-de-condominio-reglas-constitucionales---art-26-lph">Digitalización del Documento de Condominio (Art. 26 LPH)</a></li>
-</ul>
-</li>
-<li><a href="#bloque-2-el-n%C3%BAcleo-financiero-y-contable-fintech-engine">BLOQUE 2: EL NÚCLEO FINANCIERO Y CONTABLE (FinTech Engine)</a>
-<ul>
-<li><a href="#diferenciaci%C3%B3n-estricta-de-gastos-por-cosas-comunes-limitadas-art-5-y-art-11-lph">Diferenciación Estricta de Gastos (Art. 5 y 11 LPH)</a></li>
-<li><a href="#conciliaci%C3%B3n-bancaria-h%C3%ADbrida-y-gesti%C3%B3n-de-ingresos-motor-ia--taquilla-manual--preparaci%C3%B3n-h2h">Conciliación Bancaria Híbrida y Gestión de Ingresos</a></li>
-<li><a href="#indexaci%C3%B3n-din%C3%A1mica-de-deuda-y-visualizaci%C3%B3n-bimonetaria-motor-de-tasa-flotante">Indexación Dinámica de Deuda (Multimoneda)</a></li>
-<li><a href="#gesti%C3%B3n-de-fondos-y-cuentas-virtuales-arquitectura-multi-ledger">Gestión de Fondos y Cuentas Virtuales</a></li>
-<li><a href="#motor-de-contabilidad-fiscal-nativa-automatizaci%C3%B3n-tributaria-y-reportes-financieros-erp-integrado--tax-engine">Motor de Contabilidad Fiscal Nativa</a></li>
-</ul>
-</li>
-<li><a href="#bloque-3-administraci%C3%B3n-cobranza-y-legal-back-office">BLOQUE 3: ADMINISTRACIÓN, COBRANZA Y LEGAL (Back-Office)</a>
-<ul>
-<li><a href="#motor-de-emisi%C3%B3n-masiva-y-gateway-de-comunicaciones-automatizado-omnicanalidad-whatsapp-email--push">Motor de Emisión Masiva y Gateway Omnicanal</a></li>
-<li><a href="#motor-de-gesti%C3%B3n-de-morosidad-configurable-y-cobranza-asistida-rules-engine-kanban--approval-workflow">Motor de Gestión de Morosidad Configurable</a></li>
-<li><a href="#kiosco-de-autoservicio-legal-y-validaci%C3%B3n-documental-legaltech">Kiosco de Autoservicio Legal y Validación Documental</a></li>
-</ul>
-</li>
-<li><a href="#bloque-4-operaciones-f%C3%ADsicas-seguridad-y-staff-facility-management">BLOQUE 4: OPERACIONES FÍSICAS, SEGURIDAD Y STAFF (Facility Management)</a>
+<li><a href="#bloque-4-operaciones-f%C3%ADsicas-seguridad-y-staff-facility-management">BLOQUE 4: OPERACIONES Y SEGURIDAD (Facility Management)</a>
 <ul>
 <li><a href="#ecosistema-de-seguridad-integral-control-de-acceso-y-log%C3%ADstica-hardware-agnostic-biometrics--gsm-iot">Ecosistema de Seguridad Integral</a></li>
-<li><a href="#log%C3%ADstica-de-servicios-p%C3%BAblicos-y-suministros-utility-dashboard">Logística de Servicios Públicos y Suministros</a></li>
-<li><a href="#telemetr%C3%ADa-iot-gesti%C3%B3n-de-activos-f%C3%ADsicos-y-control-de-inventarios-facility-management--smart-stock">Telemetría IoT, Gestión de Activos y Control de Inventarios</a></li>
-<li><a href="#gesti%C3%B3n-de-fuerza-laboral-asistencia-biom%C3%A9trica-y-planificaci%C3%B3n-operativa-workforce-management--geofencing">Gestión de Fuerza Laboral y Asistencia</a></li>
+<li><a href="#log%C3%ADstica-de-servicios-p%C3%BAblicos-y-suministros-utility-dashboard">Logística de Servicios Públicos</a></li>
+<li><a href="#telemetr%C3%ADa-iot-gesti%C3%B3n-de-activos-f%C3%ADsicos-y-control-de-inventarios-facility-management--smart-stock">Telemetría IoT y Activos</a></li>
+<li><a href="#gesti%C3%B3n-de-fuerza-laboral-asistencia-biom%C3%A9trica-y-planificaci%C3%B3n-operativa-workforce-management--geofencing">Gestión de Fuerza Laboral</a></li>
 <li><a href="#motor-de-n%C3%B3mina-condominial-y-compensaci%C3%B3n-h%C3%ADbrida-payroll-lite--multi-currency">Motor de Nómina Condominial</a></li>
 </ul>
 </li>
-<li><a href="#bloque-5-gobernanza-comunidad-y-proveedores-social--srm">BLOQUE 5: GOBERNANZA, COMUNIDAD Y PROVEEDORES (Social &amp; SRM)</a>
+<li><a href="#bloque-5-gobernanza-comunidad-y-proveedores-social--srm">BLOQUE 5: GOBERNANZA Y COMUNIDAD (Social &amp; SRM)</a>
 <ul>
 <li><a href="#ecosistema-de-autogesti%C3%B3n-vecinal-democracia-digital-y-mantenimiento-app--web">Ecosistema de Autogestión Vecinal</a></li>
-<li><a href="#funcionalidad-de-integraci%C3%B3n-cr%C3%ADtica-y-gobernanza-digital">Funcionalidad de Integración Crítica</a></li>
-<li><a href="#motor-de-carta-consulta-digital-procedimiento-art-23-lph">Motor de Carta Consulta Digital (Art. 23 LPH)</a></li>
-<li><a href="#gesti%C3%B3n-de-voto-salvado-y-protecci%C3%B3n-de-responsabilidad">Gestión de Voto Salvado y Protección</a></li>
-<li><a href="#generador-de-carteles-de-convocatoria-y-certificaci%C3%B3n-art-22-lph">Generador de Carteles de Convocatoria (Art. 22 LPH)</a></li>
+<li><a href="#funcionalidad-de-integraci%C3%B3n-cr%C3%ADtica-y-gobernanza-digital">Integración Crítica y Gobernanza</a></li>
+<li><a href="#motor-de-carta-consulta-digital-procedimiento-art-23-lph">Motor de Carta Consulta Digital (Votación)</a></li>
+<li><a href="#gesti%C3%B3n-de-voto-salvado-y-protecci%C3%B3n-de-responsabilidad">Gestión de Voto Salvado</a></li>
+<li><a href="#generador-de-carteles-de-convocatoria-y-certificaci%C3%B3n-art-22-lph">Generador de Carteles de Convocatoria</a></li>
 <li><a href="#gesti%C3%B3n-de-proyectos-y-recaudaci%C3%B3n-de-cuotas-especiales-crowdfunding-interno">Gestión de Proyectos y Crowdfunding</a></li>
-<li><a href="#ecosistema-srm-gesti%C3%B3n-de-proveedores-licitaciones-transparentes-y-adjudicaci%C3%B3n-democr%C3%A1tica-funcionalidad-administrativa-fiscal-y-de-gobernanza">Ecosistema SRM: Gestión de Proveedores</a></li>
-<li><a href="#despacho-de-servicios-ticket-dispatch">Despacho de Servicios (Ticket Dispatch)</a></li>
-<li><a href="#inteligencia-de-negocios-360-benchmarking-anal%C3%ADtica-prescriptiva-y-portal-de-transparencia-bi--data-storytelling">Inteligencia de Negocios 360° (BI)</a></li>
-<li><a href="#gesti%C3%B3n-de-fianza-del-administrador-art-19-lph">Gestión de Fianza del Administrador (Art. 19 LPH)</a></li>
-<li><a href="#estructura-r%C3%ADgida-de-la-junta-de-condominio-art-18-y-24-lph">Estructura Rígida de la Junta (Art. 18 y 24 LPH)</a></li>
-<li><a href="#libros-obligatorios-sellados-art-20-lph">Libros Obligatorios Sellados (Art. 20 LPH)</a></li>
-<li><a href="#gesti%C3%B3n-de-traspaso-de-propiedad-y-prelaci%C3%B3n-de-cr%C3%A9ditos-art-13-lph">Gestión de Traspaso de Propiedad (Art. 13 LPH)</a></li>
-<li><a href="#gesti%C3%B3n-de-p%C3%B3lizas-de-seguro-obligatorias-art-20-literal-d">Gestión de Pólizas de Seguro (Art. 20 Lit. d)</a></li>
-<li><a href="#gesti%C3%B3n-de-mejoras-voluptuarias-y-opt-out-art-9-lph">Gestión de “Mejoras Voluptuarias” (Art. 9 LPH)</a></li>
+<li><a href="#ecosistema-srm-gesti%C3%B3n-de-proveedores-licitaciones-transparentes-y-adjudicaci%C3%B3n-democr%C3%A1tica-funcionalidad-administrativa-fiscal-y-de-gobernanza">Gestión de Proveedores (SRM)</a></li>
+<li><a href="#despacho-de-servicios-ticket-dispatch">Despacho de Servicios (Tickets)</a></li>
+<li><a href="#inteligencia-de-negocios-360-benchmarking-anal%C3%ADtica-prescriptiva-y-portal-de-transparencia-bi--data-storytelling">Inteligencia de Negocios (BI)</a></li>
+<li><a href="#gesti%C3%B3n-de-fianza-del-administrador-art-19-lph">Gestión de Fianza del Administrador</a></li>
+<li><a href="#estructura-r%C3%ADgida-de-la-junta-de-condominio-art-18-y-24-lph">Estructura Rígida de la Junta</a></li>
+<li><a href="#libros-obligatorios-sellados-art-20-lph">Libros Obligatorios Sellados</a></li>
+<li><a href="#gesti%C3%B3n-de-traspaso-de-propiedad-y-prelaci%C3%B3n-de-cr%C3%A9ditos-art-13-lph">Gestión de Traspaso de Propiedad</a></li>
+<li><a href="#gesti%C3%B3n-de-p%C3%B3lizas-de-seguro-obligatorias-art-20-literal-d">Gestión de Pólizas de Seguro</a></li>
+<li><a href="#gesti%C3%B3n-de-mejoras-voluptuarias-y-opt-out-art-9-lph">Gestión de Mejoras Voluptuarias (Opt-Out)</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#6-integraciones-con-terceros">6. Integraciones con Terceros</a></li>
+<li><a href="#7-seguridad">7. Seguridad</a></li>
+<li><a href="#8-consideraciones-de-despliegue">8. Consideraciones de Despliegue</a></li>
 <li><a href="#esquemas">ESQUEMAS</a>
 <ul>
-<li><a href="#modelo-de-negocio-y-arquitectura-f%C3%ADsica">Modelo de Negocio y Arquitectura Física</a></li>
+<li><a href="#modelo-de-negocio-y-arquitectura-f%C3%ADsica">Modelo de Negocio y Arquitectura</a></li>
 <li><a href="#esquema-1-arquitectura-de-datos-modelo-multi-tenant--suscripci%C3%B3n-granular">ESQUEMA 1: Arquitectura de Datos</a></li>
 <li><a href="#esquema-2-flujo-de-la-verdad-sincronizaci%C3%B3n-y-tasas">ESQUEMA 2: Flujo de la Verdad</a></li>
 <li><a href="#esquema-3-infraestructura-f%C3%ADsica-devops">ESQUEMA 3: Infraestructura Física</a></li>
@@ -122,12 +107,9 @@ extensions:
 </li>
 <li><a href="#anexos">ANEXOS</a>
 <ul>
-<li><a href="#anexo-1-c%C3%B3digo-del-diagrama-erd-mermaid---versi%C3%B3n-final-consolidada">ANEXO 1: CÓDIGO DEL DIAGRAMA ERD (MERMAID)</a></li>
+<li><a href="#anexo-1-c%C3%B3digo-del-diagrama-erd-mermaid---versi%C3%B3n-final-consolidada">ANEXO 1: Código del ERD (Mermaid)</a></li>
 </ul>
 </li>
-<li><a href="#esquema-erd">Esquema ERD</a></li>
-<li><a href="#diccionario">Diccionario</a></li>
-<li><a href="#esquemas-logicos">Esquemas Logicos</a></li>
 </ol>
 <h1 id="objetivo-general-del-desarrollo">Objetivo general del desarrollo:</h1>
 <p>El objetivo general de este desarrollo es la creación de un ecosistema SaaS bajo el dominio <a href="http://mascondominios.com.ve">mascondominios.com.ve</a>, el cual albergará una Landing Page que promocionará un software para administración de condominios en la República Bolivariana de Venezuela. En términos de SEO, la Landing Page tendrá una máxima relevancia, ya que será la página encargada de promover la conversión de un visitante (cliente potencial) a un cliente registrado (usuario) que adquiera un plan para usar el SaaS.</p>
