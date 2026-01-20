@@ -12,21 +12,29 @@ erDiagram
     classDef legalFill fill:#fce7f3,stroke:#db2777,stroke-width:2px
 
     %% =======================================================
-    %% GRUPO 1: CORE SAAS
+    %% GRUPO 1: CORE SAAS (PUBLIC SCHEMA)
     %% =======================================================
     User {
         UUID id PK
         string email
         string password_hash
+        string national_id
         datetime last_login
+        datetime created_at
     }
     Tenant {
         UUID id PK
         string schema_name
+        string name
         boolean is_active
         datetime trial_ends_at
         int purchased_capacity
         decimal credit_balance
+    }
+    Domain {
+        string domain PK
+        boolean is_primary
+        UUID tenant_id FK
     }
     PlanCatalog {
         UUID id PK
@@ -53,24 +61,35 @@ erDiagram
         string webhook_url
     }
     
-    class User,Tenant,PlanCatalog,PlanTier,SaaSPayment,IntegrationConfig publicFill
+    class User,Tenant,Domain,PlanCatalog,PlanTier,SaaSPayment,IntegrationConfig publicFill
 
     %% =======================================================
-    %% GRUPO 2: IDENTIDAD
+    %% GRUPO 2: IDENTIDAD & UNIDADES (TENANT SCHEMA)
     %% =======================================================
-    TenantUserRelation {
-        UUID id PK
-        boolean is_global_admin
-        datetime joined_at
-    }
     TenantProfile {
         UUID id PK
+        UUID user_id FK
         enum role
-        boolean is_primary_owner
         string phone_number
     }
     
-    class TenantUserRelation,TenantProfile opsFill
+    Unit {
+        UUID id PK
+        string name "Ej: 1-A"
+        decimal aliquot
+        string tower_section
+        boolean is_common_area
+    }
+
+    UnitOwner {
+        UUID id PK
+        UUID unit_id FK
+        UUID profile_id FK
+        decimal ownership_percent
+        boolean is_responsible "Recibe Cobro"
+    }
+    
+    class TenantProfile,Unit,UnitOwner opsFill
 
     %% =======================================================
     %% GRUPO 3: FINANZAS COMPLEJAS
@@ -94,6 +113,7 @@ erDiagram
         decimal total_amount_usd
         enum status
         date due_date
+        UUID unit_id FK
     }
     BillItem {
         UUID id PK
@@ -145,51 +165,37 @@ erDiagram
     AmenityExclusion {
         UUID id PK
         UUID amenity_id FK
-        UUID property_id FK
+        UUID unit_id FK
         string reason
     }
-    
-    %% --- INSERCIÓN QUIRÚRGICA: Tablas Financieras Faltantes ---
     LeaseContract {
         UUID id PK
         string client_name
         string client_rif
-        string description
         decimal monthly_fee_usd
-        int payment_day
-        date contract_end
         boolean is_active
     }
     Expense {
         UUID id PK
-        string description
         decimal amount
         string invoice_number
-        string pdf_url
-        boolean is_public_to_residents
         enum status
         UUID supplier_id FK
     }
-
-    %% Sub-Modulo Proveedores y Compras
     Supplier {
         UUID id PK
         string name
         string rif
         boolean is_special_taxpayer
-        boolean is_public_directory
-        decimal rating_avg
     }
     BiddingProcess {
         UUID id PK
         string title
         enum status
-        datetime closed_at
     }
     BiddingQuote {
         UUID id PK
         decimal amount_usd
-        string pdf_url
         boolean is_winner
         UUID supplier_id FK
     }
@@ -199,12 +205,6 @@ erDiagram
     %% =======================================================
     %% GRUPO 4: OPERACIONES
     %% =======================================================
-    Property {
-        UUID id PK
-        string code
-        decimal aliquot
-        boolean is_common_area
-    }
     OwnershipTransfer {
         UUID id PK
         UUID old_owner_id FK
@@ -221,14 +221,12 @@ erDiagram
         UUID id PK
         string name
         boolean is_luxury
-        decimal reserve_cost
     }
     Ticket {
         UUID id PK
         enum type
         enum status
         string subject
-        text description
     }
     SupplierRating {
         UUID id PK
@@ -251,18 +249,13 @@ erDiagram
         datetime triggered_at
         string gps_coords
     }
-    
-    %% --- INSERCIÓN QUIRÚRGICA: Tabla Asamblea Faltante ---
     Assembly {
         UUID id PK
         string topic
         datetime date
         enum status
-        string zoom_link
-        string billboard_proof_url
         decimal quorum_current
     }
-
     Poll {
         UUID id PK
         string title
@@ -271,7 +264,8 @@ erDiagram
     Vote {
         UUID id PK
         enum choice
-        datetime voted_at
+        decimal weight
+        UUID unit_id FK
     }
     Parcel {
         UUID id PK
@@ -281,7 +275,6 @@ erDiagram
     Vehicle {
         UUID id PK
         string plate_number
-        string model
     }
     Pet {
         UUID id PK
@@ -289,30 +282,25 @@ erDiagram
         string breed
     }
 
-    class Property,OwnershipTransfer,Reservation,Amenity,Ticket,SupplierRating,AccessLog,GuestInvitation,PanicAlert,Assembly,Poll,Vote,Parcel,Vehicle,Pet opsFill
+    class OwnershipTransfer,Reservation,Amenity,Ticket,SupplierRating,AccessLog,GuestInvitation,PanicAlert,Assembly,Poll,Vote,Parcel,Vehicle,Pet opsFill
 
     %% =======================================================
-    %% GRUPO 5: LEGAL Y GOBIERNO (DETALLADO)
+    %% GRUPO 5: LEGAL Y GOBIERNO
     %% =======================================================
     CondoConstitution {
         UUID id PK
         int fiscal_year_start
         decimal reserve_fund_pct
-        string doc_url
     }
     AdministratorBond {
         UUID id PK
         decimal amount
         date expiry_date
-        string doc_url
-        string insurer_name
     }
     BuildingInsurance {
         UUID id PK
         string policy_number
         date expiry_date
-        enum type
-        decimal coverage_amount
     }
     BoardTerm {
         UUID id PK
@@ -323,14 +311,12 @@ erDiagram
     BoardPosition {
         UUID id PK
         enum title
-        enum role_type
         UUID tenant_profile_id FK
     }
     LegalCase {
         UUID id PK
         string case_number
         enum status
-        decimal amount_claimed
     }
     LegalConsultation {
         UUID id PK
@@ -346,7 +332,6 @@ erDiagram
         UUID id PK
         string name
         int current_folio
-        string notary_ref
     }
     LegalDocument {
         UUID id PK
@@ -368,18 +353,15 @@ erDiagram
     WorkShift {
         UUID id PK
         datetime check_in
-        datetime check_out
         boolean gps_verified
     }
     EmployeeProfile {
         UUID id PK
         decimal base_salary_bs
-        string job_title
     }
     PayrollReceipt {
         UUID id PK
         decimal total_paid
-        date pay_date
     }
     InventoryItem {
         UUID id PK
@@ -389,43 +371,44 @@ erDiagram
     InventoryLog {
         UUID id PK
         int quantity_change
-        string reason
     }
     Project {
         UUID id PK
         string name
         decimal goal_amount
-        decimal current_amount
     }
 
     class Asset,WorkShift,EmployeeProfile,PayrollReceipt,InventoryItem,InventoryLog,Project hrFill
 
     %% =======================================================
-    %% RELACIONES (ORGANIZADAS POR FLUJO)
+    %% RELACIONES (CORREGIDAS)
     %% =======================================================
     
-    User ||--o{ TenantUserRelation : "accede"
-    Tenant ||--o{ TenantUserRelation : "tiene usuarios"
-    User ||--o{ TenantProfile : "perfil activo"
+    %% Core & Tenants
+    User ||--o{ TenantProfile : "tiene perfil"
+    Tenant ||--o{ Domain : "accesible via"
     Tenant ||--o{ PlanCatalog : "plan suscrito"
     PlanCatalog ||--|{ PlanTier : "niveles"
     Tenant ||--o{ SaaSPayment : "facturacion saas"
     Tenant ||--o{ IntegrationConfig : "integraciones"
     
-    TenantProfile }o..o| Property : "habita/propietario"
+    %% Identidad & Propiedad (CORREGIDO)
+    TenantProfile ||--o{ UnitOwner : "posee derechos"
+    Unit ||--o{ UnitOwner : "tiene dueños"
     
-    Property ||--o{ Bill : "deuda mensual"
+    %% Finanzas
+    Unit ||--o{ Bill : "deuda mensual"
     BillingPeriod ||--o{ Bill : "ciclo"
     Bill ||--o{ BillItem : "items"
     BillItem }o..o| DistributionGroup : "imputacion gastos"
     Bill ||--o{ Transaction : "pago parcial"
     Payment ||--o{ Transaction : "conciliacion"
-    Property ||--o{ PaymentAgreement : "convenio pago"
+    Unit ||--o{ PaymentAgreement : "convenio pago"
     Amenity ||--o{ AmenityExclusion : "restriccion"
-    Property ||--o{ AmenityExclusion : "bloqueado en"
+    Unit ||--o{ AmenityExclusion : "bloqueado en"
     Transaction ||--o{ TaxRetention : "retenciones"
     
-    %% --- INSERCIÓN QUIRÚRGICA: Relaciones Faltantes ---
+    %% Operaciones
     Tenant ||--o{ LeaseContract : "arrienda areas"
     LeaseContract ||--o{ Bill : "genera cobro"
     Tenant ||--o{ Expense : "registra gasto"
@@ -444,15 +427,17 @@ erDiagram
     Supplier ||--o{ Ticket : "asignado a"
     TenantProfile ||--o{ GuestInvitation : "crea invitacion"
     AccessLog ||--o{ GuestInvitation : "valida acceso"
-    Property ||--o{ OwnershipTransfer : "historial ventas"
-    Property ||--o{ Vehicle : "estaciona"
-    Property ||--o{ Pet : "dueño"
-    Property ||--o{ Parcel : "paqueteria"
+    Unit ||--o{ OwnershipTransfer : "historial ventas"
+    Unit ||--o{ Vehicle : "estaciona"
+    Unit ||--o{ Pet : "dueño"
+    Unit ||--o{ Parcel : "paqueteria"
     TenantProfile ||--o{ PanicAlert : "SOS"
 
-    %% --- INSERCIÓN QUIRÚRGICA: Relación Asamblea ---
+    %% Gobernanza
     Tenant ||--o{ Assembly : "convoca"
     Assembly ||--o{ Vote : "votacion en vivo"
+    Poll ||--o{ Vote : "urna virtual"
+    Unit ||--o{ Vote : "ejerce derecho"
 
     Tenant ||--|| CondoConstitution : "reglamento"
     Tenant ||--o{ BoardTerm : "periodos junta"
@@ -465,15 +450,14 @@ erDiagram
     Tenant ||--o{ LegalConsultation : "consultas"
     LegalConsultation ||--o{ ConsultationResponse : "respuestas"
     
+    %% RRHH
     TenantProfile ||--o{ WorkShift : "control horario"
     User ||--o{ EmployeeProfile : "datos empleado"
     EmployeeProfile ||--o{ PayrollReceipt : "recibos"
     InventoryItem ||--o{ InventoryLog : "kardex"
     BillItem ||--o{ Project : "financia fondo"
     
-    %% =======================================================
-    %% CORRECCIONES DE SEGURIDAD SAAS
-    %% =======================================================
+    %% Seguridad
     Tenant ||--o{ Account : "cuentas propias"
     Account ||--o{ BankRule : "reglas conciliacion"
     Tenant ||--o{ InventoryItem : "stock almacen"
