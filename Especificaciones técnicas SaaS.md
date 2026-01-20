@@ -1022,6 +1022,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 </li>
 </ul>
 <h2 id="finanzas_contabilidad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/02_FINANZAS_CONTABILIDAD.md">02_FINANZAS_CONTABILIDAD.md</a></h2>
+<h3 id="contenido-1">Contenido</h3>
 <ul>
 <li>
 <p><strong>Función 13:</strong> Economía Bimonetaria.</p>
