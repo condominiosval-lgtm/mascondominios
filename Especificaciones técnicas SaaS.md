@@ -1089,4 +1089,47 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><strong>Función 32:</strong> Bloqueo Automático de Documentos.</p>
 </li>
 </ul>
+<h2 id="operaciones_seguridad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/04_OPERACIONES_SEGURIDAD.md">04_OPERACIONES_SEGURIDAD.md</a></h2>
+<h3 id="contenido-3">Contenido</h3>
+<p>&lt;![endif]–&gt; <strong>Función 33:</strong> Validación Offline (QR Acceso).[[<br>
+&lt;![endif]–&gt; <strong>Función 34:</strong> Pasarela GSM (Portones).[[<br>
+&lt;![endif]–&gt;</p>
+<ul>
+<li>
+<p><strong>Función 35:</strong> Sincronización Biométrica.</p>
+</li>
+<li>
+<p><strong>Función 36:</strong> Bitácora de Visitas (Voz).</p>
+</li>
+<li>
+<p><strong>Función 37:</strong> Botón de Pánico Enterprise.[[</p>
+</li>
+<li>
+<p><strong>Función 38:</strong> Gestión de Paquetería.</p>
+</li>
+<li>
+<p><strong>Función 39:</strong> Semáforo de Servicios Públicos. (Nota: En el texto aparece como título sin número, justo antes de la 40).</p>
+</li>
+<li>
+<p><strong>Función 40:</strong> Bitácora de Cisternas.</p>
+</li>
+<li>
+<p><strong>Función 41:</strong> Gestión de Activos Fijos.</p>
+</li>
+<li>
+<p><strong>Función 42:</strong> Control de Inventarios.</p>
+</li>
+<li>
+<p><strong>Función 43:</strong> Planificador de Rutinas.</p>
+</li>
+<li>
+<p><strong>Función 44:</strong> Control de Asistencia (Geofencing).</p>
+</li>
+<li>
+<p><strong>Función 45:</strong> Motor de Nómina Híbrida.</p>
+</li>
+<li>
+<p><strong>Función 46:</strong> Emisión de Recibos Digitales.</p>
+</li>
+</ul>
 
