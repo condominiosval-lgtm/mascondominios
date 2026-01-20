@@ -982,7 +982,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 <p><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/DICCIONARIO_DATOS.md?plain=1">Enlace al Diccionario</a></p>
 <h1 id="esquemas-logicos">Esquemas Logicos</h1>
 <h2 id="core_plataforma.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/01_CORE_PLATAFORMA.md">01_CORE_PLATAFORMA.md</a></h2>
-<h3 id="contenido">Contenido</h3>
+<p><strong>Contenido:</strong></p>
 <ul>
 <li>
 <p><strong>Función 1:</strong> Calculadora de Precios Interactiva.</p>
@@ -1022,7 +1022,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 </li>
 </ul>
 <h2 id="finanzas_contabilidad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/02_FINANZAS_CONTABILIDAD.md">02_FINANZAS_CONTABILIDAD.md</a></h2>
-<h3 id="contenido-1">Contenido</h3>
+<p><strong>Contenido:</strong></p>
 <ul>
 <li>
 <p><strong>Función 13:</strong> Economía Bimonetaria.</p>
@@ -1056,7 +1056,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 </li>
 </ul>
 <h2 id="admin_cobranza.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/03_ADMIN_COBRANZA.md">03_ADMIN_COBRANZA.md</a></h2>
-<h3 id="contenido-2">Contenido</h3>
+<p><strong>Contenido:</strong></p>
 <ul>
 <li>
 <p><strong>Función 23:</strong> Gateway Omnicanal (Push/Email).[[</p>
@@ -1090,7 +1090,7 @@ Automáticamente, el sistema realiza dos acciones:</p>
 </li>
 </ul>
 <h2 id="operaciones_seguridad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/04_OPERACIONES_SEGURIDAD.md">04_OPERACIONES_SEGURIDAD.md</a></h2>
-<h3 id="contenido-3">Contenido</h3>
+<p><strong>Contenido:</strong></p>
 <ul>
 <li>
 <p><strong>Función 33:</strong> Validación Offline (QR Acceso).</p>
@@ -1133,6 +1133,49 @@ Automáticamente, el sistema realiza dos acciones:</p>
 </li>
 <li>
 <p><strong>Función 46:</strong> Emisión de Recibos Digitales.</p>
+</li>
+</ul>
+<h2 id="comunidad_gobernanza.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/05_COMUNIDAD_GOBERNANZA.md">05_COMUNIDAD_GOBERNANZA.md</a></h2>
+<p><strong>Contenido:</strong></p>
+<ul>
+<li>
+<p><strong>Función 47:</strong> Sistema de Tickets PQRS</p>
+</li>
+<li>
+<p><strong>Función 48:</strong> Asignación Externa (WhatsApp Work Order).</p>
+</li>
+<li>
+<p><strong>Función 49:</strong> Votaciones y Encuestas.</p>
+</li>
+<li>
+<p><strong>Función 50:</strong> Asambleas Híbridas.</p>
+</li>
+<li>
+<p><strong>Función 51:</strong> Libro de Actas con Dictado.</p>
+</li>
+<li>
+<p><strong>Función 52:</strong> Crowdfunding Interno</p>
+</li>
+<li>
+<p><strong>Función 53:</strong> Cuotas Extraordinarias.</p>
+</li>
+<li>
+<p><strong>Función 54:</strong> Directorio con Semáforo Fiscal.</p>
+</li>
+<li>
+<p><strong>Función 55:</strong> Comparador de Presupuestos.</p>
+</li>
+<li>
+<p><strong>Función 56:</strong> Adjudicación Democrática</p>
+</li>
+<li>
+<p><strong>Función 57:</strong> Dashboard Analítico.</p>
+</li>
+<li>
+<p><strong>Función 58:</strong> Normalización Financiera.</p>
+</li>
+<li>
+<p><strong>Función 59:</strong> Health Score del Edificio</p>
 </li>
 </ul>
 
