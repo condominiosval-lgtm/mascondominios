@@ -72,9 +72,12 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `amount_usd` | Decimal | | Monto Divisa Base. | Valor contable. |
 | | `reference` | String | | Referencia. | Identificador del movimiento. |
 | **Payment** | `reference_number` | String | UK* | Ref. Bancaria. | Unicidad compuesta. |
+| | `payment_date` | Date | | Fecha Pago. | Día de la transferencia. |
+| | `method` | Enum | | Método. | `PAGO_MOVIL`, `ZELLE`, `CASH`. |
 | **PaymentAgreement** | `frozen_debt` | Decimal | | Deuda Congelada. | Deja de generar intereses. |
 | | `installments` | Integer | | Nro Cuotas. | Cantidad de partes. |
 | **BankRule** | `keyword_pattern` | String | | Patrón IA. | Auto-conciliación. |
+| | `target_account_id`| UUID | FK | Cuenta Destino. | A dónde imputar el dinero. |
 | **ExchangeRate** | `rate` | Decimal | | Valor Tasa. | BCV o Paralelo. |
 | | `source` | String | | Fuente. | Ej. "BCV Oficial". |
 | **TaxRetention** | `type` | Enum | | Impuesto. | ISLR/IVA. |
@@ -96,6 +99,7 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `supplier_id` | UUID | FK | Proveedor. | Quién emitió la factura. |
 | **Supplier** | `is_special_taxpayer`| Boolean | | Contribuyente Esp. | Define retención IVA. |
 | **BiddingProcess** | `status` | Enum | | Estado. | `OPEN`, `CLOSED`, `AWARDED`. |
+| | `closed_at` | DateTime | | Cierre. | Fecha fin licitación. |
 | **BiddingQuote** | `is_winner` | Boolean | | Ganador. | Oferta seleccionada. |
 
 ---
@@ -109,8 +113,10 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | | `is_common_area` | Boolean | | ¿Conserjería? | Si es True, no paga recibos ni vota. |
 | | `aliquot` | Decimal | | % Participación. | Peso del voto y deuda. |
 | **OwnershipTransfer** | `debt_at_transfer` | Decimal | | Deuda Previa. | Auditoría al vender. |
+| | `transfer_date` | Date | | Fecha Traspaso. | Cambio de titularidad. |
 | **Reservation** | `status` | Enum | | Estado. | `CONFIRMED`, `CANCELLED`. |
 | **Amenity** | `is_luxury` | Boolean | | ¿Suntuario? | Permite Opt-out (Art. 9 LPH). |
+| | `reserve_cost` | Decimal | | Costo Uso. | Tarifa de alquiler. |
 | **Ticket** | `status` | Enum | | Estado. | `OPEN`, `IN_PROGRESS`, `RESOLVED`. |
 | | `subject` | String | | Asunto. | Título breve del problema. |
 | | `description` | Text | | Detalle. | Explicación completa del vecino. |
@@ -139,11 +145,14 @@ A continuación se detalla la estructura de datos, tipos y reglas de negocio par
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **CondoConstitution** | `fiscal_year_start` | Integer | | Inicio Fiscal. | Mes de inicio contable. |
 | | `reserve_fund_pct` | Decimal | | % Reserva. | Mínimo legal. |
+| | `doc_url` | String | | Documento PDF. | Archivo digitalizado del reglamento. |
 | **AdministratorBond** | `amount` | Decimal | | Monto Garantía. | Cobertura fianza (Art. 19). |
 | | `expiry_date` | Date | | Vencimiento. | Alerta bloqueante. |
 | | `doc_url` | String | | PDF Fianza. | Evidencia. |
+| | `insurer_name` | String | | Aseguradora. | Nombre de la entidad garante. |
 | **BuildingInsurance** | `policy_number` | String | | Nro Póliza. | Seguro Edificio (Art. 20d). |
 | | `type` | Enum | | Tipo. | `INCENDIO`, `TERREMOTO`. |
+| | `coverage_amount` | Decimal | | Cobertura. | Monto asegurado. |
 | **BoardTerm** | `status` | Enum | | Estado Junta. | `ACTIVE`, `EXPIRED`. |
 | **BoardPosition** | `role_type` | Enum | | Jerarquía. | `PRINCIPAL`, `SUPLENTE`. |
 | | `tenant_profile_id` | UUID | FK | Miembro. | Quién ocupa el cargo. |
