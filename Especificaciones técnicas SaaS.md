@@ -123,7 +123,22 @@ extensions:
 </li>
 </ul>
 </li>
-<li><a href="#anexos">ANEXOS Y DOCUMENTACIÓN EXTERNA</a></li>
+<li><a href="#anexos">ANEXOS</a>
+<ul>
+<li><a href="#anexo-1-c%C3%B3digo-del-diagrama-erd-mermaid---versi%C3%B3n-final-consolidada">ANEXO 1: CÓDIGO DEL DIAGRAMA ERD</a></li>
+</ul>
+</li>
+<li><a href="#esquema-erd">Esquema ERD</a></li>
+<li><a href="#diccionario">Diccionario</a></li>
+<li><a href="#esquemas-logicos">Esquemas Logicos</a>
+<ul>
+<li><a href="#core_plataformamd">01_CORE_PLATAFORMA.md</a></li>
+<li><a href="#finanzas_contabilidadmd">02_FINANZAS_CONTABILIDAD.md</a></li>
+<li><a href="#admin_cobranzamd">03_ADMIN_COBRANZA.md</a></li>
+<li><a href="#operaciones_seguridadmd">04_OPERACIONES_SEGURIDAD.md</a></li>
+<li><a href="#comunidad_gobernanzamd">05_COMUNIDAD_GOBERNANZA.md</a></li>
+</ul>
+</li>
 </ol>
 <h1 id="objetivo-general-del-desarrollo">Objetivo general del desarrollo:</h1>
 <p>El objetivo general de este desarrollo es la creación de un ecosistema SaaS bajo el dominio <a href="http://mascondominios.com.ve">mascondominios.com.ve</a>, el cual albergará una Landing Page que promocionará un software para administración de condominios en la República Bolivariana de Venezuela. En términos de SEO, la Landing Page tendrá una máxima relevancia, ya que será la página encargada de promover la conversión de un visitante (cliente potencial) a un cliente registrado (usuario) que adquiera un plan para usar el SaaS.</p>
