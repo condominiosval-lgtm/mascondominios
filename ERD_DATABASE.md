@@ -144,6 +144,18 @@ entity "OnboardingState" as onboarding_state {
  date end_date
  boolean is_closed
  }
+ entity "ExpenseSettlement" as settlement {
+        UUID id PK
+        UUID tenant_id FK
+        DATE period_start "Inicio del mes"
+        DATE period_end "Fin del mes"
+        DECIMAL total_amount "Monto total a distribuir"
+        VARCHAR status "DRAFT, WAITING_BOARD, APPROVED, PUBLISHED, REJECTED"
+        UUID approved_by FK "Miembro de la junta que dio el click"
+        DATETIME approved_at
+        JSONB board_comments "Notas de la junta si rechazan"
+        DATETIME created_at
+    }
  Bill {
  UUID id PK
  string code
@@ -502,6 +514,8 @@ entity "TenantBackup" as tenant_backup {
  Tenant ||--o{ IntegrationConfig : "integraciones"
  Tenant ||--o{ TenantBackup : "genera respaldos"
  Tenant ||--o{ AdminContract : "tiene contratos gestion"
+ Tenant ||--o{ ExpenseSettlement : "genera cierres"
+    ExpenseSettlement ||--o{ Bill : "origina recibos"
  tenant ||--o{ onboarding_state : "rastrea progreso usuarios"
  
  %% Identidad & Propiedad (CORREGIDO)
