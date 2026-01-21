@@ -91,6 +91,17 @@ entity "TenantEmailIntegration" as tenant_email {
         DATETIME created_at
         DATETIME updated_at
     }
+entity "OnboardingState" as onboarding_state {
+        UUID id PK
+        UUID user_id FK
+        VARCHAR tour_id "Ej: ADMIN_SETUP, GUARD_BASIC"
+        INTEGER current_step_index "Paso actual (0, 1, 2...)"
+        BOOLEAN is_completed
+        BOOLEAN is_skipped "Si el usuario cerró el tour"
+        BOOLEAN sandbox_used "Si probó el modo demo"
+        DATETIME last_interaction_at
+    }
+
  Unit {
  UUID id PK
  string name "Ej: 1-A"
@@ -448,6 +459,7 @@ entity "TenantEmailIntegration" as tenant_email {
  PlanCatalog ||--|{ PlanTier : "niveles"
  Tenant ||--o{ SaaSPayment : "facturacion saas"
  Tenant ||--o{ IntegrationConfig : "integraciones"
+ tenant ||--o{ onboarding_state : "rastrea progreso usuarios"
  
  %% Identidad & Propiedad (CORREGIDO)
  TenantProfile ||--o{ UnitOwner : "posee derechos"
