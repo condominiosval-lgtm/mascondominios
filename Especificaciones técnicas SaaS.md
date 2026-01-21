@@ -302,6 +302,38 @@ Optimización de Carga: Se implementará la librería browser-image-compression 
 <h1 id="motor-de-aprobaciones-workflow-engine"><strong>Motor de Aprobaciones (Workflow Engine):</strong></h1>
 <p>Implementación de flujos de trabajo basados en estados (State Machines) para procesos críticos (ej: Cierre de Mes).</p>
 <p>Soporte para roles de “Auditor” (Junta de Condominio) que interceptan transacciones antes de su commit definitivo (<code>WAITING_BOARD</code> -&gt; <code>APPROVED</code>).</p>
+<h2 id="motor-de-crecimiento-y-fidelización-growth-engine"><strong>Motor de Crecimiento y Fidelización (Growth Engine):</strong></h2>
+<p><strong>Sistema de Promociones (SaaSPromotion):</strong><br>
+*   Implementación de lógica híbrida para descuentos en facturación SaaS.<br>
+*   <strong>Triggers:</strong> Soporte para códigos manuales (input de usuario en checkout) y eventos de calendario automáticos (ej. Descuento automático en Fechas Patrias).<br>
+*   <strong>Tipos:</strong> Validación de descuentos porcentuales (<code>PERCENTAGE</code>) o montos fijos (<code>FIXED_AMOUNT</code>) sobre el total de la suscripción.</p>
+<h2 id="sistema-viral-de-referidos-referral-loop"><strong>Sistema Viral de Referidos (Referral Loop):</strong></h2>
+<p><strong>Atribución Global:</strong> Cada <code>User</code> posee un <code>referral_code</code> único e inmutable.<br>
+<strong>Vinculación:</strong> Al registrar un nuevo <code>Tenant</code>, se asocia el <code>referred_by_code</code> para trazabilidad del origen (Administrador vs. Vecino).<br>
+<strong>Recompensas (Gamification):</strong> El sistema incrementa el contador <code>successful_referrals</code> tras el primer pago exitoso del condominio referido, habilitando lógica de <em>feature unlocking</em> (desbloqueo de funciones) o créditos automáticos según el rol del usuario.<br>
+<strong>Flexibilidad en Cálculo de Gastos (Proration Logic):</strong><br>
+*   El sistema soporta dos estrategias de distribución de gastos comunes, configurables por edificio (<code>Tenant.proration_strategy</code>):<br>
+*   <strong>Estrategia Formal (<code>ALIQUOT_BASED</code>):</strong><br>
+*   Cálculo estándar legal.<br>
+*   Fórmula: <code>Monto_Deuda = Gasto_Total * (Unidad.aliquot / 100)</code>.<br>
+*   <strong>Estrategia Informal (<code>EQUAL_UNITS</code>):</strong><br>
+*   Diseñada para juntas vecinales o condominios sin documento legal registrado.<br>
+*   Fórmula: <code>Monto_Deuda = Gasto_Total / Count(Unidades_Activas)</code>.<br>
+*   El sistema ignora los porcentajes de alícuota y divide equitativamente el monto entre todas las unidades habilitadas.</p>
+<h2 id="gestión-de-activos-rentables-y-redistribución-profit-sharing"><strong>Gestión de Activos Rentables y Redistribución (Profit Sharing):</strong></h2>
+<p><strong>Lógica de Redistribución de Ingresos (Revenue Sharing):</strong><br>
+*   Implementación de algoritmo para convertir ingresos extraordinarios (Alquileres de áreas comunes, multas a terceros) en beneficios directos para los copropietarios.<br>
+*   <strong>Automatización:</strong> Al marcar un ingreso como “Distribuible”, el sistema ejecuta la estrategia de prorrateo activa (<code>Aliquot</code> o <code>Equal</code>) de forma inversa.<br>
+*   <strong>Generación de Créditos:</strong> En lugar de crear deuda, el motor inyecta automáticamente <strong>Items de Crédito</strong> en la facturación mensual (<code>BillItem</code>), reduciendo el total a pagar de cada unidad de forma transparente y calculada, sin requerir intervención manual ni cálculos externos por parte del administrador.</p>
+<h2 id="gestión-de-activos-y-rentas-lease-management"><strong>Gestión de Activos y Rentas (Lease Management):</strong></h2>
+<p><strong>Arquitectura Contractual:</strong> Implementación de la entidad <code>LeaseContract</code> para formalizar el arrendamiento de áreas comunes a terceros (Telecomunicaciones, Vallas, Locales).<br>
+*   <strong>Manejo de Pasivos:</strong> Distinción contable del <code>security_deposit</code> como fondo en custodia (Pasivo) y no como ingreso operativo.<br>
+*   <strong>Sistema de Alertas (Cron Jobs):</strong><br>
+*   Monitoreo diario de <code>end_date</code> vs <code>notification_days</code>.<br>
+*   Generación de notificaciones automáticas al Administrador para renegociación o desalojo antes del vencimiento.<br>
+*   <strong>Integración con Finanzas (Revenue Redistribution):</strong><br>
+*   Lógica para transformar el cobro de rentas (<code>monthly_fee</code>) en beneficios para los propietarios.<br>
+*   <em>Ejemplo de Uso:</em> Al procesar el pago de $1,000 USD por alquiler de azotea (Antena), el sistema permite inyectar ese monto como un <strong>Crédito Global</strong> distribuido automáticamente entre las alícuotas de los residentes, reduciendo su factura mensual de condominio de forma transparente.</p>
 <h1 id="detalles-inherentes-a-la-app-nativa"><strong>Detalles inherentes a la App nativa:</strong></h1>
 <p>La aplicación móvil estará disponible tanto para administradores como para administrados. Será una aplicación que garantice su funcionamiento en equipos móviles de gama media, así como en equipos de alta gama sean estos Android o iPhone. Como es de esperarse, en el caso de los usuarios, no necesariamente tendrán activas todas las funciones que ofrece el SaaS, ya que las tablas largas pueden ser casi imposibles de mostrar en la aplicación.</p>
 <h2 id="tecnología-a-aplicarse-en-la-app-nativa-android--ios"><strong>Tecnología a aplicarse en la App Nativa (Android / iOS):</strong></h2>
