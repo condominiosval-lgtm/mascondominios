@@ -1068,3 +1068,85 @@ Bifurcación Híbrida: El rombo ¿Tiene API Key IA? es el "Interruptor" que dise
 Staging (Zona Rosa): Los datos se guardan en las tablas temporales (ImportRow). Aquí es donde ocurre la validación de deuda bimonetaria y alícuotas.
 Bucle de Corrección: Las flechas entre Frontend, User y API_Edit muestran que el usuario puede corregir datos infinitas veces sin volver a subir el archivo.
 Commit Atómico (Zona Azul): Solo cuando el usuario da el "OK", los datos pasan a las tablas reales (ProdDB).
+
+## 1.4 Sub-flujo: Asistente de Migración Inteligente (Import Wizard)
+**Objetivo:** Permitir la carga masiva de datos (Inmuebles, Proveedores, Cuentas y Deudas) mediante archivos Excel, utilizando un área de Staging para validación y limpieza antes de afectar la base de datos real.
+
+### Diagrama Lógico de Importación (ETL Pipeline)
+
+```mermaid
+graph TD
+    User((Administrador)) -->|1. Sube Excel| API[API Backend]
+    
+    subgraph "Procesamiento Asíncrono (Celery)"
+        API -->|2. Crea Batch| Batch[(Tabla: ImportBatch)]
+        API -.->|3. Dispara Worker| Worker{Pandas Engine}
+        
+        Worker -->|4. Detecta Estrategia| Strategy{¿API Key IA?}
+        Strategy -- NO --> Fuzzy[Fase 1: Lógica Difusa\n(Comparar Encabezados)]
+        Strategy -- SI --> AI[Fase 2: Análisis Semántico\n(LLM / OpenAI)]
+        
+        Fuzzy & AI --> Map[Generar Mapeo JSON]
+        Map --> Valid[5. Reglas de Negocio]
+        
+        Valid -->|Check Alícuotas| Check1[Suma 100%]
+        Valid -->|Check Moneda| Check2[Indexación Histórica]
+        
+        Check1 & Check2 --> Staging[(Tabla: ImportRow)]
+    end
+    
+    subgraph "Interfaz de Usuario (React)"
+        Staging -->|6. Muestra Errores| UI[Grilla de Validación]
+        UI -->|7. Corrige Celda| Update[API Patch Row]
+        Update --> Staging
+        User -->|8. Confirma Todo| Commit[Commit Final]
+    end
+    
+    Commit -->|INSERT| DB[(DB Producción)]
+```
+
+
+** Funcion 61 3.X Motor de Inmersión y Gamificación (Smart Walkthrough)**
+
+```mermaid
+## 1.5 Sub-flujo: Experiencia de Primer Uso (FTUE - First Time User Experience)
+**Actor:** Usuario Nuevo (Cualquier rol)
+**Trigger:** Primer inicio de sesión exitoso.
+
+1.  **Detección de Estado:** El sistema consulta `OnboardingState`. Si no existe registro, inicia el protocolo de bienvenida.
+2.  **Selector de Ruta (Modal):**
+    *   Opción A: **"Modo Práctica"** -> Carga el *Sandbox* con datos ficticios.
+    *   Opción B: **"Configurar Ahora"** -> Inicia el *Tour Guiado* en el entorno real.
+3.  **Ejecución del Tour (Role-Based):**
+    *   *Si es Admin:* Guía hacia Configuración de Moneda -> Importación de Excel -> Primer Recibo.
+    *   *Si es Vigilante:* Guía hacia Botón de Pánico -> Registro de Visitas.
+4.  **Gamificación:**
+    *   Al completar hitos clave (ej: cargar la nómina), el sistema dispara efectos visuales (Confeti) y actualiza la barra de progreso global.
+5.  **Finalización:** Marca `is_completed = True` en base de datos y libera la interfaz completa.
+```
+´´´mermaid
+graph TD
+    Login((Inicio Sesión)) -->|1. Check DB| State{¿Tiene Onboarding?}
+    
+    State -- SI --> Dashboard[Dashboard Normal]
+    State -- NO --> Welcome[Modal de Bienvenida]
+    
+    Welcome -->|Opción A| Sandbox[Modo Sandbox\n(Edificio Demo)]
+    Welcome -->|Opción B| Real[Configurar Edificio Real]
+    
+    subgraph "Motor de Guiado (Driver.js)"
+        Real --> Role{¿Qué Rol tiene?}
+        
+        Role -- ADMIN --> Tour1[Tour: Configuración + Importación]
+        Role -- VIGILANTE --> Tour2[Tour: Botón Pánico + QR]
+        Role -- VECINO --> Tour3[Tour: Descarga App + Pagos]
+        
+        Tour1 --> Step1[Spotlight: Tasa de Cambio]
+        Step1 --> Step2[Spotlight: Carga de Excel]
+        Step2 -->|Éxito| Reward[Animación Confeti]
+    end
+    
+    Sandbox -->|Juega con datos falsos| Reset[Reiniciar Demo]
+    Reward -->|Update DB| Finish[Marcar Completed = True]
+    Finish --> Dashboard
+    ´´´
