@@ -156,6 +156,64 @@ Base de Datos: Sigue diciendo $50.00. No se edita el registro.
 Usuario abre la App: Cálculo en vivo 50 * 40. Ve "Pagar Bs. 2,000.00".
 Conclusión: El sistema se ajusta a la inflación automáticamente sin correr procesos batch masivos nocturnos.
 
+**Función #15: Motor de Cálculo de Deuda (Estrategia Dual)**
+
+**1. Ficha Técnica**
+
+Contexto: Este proceso determina **cuánto debe pagar** el usuario. El cálculo varía según la estrategia contable del Condominio (`Tenant.accounting_strategy`).
+Lógica de Negocio: Bifurcación según configuración (Indexación vs. Mora Legal).
+Ubicación en BD: `Tenant` (Config), `Bill`, `CurrencyHistory`.
+Objetivo: Soportar legalmente condominios dolarizados y condominios en Bolívares bajo la misma plataforma.
+
+**2. Lógica de Negocio Detallada**
+
+El sistema consulta `Tenant.accounting_strategy` y ejecuta una de las dos fórmulas:
+
+**A. Estrategia 1: "Dolarizada / Mixta" (USD_INDEXED)**
+*   **Concepto:** La deuda base es en Dólares. El Bolívar es solo un medio de pago.
+*   **Fórmula:** `Deuda_Bs = Deuda_Base (USD) * Tasa_BCV_Actual`.
+*   **Comportamiento:** El monto en Bs cambia diariamente. No genera intereses de mora (la indexación protege el valor).
+
+**B. Estrategia 2: "Bolívar Histórico + Interés" (VES_HISTORIC)**
+*   **Concepto:** La deuda base es en Bolívares. El monto original se respeta, pero se castiga el retraso según el Código Civil / LPH.
+*   **Fórmula:**
+    1. Verificar antigüedad (`Days_Overdue`).
+    2. Si `Days_Overdue > 30`:
+       `Interés = (Deuda_Base * Tenant.monthly_interest_rate) * (Meses_Vencidos)`
+    3. `Deuda_Total_Bs = Deuda_Base (Bs) + Interés`.
+*   **Comportamiento:** El monto NO cambia por el dólar. SOLO sube si hay mora.
+
+**3. Diagrama de Secuencia Lógico**
+
+```mermaid
+sequenceDiagram
+ autonumber
+ participant App as App Residente
+ participant API as API Gateway
+ participant DB as BD (Tenant)
+
+ App->>API: GET /api/bills/my-bills/
+ API->>DB: Fetch Bills + Tenant.Config
+ DB-->>API: Bill{$50/5000Bs} + Strategy='VES_HISTORIC'
+
+ alt Estrategia USD_INDEXED
+    API->>DB: Get Tasa BCV (ej: 60.00)
+    API->>API: Calc: 50 * 60 = 3000 Bs
+    API-->>App: {debt_usd: 50, debt_ves: 3000, display: "Dinámico"}
+ else Estrategia VES_HISTORIC
+    API->>API: Check Mora (3 Meses vencido @ 3%)
+    API->>API: Calc: 5000 + (5000 * 0.09) = 5450 Bs
+    API-->>App: {debt_ves_base: 5000, interest: 450, total: 5450}
+ end
+
+ App->>App: Renderizar UI según moneda
+
+4. Refuerzo Lógico: Trace de Datos
+Escenario A (Dolarizado): Deuda $100.[1] Tasa sube de 50 a 60.[1]
+Usuario ve: Deuda Bs. 6,000.00 (Subió por el dólar).[1]
+Escenario B (Legalista): Deuda Bs. 5,000.[1] Tasa sube de 50 a 60.[1]
+Usuario ve: Deuda Bs. 5,000.00 (Inmune al dólar).[1]
+Pasa un mes: Usuario ve Bs. 5,150.00 (Subió por interés del 3%).[1]
 
 **Función #16: Conciliación Bancaria Híbrida**
 
