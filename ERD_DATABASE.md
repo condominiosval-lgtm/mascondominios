@@ -510,4 +510,52 @@ erDiagram
  TenantProfile ||--o{ AIChatSession : "inicia chat"
  AIChatSession ||--o{ AIChatMessage : "tiene mensajes"
  Tenant ||--o{ AIKnowledgeBase : "memoria vectorial"
+
+%% =======================================================
+ %% GRUPO 8: MARKETPLACE (CROSS-SCHEMA)
+ %% =======================================================
+ MarketplaceCategory {
+ UUID id PK
+ string name
+ string icon_slug
+ }
+ 
+ MarketplaceProvider {
+ UUID id PK
+ string name
+ string rif
+ enum verification_status
+ decimal global_rating
+ string whatsapp
+ jsonb service_zone
+ UUID category_id FK
+ }
+ 
+ ServiceOrder {
+ UUID id PK
+ UUID ticket_id FK
+ UUID provider_public_id "REF PUBLIC"
+ enum status
+ decimal cost_usd
+ boolean invoiced
+ }
+ 
+ ProviderReview {
+ UUID id PK
+ UUID service_order_id FK
+ int rating
+ text comment
+ boolean is_public
+ }
+ 
+ class MarketplaceCategory,MarketplaceProvider publicFill
+ class ServiceOrder,ProviderReview opsFill
+
+ %% Relaciones Marketplace
+ MarketplaceCategory ||--|{ MarketplaceProvider : "agrupa"
+ Ticket ||--o{ ServiceOrder : "genera orden"
+ ServiceOrder ||--o{ ProviderReview : "calificacion"
+ 
+ %% RELACION LOGICA ENTRE ESQUEMAS (Línea Punteada)
+ MarketplaceProvider |o..o{ ServiceOrder : "contratado en (Cross-Schema)"
 ```
