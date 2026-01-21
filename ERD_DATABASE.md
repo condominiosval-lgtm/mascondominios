@@ -75,7 +75,27 @@ erDiagram
  enum role
  string phone_number
  }
- 
+entity "TenantEmailIntegration" as tenant_email {
+        *id : UUID <<PK>>
+        --
+        tenant_profile_id : UUID <<FK>>
+        provider : VARCHAR(20) "GMAIL, MICROSOFT, SMTP_CUSTOM"
+        email_address : VARCHAR(255)
+        is_active : BOOLEAN
+        -- Credenciales OAuth2 --
+        oauth_access_token : TEXT
+        oauth_refresh_token : TEXT
+        oauth_token_expiry : DATETIME
+        -- Credenciales SMTP --
+        smtp_host : VARCHAR(255)
+        smtp_port : INTEGER
+        smtp_user : VARCHAR(255)
+        smtp_password_encrypted : TEXT
+        --
+        created_at : DATETIME
+        updated_at : DATETIME
+    }
+
  Unit {
  UUID id PK
  string name "Ej: 1-A"
