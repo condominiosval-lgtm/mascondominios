@@ -23,17 +23,34 @@ erDiagram
  string national_id
  datetime last_login
  datetime created_at
+ string referral_code
+ integer successful_referrals
  }
  Tenant {
- UUID id PK
- string schema_name
- string name
- boolean is_active
- datetime trial_ends_at
- int purchased_capacity
- decimal credit_balance
- jsonb ai_config "Nuevo: Config IA"
- }
+    UUID id PK
+    string schema_name
+    string name
+    boolean is_active
+    datetime trial_ends_at
+    int purchased_capacity
+    decimal credit_balance
+    jsonb ai_config "Nuevo: Config IA"
+    boolean requires_board_approval "Nuevo: Visto Bueno"
+    string base_currency "Nuevo: USD/VES"
+    string accounting_strategy "Nuevo: Logica Contable"
+    decimal monthly_interest_rate "Nuevo: Mora"
+    string referred_by_code "Nuevo: Viralidad"
+}
+SaaSPromotion {
+    UUID id PK
+    string code "Unique"
+    string trigger_type "MANUAL/AUTO"
+    string discount_type
+    decimal discount_value
+    datetime start_date
+    datetime end_date
+    boolean is_active
+}
  Domain {
  string domain PK
  boolean is_primary
