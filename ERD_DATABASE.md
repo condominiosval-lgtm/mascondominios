@@ -298,6 +298,7 @@ erDiagram
  UUID id PK
  int fiscal_year_start
  decimal reserve_fund_pct
+ enum expense_method "Nuevo: ALIQUOT / EQUAL"
  }
  AdministratorBond {
  UUID id PK
