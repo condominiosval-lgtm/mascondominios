@@ -41,6 +41,7 @@ Tenant {
  string accounting_strategy "Nuevo: Logica Dual"
  decimal monthly_interest_rate "Nuevo: Mora"
  string referred_by_code "Nuevo: Attribution"
+ string proration_strategy "Prorrateo"
 }
 
 SaaSPromotion {
