@@ -40,6 +40,7 @@ Representa el Condominio (Cliente del SaaS).
 | `purchased_capacity` | INTEGER | Not Null | Cantidad de unidades contratadas. |
 | `credit_balance` | DECIMAL | Default: 0.00 | Saldo a favor para pagar suscripción. |
 | `ai_config` | JSONB | Nullable | **(Nuevo)** Configuración del bot (tono, permisos, bienvenida). |
+| requires_board_approval | BOOLEAN | Default: False | Si es TRUE, el cierre de mes requiere Visto Bueno de la Junta. |
 
 ### Tabla: Domain
 Dominios personalizados para acceso.
@@ -217,6 +218,22 @@ Periodos de facturación.
 | `start_date` | DATE | Not Null | Inicio del periodo. |
 | `end_date` | DATE | Not Null | Fin del periodo. |
 | `is_closed` | BOOLEAN | Default: False | Si el periodo está cerrado contablemente. |
+
+### Tabla: ExpenseSettlement
+Representa el "Cierre de Mes" o "Relación de Gastos". Agrupa todas las transacciones de un periodo para ser auditados antes de generar la facturación.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único del cierre. |
+| `tenant_id` | UUID | FK -> Tenant | El condominio asociado. |
+| `period_start` | DATE | Not Null | Inicio del periodo fiscal (ej: 01/01/2026). |
+| `period_end` | DATE | Not Null | Fecha de corte/fin del periodo (ej: 31/01/2026). |
+| `total_amount` | DECIMAL | Not Null | Monto total en Divisa Base a distribuir. |
+| `status` | VARCHAR | Not Null | 'DRAFT', 'WAITING_BOARD', 'APPROVED', 'REJECTED'. |
+| `approved_by` | UUID | FK -> User | ID del miembro de Junta que aprobó (si aplica). |
+| `approved_at` | DATETIME | Nullable | Fecha y hora de la aprobación. |
+| `board_comments` | JSONB | Nullable | Historial de notas o rechazos de la junta. |
+| `created_at` | DATETIME | Default: Now | Fecha de creación del borrador. |
 
 ### Tabla: Bill
 Recibo de Condominio (Aviso de Cobro).
