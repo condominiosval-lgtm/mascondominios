@@ -527,6 +527,8 @@ entity "TenantEmailIntegration" as tenant_email {
  TenantProfile ||--o{ AIChatSession : "inicia chat"
  AIChatSession ||--o{ AIChatMessage : "tiene mensajes"
  Tenant ||--o{ AIKnowledgeBase : "memoria vectorial"
+ %% Onboarding
+    ImportBatch ||--o{ ImportRow : "contiene filas"
 
 %% =======================================================
  %% GRUPO 8: MARKETPLACE (CROSS-SCHEMA)
@@ -564,6 +566,33 @@ entity "TenantEmailIntegration" as tenant_email {
  text comment
  boolean is_public
  }
+%% =======================================================
+    %% GRUPO 9: ONBOARDING & DATA STAGING
+    %% =======================================================
+
+    ImportBatch {
+        UUID id PK
+        string file_name
+        string batch_type "UNITS, PROVIDERS, ACCOUNTS, EXPENSES"
+        string status "UPLOADING, ANALYZING, WAITING_APPROVAL, COMPLETED"
+        int total_rows
+        int error_count
+        boolean used_ai_mapping
+        datetime created_at
+        datetime executed_at
+    }
+
+    ImportRow {
+        UUID id PK
+        UUID batch_id FK
+        int row_number
+        jsonb raw_data
+        jsonb mapped_data
+        jsonb validation_errors
+        boolean is_valid
+    }
+    
+    class ImportBatch,ImportRow opsFill
  
  class MarketplaceCategory,MarketplaceProvider publicFill
  class ServiceOrder,ProviderReview opsFill
