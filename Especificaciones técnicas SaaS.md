@@ -281,7 +281,13 @@ Optimización de Carga: Se implementará la librería browser-image-compression 
 <li><strong>Finalización:</strong> Marca <code>is_completed = True</code> en base de datos y libera la interfaz completa.</li>
 </ol>
 <h2 id="aseguramiento-de-la-calidad-qa-y-testing"><strong>Aseguramiento de la Calidad (QA y Testing):</strong></h2>
-<p>Dado que el sistema maneja dinero y datos legales sensibles, se prohíbe confiar ciegamente en el código generado. Se implementará Pytest como suite de pruebas. Se establece como regla de desarrollo que cada módulo crítico (cálculo de alícuotas, conversión de divisas, generación de deuda) debe incluir sus Tests Unitarios automatizados para validar matemáticamente la lógica. Esto servirá de “red de seguridad” para evitar regresiones cuando la IA realice refactorizaciones.</p>
+<p>Dado que el sistema maneja dinero y datos legales sensibles, se prohíbe confiar ciegamente en el código generado. Se implementará Pytest como suite de pruebas. Se establece como regla de desarrollo que cada módulo crítico (cálculo de alícuotas, conversión de divisas, generación de deuda) debe incluir sus Tests Unitarios automatizados para validar matemáticamente la lógica. Esto servirá de “red de seguridad” para evitar regresiones cuando la IA realice refactorizaciones</p>
+<h2 id="sistema-de-auditoría-forense-audit-trail">2.7 Sistema de Auditoría Forense (Audit Trail)</h2>
+<ul>
+<li><strong>Interceptores de Escritura (Middleware):</strong> Implementación de mecanismos a nivel de ORM (Django Signals) que interceptan automáticamente todas las operaciones de escritura (<code>CREATE</code>, <code>UPDATE</code>, <code>DELETE</code>) en modelos críticos, asegurando que ningún cambio de datos ocurra sin dejar rastro, incluso si se realiza desde la consola administrativa.</li>
+<li><strong>Trazabilidad Inmutable:</strong> Generación de registros blindados en la tabla <code>AuditLog</code> que vinculan inequívocamente cada transacción con el Actor (<code>user_id</code>), la Ubicación de Red (<code>IP Address</code>) y el Dispositivo (<code>User Agent</code>), garantizando el principio de “No Repudio” legal.</li>
+<li><strong>Snapshot Diferencial (JSON Diff):</strong> Almacenamiento optimizado de los cambios en formato JSONB, guardando exclusivamente la diferencia entre el estado anterior y el nuevo (ej: <code>aliquot: {old: 1.5, new: 1.6}</code>), lo que permite reconstruir la historia de cualquier dato financiero y detectar fraudes internos.</li>
+</ul>
 <h2 id="microservicio-de-verificación-fiscal-seniat-integration">2.6 Microservicio de Verificación Fiscal (SENIAT Integration)</h2>
 <ul>
 <li><strong>Arquitectura de Scraping Ligero:</strong> Implementación de un módulo de consulta en tiempo real utilizando <strong><code>requests</code></strong> y <strong><code>BeautifulSoup4</code></strong> para validar RIFs directamente contra el portal público del SENIAT, garantizando la exactitud de la Razón Social de Condominios y Proveedores.</li>
@@ -1380,6 +1386,17 @@ Script de despliegue automatizado que:</p>
 <ul>
 <li><strong>Proveedor:</strong> AWS RDS o DigitalOcean Managed PostgreSQL.</li>
 <li><strong>Configuración:</strong> Backups automáticos diarios, Point-in-Time Recovery (PITR) y aislamiento total del servidor de aplicaciones. Esto protege la data crítica ante fallos catastróficos del servidor web.</li>
+</ul>
+<h2 id="estrategia-de-continuidad-y-respaldos-backup-policy">6.5 Estrategia de Continuidad y Respaldos (Backup Policy)</h2>
+<ul>
+<li><strong>Regla 3-2-1:</strong> Implementación estándar de seguridad: 3 copias de los datos, en 2 medios diferentes, 1 de ellas fuera del sitio (Off-site).
+<ul>
+<li><strong>Nivel 1 (Provider):</strong> Snapshots automáticos diarios de toda la instancia RDS (Retención: 30 días).</li>
+<li><strong>Nivel 2 (Tenant):</strong> Funcionalidad “On-Demand” que permite al administrador generar un volcado <code>.zip</code> que incluye su esquema de base de datos (JSON/SQL) y sus archivos multimedia (Recibos).</li>
+</ul>
+</li>
+<li><strong>Aislamiento de Datos:</strong> El proceso de respaldo utiliza <code>pg_dump</code> a nivel de esquema (<code>schema-level export</code>), garantizando que un condominio nunca pueda acceder a los datos de otro vecino, incluso al descargar su copia completa.</li>
+<li><strong>Cifrado:</strong> Los respaldos generados se almacenan en un Bucket S3 privado con cifrado del lado del servidor (SSE-S3) y solo son accesibles mediante URLs firmadas con caducidad de tiempo (Time-To-Live).</li>
 </ul>
 <h1 id="esquemas">ESQUEMAS</h1>
 <h2 id="modelo-de-negocio-y-arquitectura-física"><strong>Modelo de Negocio y Arquitectura Física:</strong></h2>
