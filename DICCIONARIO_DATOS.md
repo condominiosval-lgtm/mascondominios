@@ -47,6 +47,7 @@ Representa el Condominio (Cliente del SaaS).
 | accounting_strategy | ENUM | 'USD_INDEXED', 'VES_HISTORIC'. Default: 'USD_INDEXED' | Motor de cálculo. USD_INDEXED: Deuda indexada a la tasa del día (Opción 1). VES_HISTORIC: Deuda fija en Bs + Interés de Mora (Opción 2). |
 | monthly_interest_rate | DECIMAL | Default: 0.00 | Porcentaje de interés de mora mensual (Ej: 3.00). Solo aplica si la estrategia es VES_HISTORIC. |
 | referred_by_code | VARCHAR(12) | Nullable | Código del usuario (referral_code) que recomendó este condominio. Se usa para atribuir la recompensa. |
+| proration_strategy | ENUM | 'ALIQUOT_BASED', 'EQUAL_UNITS'. Default: 'ALIQUOT_BASED' | Define la fórmula de reparto de gastos comunes. <br>ALIQUOT_BASED: Usa el % de propiedad (Legal). <br>EQUAL_UNITS: Divide el total entre la cantidad de unidades activas (Informal). |
 
 ### Tabla: Domain
 Dominios personalizados para acceso.
