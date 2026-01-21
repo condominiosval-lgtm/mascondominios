@@ -435,6 +435,21 @@ Bitácora de acceso (Vigilancia).
 | `visitor_id_doc` | VARCHAR(20) | Not Null | Cédula visitante. |
 | `entry_time` | DATETIME | Default: Now | Hora entrada. |
 
+### AuditLog
+El "Caja Negra" del sistema. Registra cada movimiento crítico para fines legales y de seguridad. Permite responder: "¿Quién, cuándo, desde dónde y qué cambió exactamente?".
+
+| Columna | Tipo | Descripción |
+| :--- | :--- | :--- |
+| `id` | UUID | Identificador único del evento. |
+| `user_id` | UUID | Usuario que ejecutó la acción (Admin, Vigilante, Vecino). |
+| `action` | VARCHAR(20) | Tipo de evento: `'CREATE'`, `'UPDATE'`, `'DELETE'`, `'LOGIN_SUCCESS'`, `'LOGIN_FAILED'`, `'SENSITIVE_VIEW'`. |
+| `table_name` | VARCHAR(50) | Nombre de la tabla afectada (ej: `'Payment'`). |
+| `record_id` | UUID | ID del registro específico afectado. |
+| `changes` | JSONB | **Crítico.** Almacena el diferencial. Ej: `{"aliquot": {"old": 1.5, "new": 1.6}}`. Si es CREATE, guarda el objeto nuevo. |
+| `ip_address` | INET | Dirección IP del cliente para rastreo forense. |
+| `user_agent` | VARCHAR | Datos del navegador o dispositivo (ej: "Chrome on Android"). |
+| `created_at` | DATETIME | Fecha exacta del evento (Timestamp). |
+
 ### Tabla: GuestInvitation
 Invitaciones digitales (QR).
 
