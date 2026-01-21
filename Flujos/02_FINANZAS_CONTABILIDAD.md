@@ -429,3 +429,65 @@ Egresos (Pagado real + Por pagar).
 Conciliación (Saldo Banco vs Saldo Libro).
 Lista de Morosos (Unidad + Monto $).
 Gráficos de Torta (Gastos por Categoría).
+
+**Función #62: Cierre de Mes (Settlement) y Facturación**
+
+**1. Ficha Técnica**
+
+*   **Contexto:** Proceso crítico donde se consolidan los gastos del mes y se convierten en deuda para los vecinos.
+*   **Novedad:** Soporta modalidad "Auditada" donde la Junta debe aprobar los gastos antes de emitir recibos.
+*   **Ubicación en BD:** `ExpenseSettlement` (Nueva Tabla), `Bill`, `JournalEntry`.
+*   **Trigger:** Manual (Admin pulsa "Cerrar Mes").
+
+**2. Diagrama de Secuencia Lógico**
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Admin
+    participant BE as Backend (Settlement Engine)
+    participant DB as BD
+    participant Junta as Junta Condominio
+    participant Users as Vecinos
+
+    Note over Admin, Junta: FASE 1: CÁLCULO PRELIMINAR
+
+    Admin->>BE: POST /api/settlement/close/ {period: "2026-01"}
+    BE->>BE: Validar conciliación bancaria completa
+    BE->>DB: Sum(Expenses) WHERE date in Period
+    BE->>DB: INSERT ExpenseSettlement (status='DRAFT', total=$5000)
+    BE-->>Admin: 200 OK (Muestra PDF Borrador)
+
+    Note over Admin, Junta: FASE 2: AUDITORÍA (Si requires_board_approval = True)
+
+    BE->>DB: Check Tenant.requires_board_approval
+    alt Requiere Aprobación
+        BE->>DB: UPDATE ExpenseSettlement SET status='WAITING_BOARD'
+        BE->>Junta: Notificación Push "Cierre disponible para revisión"
+        
+        Junta->>BE: GET /api/settlement/review/
+        
+        alt Junta Rechaza
+            Junta->>BE: POST /reject/ {reason: "Factura duplicada"}
+            BE->>DB: status='REJECTED'
+            BE->>Admin: Alerta "Cierre Rechazado por Junta"
+        else Junta Aprueba
+            Junta->>BE: POST /approve/
+            BE->>DB: status='APPROVED', approved_by=UserJunta
+            BE->>BE: Disparar FASE 3
+        end
+    else No Requiere Aprobación
+        BE->>DB: status='APPROVED'
+        BE->>BE: Disparar FASE 3
+    end
+
+    Note over BE, Users: FASE 3: EMISIÓN DE DEUDA
+
+    BE->>DB: Fetch Units & Aliquots
+    loop Cada Unidad
+        BE->>BE: Calc Monto = TotalGastos * Alícuota
+        BE->>DB: INSERT Bill (status='UNPAID', amount_usd=$$)
+    end
+    
+    BE->>DB: INSERT JournalEntry (Debit: CxC, Credit: Ingresos)
+    BE->>Users: Email/Push "Ya llegó tu recibo de Enero"
