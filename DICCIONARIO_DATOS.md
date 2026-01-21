@@ -113,6 +113,17 @@ Ficha del Proveedor (Visible para todos).
 | `whatsapp` | VARCHAR(20) | Not Null | Número para Click-to-Chat. |
 | `service_zone` | JSONB | Not Null | Array de ciudades: `["Caracas", "Valencia"]`. |
 
+### HelpContent
+Almacena las cápsulas de conocimiento para el módulo de "Smart Help". Permite gestionar dinámicamente qué videos y preguntas aparecen en cada pantalla.
+
+| Columna | Tipo | Descripción |
+| :--- | :--- | :--- |
+| `id` | UUID | Identificador único. |
+| `title` | VARCHAR | La pregunta que ve el usuario (ej: "¿Cómo anular una factura?"). |
+| `search_keywords` | TEXT | Palabras ocultas para mejorar la búsqueda difusa (ej: "borrar, cancelar, equivocación"). |
+| `video_url` | VARCHAR | Enlace al GIF o video corto explicativo (Loom/S3). |
+| `module_tag` | VARCHAR | Etiqueta que indica en qué pantalla debe aparecer esto (ej: `'BILLING_DASHBOARD'`). |
+| `is_active` | BOOLEAN | Si el contenido está visible. |
 
 ## GRUPO 2: IDENTIDAD & UNIDADES (TENANT SCHEMA)
 *Datos específicos de los residentes y propiedades dentro del condominio.*
