@@ -294,6 +294,9 @@ Optimización de Carga: Se implementará la librería browser-image-compression 
 <li><strong>Gestión de Latencia (Timeout Handler):</strong> Configuración estricta de “Tiempo de Vida” de la petición (Max 5 segundos). Si el ente gubernamental no responde, el proceso se aborta automáticamente para no congelar el servidor (<code>Graceful Degradation</code>), permitiendo al usuario continuar con la carga manual.</li>
 <li><strong>Caching Temporal:</strong> Almacenamiento efímero de resultados exitosos en Redis para evitar consultas repetitivas al servicio externo sobre el mismo RIF durante una sesión.</li>
 </ul>
+<h1 id="motor-de-aprobaciones-workflow-engine"><strong>Motor de Aprobaciones (Workflow Engine):</strong></h1>
+<p>Implementación de flujos de trabajo basados en estados (State Machines) para procesos críticos (ej: Cierre de Mes).</p>
+<p>Soporte para roles de “Auditor” (Junta de Condominio) que interceptan transacciones antes de su commit definitivo (<code>WAITING_BOARD</code> -&gt; <code>APPROVED</code>).</p>
 <h1 id="detalles-inherentes-a-la-app-nativa"><strong>Detalles inherentes a la App nativa:</strong></h1>
 <p>La aplicación móvil estará disponible tanto para administradores como para administrados. Será una aplicación que garantice su funcionamiento en equipos móviles de gama media, así como en equipos de alta gama sean estos Android o iPhone. Como es de esperarse, en el caso de los usuarios, no necesariamente tendrán activas todas las funciones que ofrece el SaaS, ya que las tablas largas pueden ser casi imposibles de mostrar en la aplicación.</p>
 <h2 id="tecnología-a-aplicarse-en-la-app-nativa-android--ios"><strong>Tecnología a aplicarse en la App Nativa (Android / iOS):</strong></h2>
