@@ -127,6 +127,26 @@ Perfil del usuario dentro de un condominio específico.
 | `role` | ENUM | 'ADMIN', 'OWNER', 'RESIDENT' | Rol en este condominio. |
 | `phone_number` | VARCHAR(20) | Not Null | Teléfono verificado localmente. |
 
+### TenantEmailIntegration
+Configuración del motor de envío de correos. Permite al condominio usar su propia identidad (Gmail, Outlook o SMTP) para las notificaciones oficiales en lugar de la dirección genérica de la plataforma.
+
+| Columna | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único del registro. |
+| `tenant_profile_id` | UUID | FK | Relación 1:1 con `TenantProfile`. Vincula la configuración al condominio. |
+| `provider` | VARCHAR(20) | NOT NULL | Proveedor seleccionado: `'GMAIL'`, `'MICROSOFT'`, `'SMTP_CUSTOM'`. |
+| `email_address` | VARCHAR(255) | NOT NULL | La dirección de correo que verán los vecinos (ej: `admin@res-parque.com`). |
+| `is_active` | BOOLEAN | DEFAULT FALSE | Si es `True`, el sistema usa estas credenciales. Si es `False`, usa el default del SaaS. |
+| `oauth_access_token` | TEXT | NULLABLE | (OAuth2) Token de sesión temporal para la API de Google/Microsoft. |
+| `oauth_refresh_token` | TEXT | NULLABLE | (OAuth2) **Crítico**. Token de larga duración para renovar acceso sin pedir logueo nuevamente. |
+| `oauth_token_expiry` | DATETIME | NULLABLE | (OAuth2) Fecha y hora de expiración del token actual. |
+| `smtp_host` | VARCHAR(255) | NULLABLE | (SMTP) Dirección del servidor de correo. |
+| `smtp_port` | INTEGER | NULLABLE | (SMTP) Puerto de conexión (ej: 587). |
+| `smtp_user` | VARCHAR(255) | NULLABLE | (SMTP) Usuario para autenticación. |
+| `smtp_password_encrypted` | TEXT | NULLABLE | (SMTP) Contraseña cifrada a nivel de aplicación (Fernet/AES). |
+| `created_at` | DATETIME | DEFAULT NOW | Fecha de registro. |
+| `updated_at` | DATETIME | DEFAULT NOW | Última modificación. |
+
 ### Tabla: Unit
 Inmuebles (Apartamentos, Locales).
 
