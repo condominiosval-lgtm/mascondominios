@@ -475,6 +475,7 @@ Documento de condominio y reglas base.
 | `id` | UUID | PK | ID regla. |
 | `fiscal_year_start` | INTEGER | Check (1-12) | Mes inicio año fiscal. |
 | `reserve_fund_pct` | DECIMAL | Not Null | % Fondo Reserva. |
+| `expense_method` | ENUM | 'ALIQUOT', 'EQUAL' | Default: 'ALIQUOT'. Define si el cobro estándar es por % o partes iguales. |
 
 ### Tabla: AdministratorBond
 Fianza del administrador.
