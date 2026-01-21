@@ -291,6 +291,16 @@ entity "OnboardingState" as onboarding_state {
         VARCHAR user_agent "Navegador/Dispositivo"
         DATETIME created_at
     }
+entity "TenantBackup" as tenant_backup {
+        UUID id PK
+        UUID tenant_id FK
+        UUID requested_by FK "Usuario que pidió el respaldo"
+        VARCHAR status "PENDING, PROCESSING, COMPLETED, FAILED"
+        VARCHAR file_url "Link seguro temporal (S3 Presigned URL)"
+        INTEGER file_size_bytes
+        DATETIME created_at
+        DATETIME expires_at "El link deja de funcionar en 48h"
+    }
  GuestInvitation {
  UUID id PK
  string qr_token
@@ -478,6 +488,7 @@ entity "OnboardingState" as onboarding_state {
  PlanCatalog ||--|{ PlanTier : "niveles"
  Tenant ||--o{ SaaSPayment : "facturacion saas"
  Tenant ||--o{ IntegrationConfig : "integraciones"
+Tenant ||--o{ TenantBackup : "genera respaldos"
  tenant ||--o{ onboarding_state : "rastrea progreso usuarios"
  
  %% Identidad & Propiedad (CORREGIDO)
