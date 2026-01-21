@@ -76,26 +76,21 @@ erDiagram
  string phone_number
  }
 entity "TenantEmailIntegration" as tenant_email {
-        *id : UUID <<PK>>
-        --
-        tenant_profile_id : UUID <<FK>>
-        provider : VARCHAR(20) "GMAIL, MICROSOFT, SMTP_CUSTOM"
-        email_address : VARCHAR(255)
-        is_active : BOOLEAN
-        -- Credenciales OAuth2 --
-        oauth_access_token : TEXT
-        oauth_refresh_token : TEXT
-        oauth_token_expiry : DATETIME
-        -- Credenciales SMTP --
-        smtp_host : VARCHAR(255)
-        smtp_port : INTEGER
-        smtp_user : VARCHAR(255)
-        smtp_password_encrypted : TEXT
-        --
-        created_at : DATETIME
-        updated_at : DATETIME
+        UUID id PK
+        UUID tenant_profile_id FK
+        VARCHAR provider
+        VARCHAR email_address
+        BOOLEAN is_active
+        TEXT oauth_access_token
+        TEXT oauth_refresh_token
+        DATETIME oauth_token_expiry
+        VARCHAR smtp_host
+        INTEGER smtp_port
+        VARCHAR smtp_user
+        TEXT smtp_password_encrypted
+        DATETIME created_at
+        DATETIME updated_at
     }
-
  Unit {
  UUID id PK
  string name "Ej: 1-A"
@@ -447,6 +442,7 @@ entity "TenantEmailIntegration" as tenant_email {
  
  %% Core & Tenants
  User ||--o{ TenantProfile : "tiene perfil"
+ TenantProfile ||--|| tenant_email : "configura email"
  Tenant ||--o{ Domain : "accesible via"
  Tenant ||--o{ PlanCatalog : "plan suscrito"
  PlanCatalog ||--|{ PlanTier : "niveles"
