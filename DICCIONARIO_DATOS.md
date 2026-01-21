@@ -708,3 +708,34 @@ Calificación del servicio (Alimenta la reputación global).
 | `rating` | INTEGER | Check (1-5) | Estrellas. |
 | `comment` | TEXT | Nullable | Opinión cualitativa. |
 | `is_public` | BOOLEAN | Default: True | Si es visible en el perfil público. |
+
+## 9. Onboarding y Migración (Staging)
+Este módulo contiene las tablas temporales utilizadas por el "Asistente de Importación" (Wizard). Su función es almacenar, limpiar y validar datos masivos provenientes de Excel/CSV antes de ser migrados a las tablas definitivas del sistema.
+
+### ImportBatch
+Representa un lote de carga (un archivo subido). Controla el ciclo de vida de la importación.
+
+| Columna | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único del lote. |
+| `file_name` | VARCHAR(255) | NOT NULL | Nombre original del archivo (ej: `Gastos_Enero.xlsx`). |
+| `batch_type` | VARCHAR(20) | NOT NULL | Tipo de datos: `'UNITS'` (Inmuebles), `'PROVIDERS'` (Proveedores), `'ACCOUNTS'` (Plan de Cuentas), `'EXPENSES'` (Histórico). |
+| `status` | VARCHAR(20) | NOT NULL | Estado: `'UPLOADING'`, `'ANALYZING'` (Procesando), `'WAITING_APPROVAL'` (Usuario revisando), `'COMPLETED'`, `'FAILED'`. |
+| `total_rows` | INTEGER | DEFAULT 0 | Cantidad de filas detectadas en el archivo. |
+| `error_count` | INTEGER | DEFAULT 0 | Cantidad de filas con errores de validación. |
+| `used_ai_mapping` | BOOLEAN | DEFAULT FALSE | `True` si se utilizó Inteligencia Artificial (LLM) para inferir las columnas; `False` si se usó Lógica Difusa. |
+| `created_at` | DATETIME | DEFAULT NOW | Fecha de creación del lote. |
+| `executed_at` | DATETIME | NULLABLE | Fecha en que se confirmó la migración a producción. |
+
+### ImportRow
+Almacena el detalle granular de cada fila del archivo importado para permitir su edición y validación individual.
+
+| Columna | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único de la fila. |
+| `batch_id` | UUID | FK | Relación con la tabla `ImportBatch`. |
+| `row_number` | INTEGER | NOT NULL | Número de fila en el Excel original (para referencia visual del usuario). |
+| `raw_data` | JSONB | NOT NULL | Objeto JSON con los datos crudos tal como vinieron del archivo. |
+| `mapped_data` | JSONB | NULLABLE | Objeto JSON con los datos normalizados y sugeridos por el sistema. |
+| `validation_errors` | JSONB | DEFAULT [] | Lista de errores de negocio (ej: ["RUT duplicado", "Monto negativo"]). |
+| `is_valid` | BOOLEAN | DEFAULT FALSE | Indica si la fila está limpia y lista para ser importada. |
