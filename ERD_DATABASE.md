@@ -349,6 +349,18 @@ entity "TenantBackup" as tenant_backup {
  %% =======================================================
  %% GRUPO 5: LEGAL Y GOBIERNO
  %% =======================================================
+ entity "AdminContract" as admin_contract {
+        UUID id PK
+        UUID tenant_id FK
+        VARCHAR document_url "PDF del contrato firmado"
+        DATE start_date "Fecha inicio gestión"
+        DATE end_date "Fecha fin (Vital para alertas)"
+        BOOLEAN auto_renewal "Si se renueva autom."
+        BOOLEAN is_active "Contrato vigente actual"
+        VARCHAR administrator_name "Nombre Rep. Legal o Empresa"
+        VARCHAR administrator_id "RIF/Cédula"
+        DATETIME created_at
+    }
  CondoConstitution {
  UUID id PK
  int fiscal_year_start
@@ -488,7 +500,8 @@ entity "TenantBackup" as tenant_backup {
  PlanCatalog ||--|{ PlanTier : "niveles"
  Tenant ||--o{ SaaSPayment : "facturacion saas"
  Tenant ||--o{ IntegrationConfig : "integraciones"
-Tenant ||--o{ TenantBackup : "genera respaldos"
+ Tenant ||--o{ TenantBackup : "genera respaldos"
+ Tenant ||--o{ AdminContract : "tiene contratos gestion"
  tenant ||--o{ onboarding_state : "rastrea progreso usuarios"
  
  %% Identidad & Propiedad (CORREGIDO)
