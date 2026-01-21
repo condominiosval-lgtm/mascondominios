@@ -146,6 +146,20 @@ entity "OnboardingState" as onboarding_state {
  decimal ownership_percent
  boolean is_responsible "Recibe Cobro"
  }
+entity "LeaseContract" as lease {
+        UUID id PK
+        VARCHAR lessee_name
+        VARCHAR lessee_tax_id
+        VARCHAR description
+        VARCHAR document_url
+        DECIMAL monthly_fee
+        DECIMAL security_deposit
+        DATE start_date
+        DATE end_date
+        INTEGER notification_days
+        BOOLEAN auto_renewal
+        BOOLEAN is_active
+    }
  
  class TenantProfile,Unit,UnitOwner opsFill
 
