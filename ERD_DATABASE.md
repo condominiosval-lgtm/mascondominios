@@ -17,42 +17,43 @@ erDiagram
  %% GRUPO 1: CORE SAAS (PUBLIC SCHEMA)
  %% =======================================================
 User {
-    UUID id PK
-    string email
-    string password_hash
-    string national_id
-    datetime last_login
-    datetime created_at
-    string referral_code "Nuevo: Viral"
-    integer successful_referrals "Nuevo: Gamification"
+ UUID id PK
+ string email
+ string password_hash
+ string national_id
+ datetime last_login
+ datetime created_at
+ string referral_code "Nuevo: Viral"
+ integer successful_referrals "Nuevo: Gamification"
 }
 
 Tenant {
-    UUID id PK
-    string schema_name
-    string name
-    boolean is_active
-    datetime trial_ends_at
-    int purchased_capacity
-    decimal credit_balance
-    jsonb ai_config
-    boolean requires_board_approval "Nuevo: Visto Bueno"
-    string base_currency "Nuevo: USD/VES"
-    string accounting_strategy "Nuevo: Logica Dual"
-    decimal monthly_interest_rate "Nuevo: Mora"
-    string referred_by_code "Nuevo: Attribution"
+ UUID id PK
+ string schema_name
+ string name
+ boolean is_active
+ datetime trial_ends_at
+ int purchased_capacity
+ decimal credit_balance
+ jsonb ai_config
+ boolean requires_board_approval "Nuevo: Visto Bueno"
+ string base_currency "Nuevo: USD/VES"
+ string accounting_strategy "Nuevo: Logica Dual"
+ decimal monthly_interest_rate "Nuevo: Mora"
+ string referred_by_code "Nuevo: Attribution"
 }
 
 SaaSPromotion {
-    UUID id PK
-    string code "Unique Index"
-    string trigger_type "MANUAL/AUTO"
-    string discount_type
-    decimal discount_value
-    datetime start_date
-    datetime end_date
-    boolean is_active
+ UUID id PK
+ string code "Unique Index"
+ string trigger_type "MANUAL/AUTO"
+ string discount_type
+ decimal discount_value
+ datetime start_date
+ datetime end_date
+ boolean is_active
 }
+
  Domain {
  string domain PK
  boolean is_primary
@@ -70,16 +71,6 @@ SaaSPromotion {
  decimal unit_price_usd
  UUID plan_id FK
  }
-entity "SaaSPromotion" as promo {
-        UUID id PK
-        VARCHAR code
-        ENUM trigger_type
-        ENUM discount_type
-        DECIMAL discount_value
-        DATETIME start_date
-        DATETIME end_date
-        BOOLEAN is_active
-    }
  SaaSPayment {
  UUID id PK
  decimal amount_bs
@@ -93,15 +84,15 @@ entity "SaaSPromotion" as promo {
  string webhook_url
  }
  HelpContent {
-        UUID id PK
-        string title
-        string search_keywords "Palabras clave para Fuse.js"
-        string video_url "Link al micro-video"
-        string module_tag "Contexto: BILLING, SECURITY, ETC"
-        boolean is_active
-    }
+ UUID id PK
+ string title
+ string search_keywords "Palabras clave para Fuse.js"
+ string video_url "Link al micro-video"
+ string module_tag "Contexto: BILLING, SECURITY, ETC"
+ boolean is_active
+ }
 
- class User,Tenant,Domain,PlanCatalog,PlanTier,SaaSPayment,IntegrationConfig publicFill
+ class User,Tenant,Domain,PlanCatalog,PlanTier,SaaSPayment,IntegrationConfig,SaaSPromotion publicFill
 
  %% =======================================================
  %% GRUPO 2: IDENTIDAD & UNIDADES (TENANT SCHEMA)
