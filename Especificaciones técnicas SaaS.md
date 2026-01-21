@@ -67,14 +67,14 @@ extensions:
 </li>
 <li><a href="#bloque-3-administraci%C3%B3n-cobranza-y-legal-back-office">BLOQUE 3: ADMINISTRACIÓN Y LEGAL (Back-Office)</a>
 <ul>
-<li><a href="#motor-de-emisi%C3%B3n-masiva-y-gateway-de-comunicaciones-automatizado-omnicanalidad-whatsapp-email--push">Motor de Emisión Masiva Omnicanal</a></li>
+<li><a href="#motor-de-emisi%C3%B3n-masiva-y-gateway-de-comunicaciones-automatizado-omnicanalidad-whatsapp--email--push">Motor de Emisión Masiva Omnicanal</a></li>
 <li><a href="#motor-de-gesti%C3%B3n-de-morosidad-configurable-y-cobranza-asistida-rules-engine-kanban--approval-workflow">Gestión de Morosidad Configurable</a></li>
 <li><a href="#kiosco-de-autoservicio-legal-y-validaci%C3%B3n-documental-legaltech">Kiosco de Autoservicio Legal</a></li>
 </ul>
 </li>
 <li><a href="#bloque-4-operaciones-f%C3%ADsicas-seguridad-y-staff-facility-management">BLOQUE 4: OPERACIONES Y SEGURIDAD (Facility Management)</a>
 <ul>
-<li><a href="#ecosistema-de-seguridad-integral-control-de-acceso-y-log%C3%ADstica-hardware-agnostic-biometrics--gsm-iot">Ecosistema de Seguridad Integral</a></li>
+<li><a href="#ecosistema-de-seguridad-integral-control-de-acceso-y-log%C3%ADstica-hardware-agnostic-biometrics--gsm--iot">Ecosistema de Seguridad Integral</a></li>
 <li><a href="#log%C3%ADstica-de-servicios-p%C3%BAblicos-y-suministros-utility-dashboard">Logística de Servicios Públicos</a></li>
 <li><a href="#telemetr%C3%ADa-iot-gesti%C3%B3n-de-activos-f%C3%ADsicos-y-control-de-inventarios-facility-management--smart-stock">Telemetría IoT y Gestión de Activos</a></li>
 <li><a href="#gesti%C3%B3n-de-fuerza-laboral-asistencia-biom%C3%A9trica-y-planificaci%C3%B3n-operativa-workforce-management--geofencing">Gestión de Fuerza Laboral</a></li>
@@ -104,11 +104,12 @@ extensions:
 </li>
 <li><a href="#bloque-6-asistente-virtual-inteligente-concierge-ai">BLOQUE 6: ASISTENTE VIRTUAL INTELIGENTE (Concierge AI)</a>
 <ul>
-<li><a href="#visi%C3%B3n-general">Visión General</a></li>
-<li><a href="#arquitectura-funcional">Arquitectura Funcional</a></li>
-<li><a href="#flujo-de-datos-data-flow">Flujo de Datos</a></li>
-<li><a href="#cambios-en-el-modelo-de-datos-erd">Cambios en el Modelo de Datos</a></li>
-<li><a href="#ejemplo-de-implementaci%C3%B3n-backend-django">Ejemplo de Implementación</a></li>
+<li><a href="#61-visi%C3%B3n-general">6.1 Visión General</a></li>
+<li><a href="#62-arquitectura-funcional">6.2 Arquitectura Funcional</a></li>
+<li><a href="#63-flujo-de-datos-data-flow">6.3 Flujo de Datos</a></li>
+<li><a href="#64-cambios-en-el-modelo-de-datos-erd">6.4 Cambios en el Modelo de Datos</a></li>
+<li><a href="#65-ejemplo-de-implementaci%C3%B3n-backend-django">6.5 Ejemplo de Implementación</a></li>
+<li><a href="#66-consideraciones-de-seguridad-y-costos">6.6 Consideraciones de Seguridad</a></li>
 </ul>
 </li>
 <li><a href="#7-integraciones-con-terceros">7. Integraciones con Terceros</a></li>
@@ -127,7 +128,7 @@ extensions:
 <li><a href="#anexo-1-c%C3%B3digo-del-diagrama-erd-mermaid---versi%C3%B3n-final-consolidada">ANEXO 1: Código del ERD (Mermaid)</a></li>
 </ul>
 </li>
-<li><a href="#documentaci%C3%B3n-de-referencia">DOCUMENTACIÓN DE REFERENCIA (ARCHIVOS EXTERNOS)</a>
+<li><a href="#documentaci%C3%B3n-de-referencia">DOCUMENTACIÓN DE REFERENCIA</a>
 <ul>
 <li><a href="./DICCIONARIO_DATOS.md">📘 Diccionario de Datos Completo</a></li>
 <li><a href="./ERD_DATABASE.md">🛠️ Especificaciones de Base de Datos (ERD)</a></li>
@@ -1129,306 +1130,361 @@ Bitácora detallada de mensajes.</p>
 
         <span class="token comment"># 6. Enviar respuesta (WhatsApp API Wrapper)</span>
         WhatsAppService<span class="token punctuation">.</span>send_text<span class="token punctuation">(</span>user_phone<span class="token punctuation">,</span> response<span class="token punctuation">)</span>
-
-<span class="token comment"># ESQUEMAS</span>
-
-<span class="token comment">## **Modelo de Negocio y Arquitectura Física:**</span>
-
-<span class="token comment">### **ESQUEMA 1: Arquitectura de Datos (Modelo Multi-Tenant &amp; Suscripción Granular)**</span>
-
-Este plano define la estructura de la Base de Datos <span class="token punctuation">(</span>PostgreSQL<span class="token punctuation">)</span> para soportar que <span class="token string">"María"</span> tenga <span class="token number">5</span> condominios con pagos independientes y <span class="token string">"Juan"</span> aparezca en todos<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>A<span class="token punctuation">)</span> El Esquema Público <span class="token punctuation">(</span><span class="token string">"Public Schema"</span><span class="token punctuation">)</span><span class="token operator">**</span>
-
-_Aquí vive la información <span class="token keyword">global</span> y la facturación <span class="token keyword">del</span> SaaS<span class="token punctuation">.</span>_
-
-<span class="token operator">**</span>Tabla GlobalUser <span class="token punctuation">(</span>Identidad Única <span class="token operator">-</span> Juan<span class="token operator">/</span>María<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token builtin">id</span><span class="token punctuation">:</span> UUID<span class="token punctuation">.</span>
-
-email<span class="token punctuation">:</span> <span class="token punctuation">(</span>Llave única para login<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-password_hash<span class="token punctuation">:</span> <span class="token punctuation">(</span>Encriptado<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-perfil_base<span class="token punctuation">:</span> <span class="token string">"Administrador"</span> <span class="token operator">/</span> <span class="token string">"Propietario"</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Tabla PlanCatalog <span class="token punctuation">(</span>El Menú <span class="token keyword">del</span> SaaS<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token builtin">id</span><span class="token punctuation">:</span> <span class="token string">"plan_basic_50"</span><span class="token punctuation">.</span>
-
-limite_unidades<span class="token punctuation">:</span> <span class="token number">50</span><span class="token punctuation">.</span>
-
-precio<span class="token punctuation">:</span> $<span class="token number">10</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Tabla Tenant <span class="token punctuation">(</span>La Entidad Facturable <span class="token operator">-</span> El Edificio<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token builtin">id</span><span class="token punctuation">:</span> UUID <span class="token punctuation">(</span>Ej<span class="token punctuation">:</span> Residencias Sol<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-schema_name<span class="token punctuation">:</span> <span class="token string">"tenant_001"</span><span class="token punctuation">.</span>
-
-admin_owner_id<span class="token punctuation">:</span> Vínculo a GlobalUser <span class="token punctuation">(</span>María<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>plan_id<span class="token punctuation">:</span> Vínculo a PlanCatalog <span class="token punctuation">(</span>Aquí vive el cobro<span class="token punctuation">,</span> NO en el usuario<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token operator">**</span>
-
-<span class="token operator">**</span>subscription_status<span class="token punctuation">:</span> <span class="token string">"ACTIVE"</span> <span class="token operator">/</span> <span class="token string">"EXPIRED"</span> <span class="token operator">/</span> <span class="token string">"TRIAL"</span><span class="token punctuation">.</span><span class="token operator">**</span>
-
-trial_ends_at<span class="token punctuation">:</span> Fecha límite de prueba<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Tabla ExchangeRate <span class="token punctuation">(</span>El Histórico <span class="token keyword">del</span> Dólar<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-fecha_hora<span class="token punctuation">:</span> Timestamp<span class="token punctuation">.</span>
-
-tasa<span class="token punctuation">:</span> <span class="token number">50.00</span> Bs<span class="token punctuation">.</span>
-
-fuente<span class="token punctuation">:</span> <span class="token string">"BCV"</span> <span class="token operator">/</span> <span class="token string">"MANUAL_OVERRIDE"</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>B<span class="token punctuation">)</span> Los Esquemas Privados <span class="token punctuation">(</span><span class="token string">"Tenant Schemas"</span><span class="token punctuation">)</span><span class="token operator">**</span>
-
-_Se crea una copia aislada de estas tablas para CADA edificio<span class="token punctuation">.</span> Aquí vive la contabilidad<span class="token punctuation">.</span>_
-
-<span class="token operator">**</span>Tabla TenantProfile <span class="token punctuation">(</span>El Rol Local<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-user_id<span class="token punctuation">:</span> Vínculo al GlobalUser público<span class="token punctuation">.</span>
-
-rol<span class="token punctuation">:</span> <span class="token string">"Junta"</span><span class="token punctuation">,</span> <span class="token string">"Vecino"</span><span class="token punctuation">,</span> <span class="token string">"Conserje"</span><span class="token punctuation">.</span>
-
-unidad_id<span class="token punctuation">:</span> Vínculo al apartamento<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Tabla Transaction <span class="token punctuation">(</span>El Dinero <span class="token operator">-</span> Finanzas<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-tipo<span class="token punctuation">:</span> Deuda <span class="token operator">/</span> Pago<span class="token punctuation">.</span>
-
-monto_usd<span class="token punctuation">:</span> <span class="token punctuation">(</span>Moneda base<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-monto_bs<span class="token punctuation">:</span> <span class="token punctuation">(</span>Moneda visual<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>unique_hash<span class="token punctuation">:</span> <span class="token punctuation">(</span>Constraint de Seguridad<span class="token punctuation">)</span><span class="token operator">**</span> <span class="token operator">-</span><span class="token operator">&gt;</span> _Hash<span class="token punctuation">(</span>Banco <span class="token operator">+</span> Referencia <span class="token operator">+</span> Fecha <span class="token operator">+</span> Monto<span class="token punctuation">)</span>_ para evitar duplicados<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Tabla AuditLog <span class="token punctuation">(</span>La Caja Negra<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-Registro histórico inmutable <span class="token punctuation">(</span>django<span class="token operator">-</span>simple<span class="token operator">-</span>history<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
-
-<span class="token comment">### **ESQUEMA 2: Flujo de la Verdad (Sincronización y Tasas)**</span>
-
-Este plano dicta cómo se mueven los datos entre el mundo offline<span class="token punctuation">,</span> el servidor y la realidad económica<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>A<span class="token punctuation">)</span> El Oráculo <span class="token keyword">del</span> Dólar <span class="token punctuation">(</span>Exchange Rate Flow<span class="token punctuation">)</span><span class="token operator">**</span>
-
-<span class="token operator">**</span>Entrada<span class="token punctuation">:</span><span class="token operator">**</span> Cron Job <span class="token punctuation">(</span>Automático cada 1h<span class="token punctuation">)</span> <span class="token operator">**</span>O<span class="token operator">**</span> Acción Manual <span class="token keyword">del</span> Admin <span class="token punctuation">(</span>Prioridad<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Proceso<span class="token punctuation">:</span><span class="token operator">**</span> El Backend actualiza la tabla ExchangeRate en el esquema público<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Disparador <span class="token punctuation">(</span>Webhook<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span> Si la tasa cambió<span class="token punctuation">,</span> el Backend llama a Vercel<span class="token operator">/</span>Netlify<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Reacción<span class="token punctuation">:</span><span class="token operator">**</span> La Landing Page se recompila sola y <span class="token string">"quema"</span> el nuevo precio en el HTML <span class="token punctuation">(</span>Static Fallback<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Propagación<span class="token punctuation">:</span><span class="token operator">**</span> La nueva tasa se envía a todos los Tenants para los cálculos de deuda en Bs<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>B<span class="token punctuation">)</span> El Protocolo de Sincronización <span class="token punctuation">(</span>Offline <span class="token operator">-</span><span class="token operator">&gt;</span> Online<span class="token punctuation">)</span><span class="token operator">**</span>
-
-_El usuario paga sin internet<span class="token punctuation">.</span>_
-
-<span class="token operator">**</span>Local <span class="token punctuation">(</span>WatermelonDB<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span> Guarda el pago con estado pending_sync<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Conexión <span class="token punctuation">(</span>Network<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span> Al detectar internet<span class="token punctuation">,</span> la App envía el paquete JSON<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Validación <span class="token punctuation">(</span>Backend<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-¿El Tenant está ACTIVE? <span class="token punctuation">(</span>Si está EXPIRED<span class="token punctuation">,</span> rechaza<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-¿Ya existe el unique_hash <span class="token punctuation">(</span>Referencia bancaria<span class="token punctuation">)</span>? <span class="token punctuation">(</span>Si existe<span class="token punctuation">,</span> rechaza<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Cálculo Aditivo<span class="token punctuation">:</span><span class="token operator">**</span> El servidor procesa el pago y recalcula el saldo final<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Respuesta <span class="token punctuation">(</span>Pull<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span> El servidor devuelve <span class="token string">"OK"</span> y el nuevo saldo oficial<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Caché Multimedia<span class="token punctuation">:</span><span class="token operator">**</span> Si la respuesta incluye un recibo PDF<span class="token punctuation">,</span> la App lo descarga al sistema de archivos <span class="token keyword">del</span> celular <span class="token punctuation">(</span>fs<span class="token operator">-</span>cache<span class="token punctuation">)</span> para verlo sin internet a futuro<span class="token punctuation">.</span>
-
-<span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
-
-<span class="token comment">### **ESQUEMA 3: Infraestructura Física (DevOps)**</span>
-
-Este plano muestra dónde se instala cada pieza <span class="token keyword">del</span> rompecabezas<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Capa de Usuario <span class="token punctuation">(</span>Clientes<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token operator">**</span>Landing Page<span class="token punctuation">:</span><span class="token operator">**</span> Hosting Estático <span class="token punctuation">(</span>Vercel<span class="token operator">/</span>Netlify<span class="token punctuation">)</span> <span class="token operator">+</span> React Islands<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Web SaaS<span class="token punctuation">:</span><span class="token operator">**</span> Hosting S3 <span class="token operator">+</span> CloudFront <span class="token punctuation">(</span>SPA React<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>App Móvil<span class="token punctuation">:</span><span class="token operator">**</span> Binarios en Play Store <span class="token operator">/</span> App Store <span class="token punctuation">(</span>React Native<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Capa de Lógica <span class="token punctuation">(</span>Servidores<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token operator">**</span>API Cluster<span class="token punctuation">:</span><span class="token operator">**</span> Contenedores Docker con Django <span class="token operator">+</span> Gunicorn <span class="token punctuation">(</span>Escalables<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Task Workers<span class="token punctuation">:</span><span class="token operator">**</span> Contenedores Celery <span class="token punctuation">(</span>Para generar los PDFs pesados y enviar correos<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Broker<span class="token punctuation">:</span><span class="token operator">**</span> Redis <span class="token punctuation">(</span>Para pasar mensajes entre API y Workers<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Capa de Datos <span class="token punctuation">(</span>Almacenamiento<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token operator">**</span>DB Principal<span class="token punctuation">:</span><span class="token operator">**</span> PostgreSQL con extensión schemas<span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Hot Storage <span class="token punctuation">(</span>S3<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span> Bucket para imágenes y PDFs de recibos recientes <span class="token punctuation">(</span>Privado<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">**</span>Cold Storage <span class="token punctuation">(</span>S3 Archive<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">**</span> Bucket barato para Logs de auditoría de <span class="token operator">+</span><span class="token number">24</span> meses<span class="token punctuation">.</span>
-
-<span class="token comment"># **ANEXOS:**</span>
-
-<span class="token comment">## **ANEXO 1: CÓDIGO DEL DIAGRAMA ERD (MERMAID) - VERSIÓN FINAL CONSOLIDADA**</span>
-
-<span class="token comment"># Esquema ERD</span>
-
-<span class="token punctuation">[</span>Enlace al esquema de relaciones<span class="token punctuation">]</span><span class="token punctuation">(</span>https<span class="token punctuation">:</span><span class="token operator">//</span>github<span class="token punctuation">.</span>com<span class="token operator">/</span>condominiosval<span class="token operator">-</span>lgtm<span class="token operator">/</span>mascondominios<span class="token operator">/</span>blob<span class="token operator">/</span>master<span class="token operator">/</span>ERD_DATABASE<span class="token punctuation">.</span>md?plain<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token comment"># Diccionario</span>
-
-<span class="token punctuation">[</span>Enlace al Diccionario<span class="token punctuation">]</span><span class="token punctuation">(</span>https<span class="token punctuation">:</span><span class="token operator">//</span>github<span class="token punctuation">.</span>com<span class="token operator">/</span>condominiosval<span class="token operator">-</span>lgtm<span class="token operator">/</span>mascondominios<span class="token operator">/</span>blob<span class="token operator">/</span>master<span class="token operator">/</span>DICCIONARIO_DATOS<span class="token punctuation">.</span>md?plain<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token comment"># Esquemas Logicos</span>
-
-<span class="token comment">## [01_CORE_PLATAFORMA.md](https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/01_CORE_PLATAFORMA.md)</span>
-
-<span class="token operator">**</span>Contenido<span class="token punctuation">:</span><span class="token operator">**</span>
-
-
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">1</span><span class="token punctuation">:</span><span class="token operator">**</span> Calculadora de Precios Interactiva<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">2</span><span class="token punctuation">:</span><span class="token operator">**</span> Fallback Estático<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">3</span><span class="token punctuation">:</span><span class="token operator">**</span> Login Global<span class="token punctuation">.</span> 
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">4</span><span class="token punctuation">:</span><span class="token operator">**</span> Perfilamiento de Usuario<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">5</span><span class="token punctuation">:</span><span class="token operator">**</span> Switch de Contexto<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">6</span><span class="token punctuation">:</span><span class="token operator">**</span> Gestión de Núcleo Familiar<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">7</span><span class="token punctuation">:</span><span class="token operator">**</span> Gestión de Staff Operativo<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">8</span><span class="token punctuation">:</span><span class="token operator">**</span> Precios Dinámicos por Volumen<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">9</span><span class="token punctuation">:</span><span class="token operator">**</span> Suscripción por Entidad<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">10</span><span class="token punctuation">:</span><span class="token operator">**</span> Billetera Virtual SaaS<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">11</span><span class="token punctuation">:</span><span class="token operator">**</span> Renovación Masiva<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">12</span><span class="token punctuation">:</span><span class="token operator">**</span> Pasarela C2P Banco Plaza<span class="token punctuation">.</span>
-
-
-<span class="token comment">## [02_FINANZAS_CONTABILIDAD.md](https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/02_FINANZAS_CONTABILIDAD.md)</span>
-
-<span class="token operator">**</span>Contenido<span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">13</span><span class="token punctuation">:</span><span class="token operator">**</span> Economía Bimonetaria<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">14</span><span class="token punctuation">:</span><span class="token operator">**</span> Oráculo de Tasas<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">15</span><span class="token punctuation">:</span><span class="token operator">**</span> Indexación Dinámica de Deuda<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">16</span><span class="token punctuation">:</span><span class="token operator">**</span> Conciliación Bancaria Híbrida<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">17</span><span class="token punctuation">:</span><span class="token operator">**</span> Taquilla de Cobro Manual<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">18</span><span class="token punctuation">:</span><span class="token operator">**</span> Validación Anti<span class="token operator">-</span>Fraude<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">19</span><span class="token punctuation">:</span><span class="token operator">**</span> Gestión de Fondos Virtuales<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">20</span><span class="token punctuation">:</span><span class="token operator">**</span> Contabilidad Doble Partida<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">21</span><span class="token punctuation">:</span><span class="token operator">**</span> Motor Fiscal <span class="token punctuation">(</span>ISLR<span class="token operator">/</span>IVA<span class="token punctuation">)</span>
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">22</span><span class="token punctuation">:</span><span class="token operator">**</span> Generación de Estados Financieros<span class="token punctuation">.</span>
-
-<span class="token comment">## [03_ADMIN_COBRANZA.md](https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/03_ADMIN_COBRANZA.md)</span>
-
-<span class="token operator">**</span>Contenido<span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">23</span><span class="token punctuation">:</span><span class="token operator">**</span> Gateway Omnicanal <span class="token punctuation">(</span>Push<span class="token operator">/</span>Email<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">[</span><span class="token punctuation">[</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">24</span><span class="token punctuation">:</span><span class="token operator">**</span> Microservicio WhatsApp Multi<span class="token operator">-</span>Tenant<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">25</span><span class="token punctuation">:</span><span class="token operator">**</span> Bot de Operaciones<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">26</span><span class="token punctuation">:</span><span class="token operator">**</span> Tablero Kanban de Cobranza<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">27</span><span class="token punctuation">:</span><span class="token operator">**</span> Motor de Reglas de Morosidad<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">28</span><span class="token punctuation">:</span><span class="token operator">**</span> Gestor de Convenios de Pago
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">29</span><span class="token punctuation">:</span><span class="token operator">**</span> Cartelera Virtual de Morosos<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">30</span><span class="token punctuation">:</span><span class="token operator">**</span> Kiosco de Autoservicio Legal<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">31</span><span class="token punctuation">:</span><span class="token operator">**</span> Motor de Emisión y Validación QR<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">32</span><span class="token punctuation">:</span><span class="token operator">**</span> Bloqueo Automático de Documentos<span class="token punctuation">.</span>
-
-<span class="token comment">## [04_OPERACIONES_SEGURIDAD.md](https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/04_OPERACIONES_SEGURIDAD.md)</span>
-
-<span class="token operator">**</span>Contenido<span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">33</span><span class="token punctuation">:</span><span class="token operator">**</span> Validación Offline <span class="token punctuation">(</span>QR Acceso<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">34</span><span class="token punctuation">:</span><span class="token operator">**</span> Pasarela GSM <span class="token punctuation">(</span>Portones<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">35</span><span class="token punctuation">:</span><span class="token operator">**</span> Sincronización Biométrica<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">36</span><span class="token punctuation">:</span><span class="token operator">**</span> Bitácora de Visitas <span class="token punctuation">(</span>Voz<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">37</span><span class="token punctuation">:</span><span class="token operator">**</span> Botón de Pánico Enterprise<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">38</span><span class="token punctuation">:</span><span class="token operator">**</span> Gestión de Paquetería<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">39</span><span class="token punctuation">:</span><span class="token operator">**</span> Semáforo de Servicios Públicos<span class="token punctuation">.</span> <span class="token punctuation">(</span>Nota<span class="token punctuation">:</span> En el texto aparece como título sin número<span class="token punctuation">,</span> justo antes de la <span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">40</span><span class="token punctuation">:</span><span class="token operator">**</span> Bitácora de Cisternas<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">41</span><span class="token punctuation">:</span><span class="token operator">**</span> Gestión de Activos Fijos<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">42</span><span class="token punctuation">:</span><span class="token operator">**</span> Control de Inventarios<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">43</span><span class="token punctuation">:</span><span class="token operator">**</span> Planificador de Rutinas<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">44</span><span class="token punctuation">:</span><span class="token operator">**</span> Control de Asistencia <span class="token punctuation">(</span>Geofencing<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">45</span><span class="token punctuation">:</span><span class="token operator">**</span> Motor de Nómina Híbrida<span class="token punctuation">.</span>
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">46</span><span class="token punctuation">:</span><span class="token operator">**</span> Emisión de Recibos Digitales<span class="token punctuation">.</span>
-
-<span class="token comment">## [05_COMUNIDAD_GOBERNANZA.md](https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/05_COMUNIDAD_GOBERNANZA.md)</span>
-
-<span class="token operator">**</span>Contenido<span class="token punctuation">:</span><span class="token operator">**</span>
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">47</span><span class="token punctuation">:</span><span class="token operator">**</span> Sistema de Tickets PQRS
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">48</span><span class="token punctuation">:</span><span class="token operator">**</span> Asignación Externa <span class="token punctuation">(</span>WhatsApp Work Order<span class="token punctuation">)</span><span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">49</span><span class="token punctuation">:</span><span class="token operator">**</span> Votaciones y Encuestas<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">50</span><span class="token punctuation">:</span><span class="token operator">**</span> Asambleas Híbridas<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">51</span><span class="token punctuation">:</span><span class="token operator">**</span> Libro de Actas con Dictado<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">52</span><span class="token punctuation">:</span><span class="token operator">**</span> Crowdfunding Interno
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">53</span><span class="token punctuation">:</span><span class="token operator">**</span> Cuotas Extraordinarias<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">54</span><span class="token punctuation">:</span><span class="token operator">**</span> Directorio con Semáforo Fiscal<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">55</span><span class="token punctuation">:</span><span class="token operator">**</span> Comparador de Presupuestos<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">56</span><span class="token punctuation">:</span><span class="token operator">**</span> Adjudicación Democrática
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">57</span><span class="token punctuation">:</span><span class="token operator">**</span> Dashboard Analítico<span class="token punctuation">.</span>
-
-<span class="token operator">-</span> <span class="token operator">**</span>Función <span class="token number">58</span><span class="token punctuation">:</span><span class="token operator">**</span> Normalización Financiera<span class="token punctuation">.</span>
-
-<span class="token operator">-</span>  <span class="token operator">**</span>Función <span class="token number">59</span><span class="token punctuation">:</span><span class="token operator">**</span> Health Score <span class="token keyword">del</span> Edificio
 </code></pre>
+<h3 id="módulo-de-visión-artificial-ocr-bancario">6.7 Módulo de Visión Artificial (OCR Bancario)</h3>
+<p>Este submódulo elimina la fricción de la transcripción manual de pagos mediante el reconocimiento inteligente de imágenes.</p>
+<h4 id="visión-general-y-stack">6.7.1 Visión General y Stack</h4>
+<ul>
+<li><strong>Motor de Visión:</strong> Integración con <strong>OpenAI Vision (GPT-4o)</strong> o AWS Textract (configurable vía variables de entorno).</li>
+<li><strong>Procesamiento:</strong> Asíncrono mediante <strong>Celery</strong>. El usuario no espera el procesamiento; el sistema notifica cuando los datos están listos.</li>
+<li><strong>Lógica Difusa (Fuzzy Logic):</strong> Algoritmos en Python para limpieza de errores OCR (ej. corregir confusión entre “8” y “B” en referencias).</li>
+</ul>
+<h4 id="flujo-técnico-technical-flow">6.7.2 Flujo Técnico (Technical Flow)</h4>
+<ol>
+<li><strong>Frontend (App/Web):</strong>
+<ul>
+<li>UX simplificada: Botón “Subir Comprobante”.</li>
+<li>Upload inmediato a Bucket S3 temporal (Privado del Tenant).</li>
+<li>Feedback visual: <em>Skeleton loader</em> (“Analizando comprobante…”).</li>
+</ul>
+</li>
+<li><strong>Backend (Django + Celery):</strong>
+<ul>
+<li><strong>Trigger:</strong> Al recibir la imagen, se dispara <code>tasks.ocr.analyze_payment_proof</code>.</li>
+<li><strong>Extracción:</strong> IA busca patrones de bancos venezolanos (BBVA, Banesco, Mercantil, Zelle). Detecta fechas (DD/MM/AAAA) y normaliza montos (1.000,00 -&gt; 1000.00).</li>
+<li><strong>Respuesta:</strong> Retorna JSON vía WebSocket/Polling para autocompletar el formulario.</li>
+</ul>
+</li>
+</ol>
+<h4 id="cambios-en-base-de-datos-tenant-schema">6.7.3 Cambios en Base de Datos (Tenant Schema)</h4>
+<p>Se modifica la tabla <code>billing_transaction</code> para auditoría del robot.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Campo (Nuevo)</th>
+<th align="left">Tipo</th>
+<th align="left">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>ocr_status</code></td>
+<td align="left">ENUM</td>
+<td align="left"><code>PENDING</code>, <code>PROCESSED</code>, <code>MANUAL_OVERRIDE</code>, <code>FAILED</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>ocr_confidence</code></td>
+<td align="left">DECIMAL</td>
+<td align="left">Puntuación 0.00 - 1.00 (Certeza de la lectura).</td>
+</tr>
+<tr>
+<td align="left"><code>ocr_raw_data</code></td>
+<td align="left">JSONB</td>
+<td align="left">Dump completo de la IA (ej: <code>{"bank_detected": "Banesco"}</code>).</td>
+</tr>
+<tr>
+<td align="left"><code>proof_image</code></td>
+<td align="left">VARCHAR</td>
+<td align="left">URL del archivo en S3.</td>
+</tr>
+</tbody>
+</table><h4 id="lógica-de-sanidad-financiera">6.7.4 Lógica de “Sanidad Financiera”</h4>
+<p>Reglas de negocio que el OCR aplica antes de permitir el registro:</p>
+<ol>
+<li><strong>Detector de Fraude (Anti-Duplicidad):</strong> Busca en el historial de <code>reference</code> si el número ya fue usado en años anteriores. Bloquea el registro si hay coincidencia.</li>
+<li><strong>Validador de Tasa (Snapshot):</strong> Si el pago es en Bolívares, el sistema busca la tasa del día <strong>que aparece en la foto</strong> (no la de hoy) en la tabla <code>rates_historicalrate</code> para validar si el pago cubre la deuda en dólares correctamente.</li>
+</ol>
+<h4 id="user-journey-referencia">6.7.5 User Journey (Referencia)</h4>
+<ul>
+<li><strong>Actor:</strong> Sr. Roberto (65 años).</li>
+<li><strong>Acción:</strong> Sube captura de Pago Móvil Banesco desordenada.</li>
+<li><strong>Resultado:</strong> En &lt;3 segundos, el sistema:
+<ol>
+<li>Detecta Banco: “Banesco”.</li>
+<li>Detecta Fecha: “Hoy”.</li>
+<li>Detecta Referencia: “12900455”.</li>
+<li>Detecta Monto: “1,500.00”.</li>
+<li>Muestra un “Check Verde” de confianza (<code>ocr_confidence &gt; 0.90</code>).</li>
+</ol>
+</li>
+<li><strong>Valor:</strong> El usuario solo confirma. La administradora recibe el pago con la etiqueta “Verificado por IA”, reduciendo la conciliación manual a cero.</li>
+</ul>
+<h1 id="esquemas">ESQUEMAS</h1>
+<h2 id="modelo-de-negocio-y-arquitectura-física"><strong>Modelo de Negocio y Arquitectura Física:</strong></h2>
+<h3 id="esquema-1-arquitectura-de-datos-modelo-multi-tenant--suscripción-granular"><strong>ESQUEMA 1: Arquitectura de Datos (Modelo Multi-Tenant &amp; Suscripción Granular)</strong></h3>
+<p>Este plano define la estructura de la Base de Datos (PostgreSQL) para soportar que “María” tenga 5 condominios con pagos independientes y “Juan” aparezca en todos.</p>
+<p><strong>A) El Esquema Público (“Public Schema”)</strong></p>
+<p><em>Aquí vive la información global y la facturación del SaaS.</em></p>
+<p><strong>Tabla GlobalUser (Identidad Única - Juan/María):</strong></p>
+<p>id: UUID.</p>
+<p>email: (Llave única para login).</p>
+<p>password_hash: (Encriptado).</p>
+<p>perfil_base: “Administrador” / “Propietario”.</p>
+<p><strong>Tabla PlanCatalog (El Menú del SaaS):</strong></p>
+<p>id: “plan_basic_50”.</p>
+<p>limite_unidades: 50.</p>
+<p>precio: $10.</p>
+<p><strong>Tabla Tenant (La Entidad Facturable - El Edificio):</strong></p>
+<p>id: UUID (Ej: Residencias Sol).</p>
+<p>schema_name: “tenant_001”.</p>
+<p>admin_owner_id: Vínculo a GlobalUser (María).</p>
+<p><strong>plan_id: Vínculo a PlanCatalog (Aquí vive el cobro, NO en el usuario).</strong></p>
+<p><strong>subscription_status: “ACTIVE” / “EXPIRED” / “TRIAL”.</strong></p>
+<p>trial_ends_at: Fecha límite de prueba.</p>
+<p><strong>Tabla ExchangeRate (El Histórico del Dólar):</strong></p>
+<p>fecha_hora: Timestamp.</p>
+<p>tasa: 50.00 Bs.</p>
+<p>fuente: “BCV” / “MANUAL_OVERRIDE”.</p>
+<p><strong>B) Los Esquemas Privados (“Tenant Schemas”)</strong></p>
+<p><em>Se crea una copia aislada de estas tablas para CADA edificio. Aquí vive la contabilidad.</em></p>
+<p><strong>Tabla TenantProfile (El Rol Local):</strong></p>
+<p>user_id: Vínculo al GlobalUser público.</p>
+<p>rol: “Junta”, “Vecino”, “Conserje”.</p>
+<p>unidad_id: Vínculo al apartamento.</p>
+<p><strong>Tabla Transaction (El Dinero - Finanzas):</strong></p>
+<p>tipo: Deuda / Pago.</p>
+<p>monto_usd: (Moneda base).</p>
+<p>monto_bs: (Moneda visual).</p>
+<p><strong>unique_hash: (Constraint de Seguridad)</strong> -&gt; <em>Hash(Banco + Referencia + Fecha + Monto)</em> para evitar duplicados.</p>
+<p><strong>Tabla AuditLog (La Caja Negra):</strong></p>
+<p>Registro histórico inmutable (django-simple-history).</p>
+<hr>
+<h3 id="esquema-2-flujo-de-la-verdad-sincronización-y-tasas"><strong>ESQUEMA 2: Flujo de la Verdad (Sincronización y Tasas)</strong></h3>
+<p>Este plano dicta cómo se mueven los datos entre el mundo offline, el servidor y la realidad económica.</p>
+<p><strong>A) El Oráculo del Dólar (Exchange Rate Flow)</strong></p>
+<p><strong>Entrada:</strong> Cron Job (Automático cada 1h) <strong>O</strong> Acción Manual del Admin (Prioridad).</p>
+<p><strong>Proceso:</strong> El Backend actualiza la tabla ExchangeRate en el esquema público.</p>
+<p><strong>Disparador (Webhook):</strong> Si la tasa cambió, el Backend llama a Vercel/Netlify.</p>
+<p><strong>Reacción:</strong> La Landing Page se recompila sola y “quema” el nuevo precio en el HTML (Static Fallback).</p>
+<p><strong>Propagación:</strong> La nueva tasa se envía a todos los Tenants para los cálculos de deuda en Bs.</p>
+<p><strong>B) El Protocolo de Sincronización (Offline -&gt; Online)</strong></p>
+<p><em>El usuario paga sin internet.</em></p>
+<p><strong>Local (WatermelonDB):</strong> Guarda el pago con estado pending_sync.</p>
+<p><strong>Conexión (Network):</strong> Al detectar internet, la App envía el paquete JSON.</p>
+<p><strong>Validación (Backend):</strong></p>
+<p>¿El Tenant está ACTIVE? (Si está EXPIRED, rechaza).</p>
+<p>¿Ya existe el unique_hash (Referencia bancaria)? (Si existe, rechaza).</p>
+<p><strong>Cálculo Aditivo:</strong> El servidor procesa el pago y recalcula el saldo final.</p>
+<p><strong>Respuesta (Pull):</strong> El servidor devuelve “OK” y el nuevo saldo oficial.</p>
+<p><strong>Caché Multimedia:</strong> Si la respuesta incluye un recibo PDF, la App lo descarga al sistema de archivos del celular (fs-cache) para verlo sin internet a futuro.</p>
+<hr>
+<h3 id="esquema-3-infraestructura-física-devops"><strong>ESQUEMA 3: Infraestructura Física (DevOps)</strong></h3>
+<p>Este plano muestra dónde se instala cada pieza del rompecabezas.</p>
+<p><strong>Capa de Usuario (Clientes):</strong></p>
+<p><strong>Landing Page:</strong> Hosting Estático (Vercel/Netlify) + React Islands.</p>
+<p><strong>Web SaaS:</strong> Hosting S3 + CloudFront (SPA React).</p>
+<p><strong>App Móvil:</strong> Binarios en Play Store / App Store (React Native).</p>
+<p><strong>Capa de Lógica (Servidores):</strong></p>
+<p><strong>API Cluster:</strong> Contenedores Docker con Django + Gunicorn (Escalables).</p>
+<p><strong>Task Workers:</strong> Contenedores Celery (Para generar los PDFs pesados y enviar correos).</p>
+<p><strong>Broker:</strong> Redis (Para pasar mensajes entre API y Workers).</p>
+<p><strong>Capa de Datos (Almacenamiento):</strong></p>
+<p><strong>DB Principal:</strong> PostgreSQL con extensión schemas.</p>
+<p><strong>Hot Storage (S3):</strong> Bucket para imágenes y PDFs de recibos recientes (Privado).</p>
+<p><strong>Cold Storage (S3 Archive):</strong> Bucket barato para Logs de auditoría de +24 meses.</p>
+<h1 id="anexos"><strong>ANEXOS:</strong></h1>
+<h2 id="anexo-1-código-del-diagrama-erd-mermaid---versión-final-consolidada"><strong>ANEXO 1: CÓDIGO DEL DIAGRAMA ERD (MERMAID) - VERSIÓN FINAL CONSOLIDADA</strong></h2>
+<h1 id="esquema-erd">Esquema ERD</h1>
+<p><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/ERD_DATABASE.md?plain=1">Enlace al esquema de relaciones</a></p>
+<h1 id="diccionario">Diccionario</h1>
+<p><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/DICCIONARIO_DATOS.md?plain=1">Enlace al Diccionario</a></p>
+<h1 id="esquemas-logicos">Esquemas Logicos</h1>
+<h2 id="core_plataforma.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/01_CORE_PLATAFORMA.md">01_CORE_PLATAFORMA.md</a></h2>
+<p><strong>Contenido:</strong></p>
+<ul>
+<li>
+<p><strong>Función 1:</strong> Calculadora de Precios Interactiva.</p>
+</li>
+<li>
+<p><strong>Función 2:</strong> Fallback Estático.</p>
+</li>
+<li>
+<p><strong>Función 3:</strong> Login Global.</p>
+</li>
+<li>
+<p><strong>Función 4:</strong> Perfilamiento de Usuario.</p>
+</li>
+<li>
+<p><strong>Función 5:</strong> Switch de Contexto.</p>
+</li>
+<li>
+<p><strong>Función 6:</strong> Gestión de Núcleo Familiar.</p>
+</li>
+<li>
+<p><strong>Función 7:</strong> Gestión de Staff Operativo.</p>
+</li>
+<li>
+<p><strong>Función 8:</strong> Precios Dinámicos por Volumen.</p>
+</li>
+<li>
+<p><strong>Función 9:</strong> Suscripción por Entidad.</p>
+</li>
+<li>
+<p><strong>Función 10:</strong> Billetera Virtual SaaS.</p>
+</li>
+<li>
+<p><strong>Función 11:</strong> Renovación Masiva.</p>
+</li>
+<li>
+<p><strong>Función 12:</strong> Pasarela C2P Banco Plaza.</p>
+</li>
+</ul>
+<h2 id="finanzas_contabilidad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/02_FINANZAS_CONTABILIDAD.md">02_FINANZAS_CONTABILIDAD.md</a></h2>
+<p><strong>Contenido:</strong></p>
+<ul>
+<li>
+<p><strong>Función 13:</strong> Economía Bimonetaria.</p>
+</li>
+<li>
+<p><strong>Función 14:</strong> Oráculo de Tasas.</p>
+</li>
+<li>
+<p><strong>Función 15:</strong> Indexación Dinámica de Deuda.</p>
+</li>
+<li>
+<p><strong>Función 16:</strong> Conciliación Bancaria Híbrida.</p>
+</li>
+<li>
+<p><strong>Función 17:</strong> Taquilla de Cobro Manual.</p>
+</li>
+<li>
+<p><strong>Función 18:</strong> Validación Anti-Fraude.</p>
+</li>
+<li>
+<p><strong>Función 19:</strong> Gestión de Fondos Virtuales.</p>
+</li>
+<li>
+<p><strong>Función 20:</strong> Contabilidad Doble Partida.</p>
+</li>
+<li>
+<p><strong>Función 21:</strong> Motor Fiscal (ISLR/IVA)</p>
+</li>
+<li>
+<p><strong>Función 22:</strong> Generación de Estados Financieros.</p>
+</li>
+</ul>
+<h2 id="admin_cobranza.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/03_ADMIN_COBRANZA.md">03_ADMIN_COBRANZA.md</a></h2>
+<p><strong>Contenido:</strong></p>
+<ul>
+<li>
+<p><strong>Función 23:</strong> Gateway Omnicanal (Push/Email).[[</p>
+</li>
+<li>
+<p><strong>Función 24:</strong> Microservicio WhatsApp Multi-Tenant.</p>
+</li>
+<li>
+<p><strong>Función 25:</strong> Bot de Operaciones.</p>
+</li>
+<li>
+<p><strong>Función 26:</strong> Tablero Kanban de Cobranza.</p>
+</li>
+<li>
+<p><strong>Función 27:</strong> Motor de Reglas de Morosidad.</p>
+</li>
+<li>
+<p><strong>Función 28:</strong> Gestor de Convenios de Pago</p>
+</li>
+<li>
+<p><strong>Función 29:</strong> Cartelera Virtual de Morosos.</p>
+</li>
+<li>
+<p><strong>Función 30:</strong> Kiosco de Autoservicio Legal.</p>
+</li>
+<li>
+<p><strong>Función 31:</strong> Motor de Emisión y Validación QR.</p>
+</li>
+<li>
+<p><strong>Función 32:</strong> Bloqueo Automático de Documentos.</p>
+</li>
+</ul>
+<h2 id="operaciones_seguridad.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/04_OPERACIONES_SEGURIDAD.md">04_OPERACIONES_SEGURIDAD.md</a></h2>
+<p><strong>Contenido:</strong></p>
+<ul>
+<li>
+<p><strong>Función 33:</strong> Validación Offline (QR Acceso).</p>
+</li>
+<li>
+<p><strong>Función 34:</strong> Pasarela GSM (Portones).</p>
+</li>
+<li>
+<p><strong>Función 35:</strong> Sincronización Biométrica.</p>
+</li>
+<li>
+<p><strong>Función 36:</strong> Bitácora de Visitas (Voz).</p>
+</li>
+<li>
+<p><strong>Función 37:</strong> Botón de Pánico Enterprise.</p>
+</li>
+<li>
+<p><strong>Función 38:</strong> Gestión de Paquetería.</p>
+</li>
+<li>
+<p><strong>Función 39:</strong> Semáforo de Servicios Públicos. (Nota: En el texto aparece como título sin número, justo antes de la 40).</p>
+</li>
+<li>
+<p><strong>Función 40:</strong> Bitácora de Cisternas.</p>
+</li>
+<li>
+<p><strong>Función 41:</strong> Gestión de Activos Fijos.</p>
+</li>
+<li>
+<p><strong>Función 42:</strong> Control de Inventarios.</p>
+</li>
+<li>
+<p><strong>Función 43:</strong> Planificador de Rutinas.</p>
+</li>
+<li>
+<p><strong>Función 44:</strong> Control de Asistencia (Geofencing).</p>
+</li>
+<li>
+<p><strong>Función 45:</strong> Motor de Nómina Híbrida.</p>
+</li>
+<li>
+<p><strong>Función 46:</strong> Emisión de Recibos Digitales.</p>
+</li>
+</ul>
+<h2 id="comunidad_gobernanza.md"><a href="https://github.com/condominiosval-lgtm/mascondominios/blob/master/Flujos/05_COMUNIDAD_GOBERNANZA.md">05_COMUNIDAD_GOBERNANZA.md</a></h2>
+<p><strong>Contenido:</strong></p>
+<ul>
+<li>
+<p><strong>Función 47:</strong> Sistema de Tickets PQRS</p>
+</li>
+<li>
+<p><strong>Función 48:</strong> Asignación Externa (WhatsApp Work Order).</p>
+</li>
+<li>
+<p><strong>Función 49:</strong> Votaciones y Encuestas.</p>
+</li>
+<li>
+<p><strong>Función 50:</strong> Asambleas Híbridas.</p>
+</li>
+<li>
+<p><strong>Función 51:</strong> Libro de Actas con Dictado.</p>
+</li>
+<li>
+<p><strong>Función 52:</strong> Crowdfunding Interno</p>
+</li>
+<li>
+<p><strong>Función 53:</strong> Cuotas Extraordinarias.</p>
+</li>
+<li>
+<p><strong>Función 54:</strong> Directorio con Semáforo Fiscal.</p>
+</li>
+<li>
+<p><strong>Función 55:</strong> Comparador de Presupuestos.</p>
+</li>
+<li>
+<p><strong>Función 56:</strong> Adjudicación Democrática</p>
+</li>
+<li>
+<p><strong>Función 57:</strong> Dashboard Analítico.</p>
+</li>
+<li>
+<p><strong>Función 58:</strong> Normalización Financiera.</p>
+</li>
+<li>
+<p><strong>Función 59:</strong> Health Score del Edificio</p>
+</li>
+</ul>
 
