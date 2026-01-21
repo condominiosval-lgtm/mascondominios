@@ -51,6 +51,16 @@ erDiagram
  decimal unit_price_usd
  UUID plan_id FK
  }
+entity "SaaSPromotion" as promo {
+        UUID id PK
+        VARCHAR code
+        ENUM trigger_type
+        ENUM discount_type
+        DECIMAL discount_value
+        DATETIME start_date
+        DATETIME end_date
+        BOOLEAN is_active
+    }
  SaaSPayment {
  UUID id PK
  decimal amount_bs
