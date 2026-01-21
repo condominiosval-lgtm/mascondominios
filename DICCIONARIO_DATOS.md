@@ -190,6 +190,10 @@ Movimientos de dinero (Pagos y Egresos).
 | `amount_usd` | DECIMAL | Not Null | Monto calculado en USD. |
 | `rate_applied` | DECIMAL | Not Null | Tasa de cambio usada. |
 | `reference` | VARCHAR(100) | Not Null | Referencia bancaria. |
+| `proof_image` | VARCHAR(500) | Nullable | **(Nuevo)** URL de la captura en S3. |
+| `ocr_status` | ENUM | PENDING, PROCESSED, FAILED | **(Nuevo)** Estado de lectura IA. |
+| `ocr_confidence` | DECIMAL(5,2) | Default: 0.00 | **(Nuevo)** % de seguridad (0.00 - 1.00). |
+| `ocr_raw_data` | JSONB | Nullable | **(Nuevo)** Metadata cruda extraída (Debug). 
 
 ### Tabla: Payment
 Registro de pago de condominio.
