@@ -135,6 +135,10 @@ erDiagram
  decimal amount_usd
  decimal rate_applied
  string reference
+ string proof_image "URL S3"
+ enum ocr_status "Nuevo"
+ decimal ocr_confidence
+ jsonb ocr_raw_data
  }
  Payment {
  UUID id PK
