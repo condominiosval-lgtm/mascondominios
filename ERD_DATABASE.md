@@ -1,5 +1,6 @@
 # Modelo de Base de Datos (ERD)
 
+
 ```mermaid
 erDiagram
  %% =======================================================
@@ -501,8 +502,8 @@ erDiagram
  Tenant ||--o{ Project : "obras y proyectos"
  Tenant ||--o{ Supplier : "proveedores aprobados"
 
- %% Modulo de IA
- User ||--o{ AIChatSession : "inicia chat"
+ %% Modulo de IA (CORREGIDO: RELACION CON TENANT PROFILE)
+ TenantProfile ||--o{ AIChatSession : "inicia chat"
  AIChatSession ||--o{ AIChatMessage : "tiene mensajes"
  Tenant ||--o{ AIKnowledgeBase : "memoria vectorial"
 ```
