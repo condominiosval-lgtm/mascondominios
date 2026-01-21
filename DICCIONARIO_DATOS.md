@@ -26,6 +26,8 @@ Usuarios globales de la plataforma.
 | `national_id` | VARCHAR(20) | Index | Cédula de Identidad o DNI. |
 | `last_login` | DATETIME | Nullable | Fecha del último acceso. |
 | `created_at` | DATETIME | Default: Now | Fecha de registro. |
+| referral_code | VARCHAR(12) | Unique, Not Null | Código único viral del usuario (ej: "ANA-505"). Generado automáticamente al registro. |
+| successful_referrals | INTEGER | Default: 0 | Contador de referidos que han completado su primer pago. Usado para desbloquear funciones (Gamification). |
 
 ### Tabla: Tenant
 Representa el Condominio (Cliente del SaaS).
@@ -44,6 +46,7 @@ Representa el Condominio (Cliente del SaaS).
 | base_currency | ENUM | 'USD', 'VES'. Default: 'USD' | Moneda base para los cálculos internos. Define si el valor numérico en los recibos se interpreta como Dólares o Bolívares. |
 | accounting_strategy | ENUM | 'USD_INDEXED', 'VES_HISTORIC'. Default: 'USD_INDEXED' | Motor de cálculo. USD_INDEXED: Deuda indexada a la tasa del día (Opción 1). VES_HISTORIC: Deuda fija en Bs + Interés de Mora (Opción 2). |
 | monthly_interest_rate | DECIMAL | Default: 0.00 | Porcentaje de interés de mora mensual (Ej: 3.00). Solo aplica si la estrategia es VES_HISTORIC. |
+| referred_by_code | VARCHAR(12) | Nullable | Código del usuario (referral_code) que recomendó este condominio. Se usa para atribuir la recompensa. |
 
 ### Tabla: Domain
 Dominios personalizados para acceso.
@@ -128,6 +131,20 @@ Almacena las cápsulas de conocimiento para el módulo de "Smart Help". Permite 
 | `video_url` | VARCHAR | Enlace al GIF o video corto explicativo (Loom/S3). |
 | `module_tag` | VARCHAR | Etiqueta que indica en qué pantalla debe aparecer esto (ej: `'BILLING_DASHBOARD'`). |
 | `is_active` | BOOLEAN | Si el contenido está visible. |
+
+### SaaSPromotion
+Motor de descuentos y cupones para la suscripción del SaaS. Maneja tanto fechas especiales (automáticas) como cupones manuales.
+
+| Columna | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único de la promoción. |
+| `code` | VARCHAR(20) | Unique, Not Null | Código del cupón (ej: "MADRE2026") o Slug de fecha (ej: "AUTO_CARNAVAL"). |
+| `trigger_type` | ENUM | 'MANUAL_CODE', 'AUTO_DATE' | Si es `MANUAL_CODE`, el usuario debe escribirlo. Si es `AUTO_DATE`, se aplica por fecha del servidor. |
+| `discount_type` | ENUM | 'PERCENTAGE', 'FIXED_AMOUNT' | Define si el descuento es porcentual o monto fijo. |
+| `discount_value` | DECIMAL | Not Null | El valor numérico del descuento. |
+| `start_date` | DATETIME | Not Null | Fecha de inicio de validez. |
+| `end_date` | DATETIME | Not Null | Fecha de vencimiento. |
+| `is_active` | BOOLEAN | Default: True | Interruptor maestro para apagar la promoción instantáneamente. |
 
 ## GRUPO 2: IDENTIDAD & UNIDADES (TENANT SCHEMA)
 *Datos específicos de los residentes y propiedades dentro del condominio.*
