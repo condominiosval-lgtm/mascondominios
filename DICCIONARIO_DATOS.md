@@ -161,6 +161,20 @@ Rastrea el progreso del usuario en los tutoriales interactivos (Smart Walkthroug
 | `sandbox_used` | BOOLEAN | DEFAULT FALSE | Si `True`, el usuario ya practicó en el Edificio Demo. |
 | `last_interaction_at` | DATETIME | DEFAULT NOW | Fecha de la última interacción educativa. |
 
+### OnboardingState
+Rastrea el progreso del usuario en los tutoriales interactivos (Smart Walkthrough). Permite pausar y reanudar el tour de bienvenida y controlar el acceso al modo "Sandbox".
+
+| Columna | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único. |
+| `user_id` | UUID | FK | El usuario que está realizando el tour. |
+| `tour_id` | VARCHAR(50) | NOT NULL | ID del flujo (ej: `'ADMIN_SETUP'`, `'GUARD_TRAINING'`). |
+| `current_step_index` | INTEGER | DEFAULT 0 | Último paso completado (para reanudar). |
+| `is_completed` | BOOLEAN | DEFAULT FALSE | Si `True`, ya terminó el tour (no mostrar más). |
+| `is_skipped` | BOOLEAN | DEFAULT FALSE | Si `True`, el usuario cerró el tour manualmente. |
+| `sandbox_used` | BOOLEAN | DEFAULT FALSE | Si `True`, el usuario ya practicó en el Edificio Demo. |
+| `last_interaction_at` | DATETIME | DEFAULT NOW | Fecha de la última interacción educativa. |
+
 ### Tabla: Unit
 Inmuebles (Apartamentos, Locales).
 
