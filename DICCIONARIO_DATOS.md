@@ -90,6 +90,30 @@ Configuraciones de servicios externos.
 | `api_key` | VARCHAR(255) | Encrypted | Clave de API. |
 | `webhook_url` | VARCHAR(255) | Nullable | URL para recibir eventos. |
 
+### Tabla: MarketplaceCategory
+Categorías de servicios (Plomería, Electricidad, Legal).
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID categoría. |
+| `name` | VARCHAR(50) | Not Null | Nombre visible. |
+| `icon_slug` | VARCHAR(20) | Nullable | Identificador de ícono UI. |
+
+### Tabla: MarketplaceProvider
+Ficha del Proveedor (Visible para todos).
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID proveedor. |
+| `name` | VARCHAR(100) | Not Null | Razón social o nombre. |
+| `rif` | VARCHAR(20) | Unique | Identificador fiscal. |
+| `category_id` | UUID | FK -> MarketplaceCategory | Rubro. |
+| `verification_status`| ENUM | 'UNVERIFIED', 'VERIFIED', 'BANNED' | Estado auditoría SaaS. |
+| `global_rating` | DECIMAL(3,2)| Default: 0.00 | Promedio de estrellas (Cross-Tenant). |
+| `whatsapp` | VARCHAR(20) | Not Null | Número para Click-to-Chat. |
+| `service_zone` | JSONB | Not Null | Array de ciudades: `["Caracas", "Valencia"]`. |
+
+
 ## GRUPO 2: IDENTIDAD & UNIDADES (TENANT SCHEMA)
 *Datos específicos de los residentes y propiedades dentro del condominio.*
 
@@ -637,3 +661,29 @@ Bitácora detallada de cada interacción (Human vs Bot).
 | `intent` | VARCHAR(50) | Nullable | Intención detectada por la IA (ej: 'QUERY_DEBT', 'REPORT_PAYMENT'). |
 | `tool_logs` | JSONB | Nullable | Registro de inputs/outputs si la IA usó una herramienta (Function Calling). |
 | `tokens` | INTEGER | Nullable | Consumo de tokens del mensaje (para cálculo de costos). |
+
+## GRUPO 8: MARKETPLACE (TENANT SCHEMA)
+*Gestión local de servicios contratados a externos.*
+
+### Tabla: ServiceOrder
+Vinculación entre una necesidad local y un proveedor global.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID orden. |
+| `ticket_id` | UUID | FK -> Ticket | Incidencia origen. |
+| `provider_public_id`| UUID | **Logical Ref** -> public.MarketplaceProvider | Link al proveedor global. |
+| `status` | ENUM | 'REQUESTED', 'IN_PROGRESS', 'COMPLETED', 'PAID' | Estado del trabajo. |
+| `cost_usd` | DECIMAL | Nullable | Costo final del servicio. |
+| `invoiced` | BOOLEAN | Default: False | Si entregó factura fiscal. |
+
+### Tabla: ProviderReview
+Calificación del servicio (Alimenta la reputación global).
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID reseña. |
+| `service_order_id` | UUID | FK -> ServiceOrder | Trabajo evaluado. |
+| `rating` | INTEGER | Check (1-5) | Estrellas. |
+| `comment` | TEXT | Nullable | Opinión cualitativa. |
+| `is_public` | BOOLEAN | Default: True | Si es visible en el perfil público. |
