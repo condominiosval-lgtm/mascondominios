@@ -280,6 +280,11 @@ Optimización de Carga: Se implementará la librería browser-image-compression 
 </li>
 <li><strong>Finalización:</strong> Marca <code>is_completed = True</code> en base de datos y libera la interfaz completa.</li>
 </ol>
+<h2 id="motor-contable-polimórfico-dual-strategy-pattern"><strong>Motor Contable Polimórfico (Dual Strategy Pattern):</strong></h2>
+<p>Capacidad del núcleo financiero para alternar su lógica matemática según la configuración del condominio (<code>Tenant Context</code>), soportando dos realidades simultáneas en la misma instancia SaaS:<br>
+1.  <strong>Modelo Divisa (Hard Currency):</strong> Deuda base en USD con indexación dinámica a tasa diaria (Protección inflacionaria automática).<br>
+2.  <strong>Modelo Legalista (Fiat Historic):</strong> Deuda base en VES nominal con motor de cálculo de intereses de mora (Cálculo de multa mensual sobre capital vencido).<br>
+*   El sistema garantiza el aislamiento estricto de lógicas: un condominio “Tipo A” jamás verá cálculos del “Tipo B”.</p>
 <h2 id="aseguramiento-de-la-calidad-qa-y-testing"><strong>Aseguramiento de la Calidad (QA y Testing):</strong></h2>
 <p>Dado que el sistema maneja dinero y datos legales sensibles, se prohíbe confiar ciegamente en el código generado. Se implementará Pytest como suite de pruebas. Se establece como regla de desarrollo que cada módulo crítico (cálculo de alícuotas, conversión de divisas, generación de deuda) debe incluir sus Tests Unitarios automatizados para validar matemáticamente la lógica. Esto servirá de “red de seguridad” para evitar regresiones cuando la IA realice refactorizaciones</p>
 <h2 id="sistema-de-auditoría-forense-audit-trail">2.7 Sistema de Auditoría Forense (Audit Trail)</h2>
