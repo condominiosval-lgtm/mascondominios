@@ -1210,6 +1210,55 @@ Bitácora detallada de mensajes.</p>
 </li>
 <li><strong>Valor:</strong> El usuario solo confirma. La administradora recibe el pago con la etiqueta “Verificado por IA”, reduciendo la conciliación manual a cero.</li>
 </ul>
+<h1 id="bloque-7-ecosistema-de-servicios-marketplace">BLOQUE 7: ECOSISTEMA DE SERVICIOS (MARKETPLACE)</h1>
+<h3 id="visión-general-1">7.1 Visión General</h3>
+<p>Este módulo transforma el sistema de una herramienta administrativa aislada a una <strong>Plataforma de Confianza Distribuida</strong>. Resuelve el problema crítico de encontrar proveedores técnicos (plomeros, ascensoristas, electricistas) confiables.<br>
+El sistema utiliza la inteligencia colectiva de todos los condominios (Tenants) para calificar a los proveedores (Public Schema), creando un “Score de Reputación” imposible de falsificar.</p>
+<p><strong>Tecnología Clave:</strong></p>
+<ul>
+<li><strong>Búsqueda Difusa:</strong> Uso de <code>PostgreSQL Full-Text Search</code> con extensión <code>pg_trgm</code> (Trigramas) para encontrar “Electricista” aunque el usuario escriba “Electrisista”.</li>
+<li><strong>Agregación Asíncrona:</strong> Workers de Celery recalculan periódicamente el <code>global_rating</code> de cada proveedor basándose en las nuevas reseñas recibidas de los distintos edificios.</li>
+</ul>
+<h3 id="arquitectura-cross-schema-segura">7.2 Arquitectura “Cross-Schema” Segura</h3>
+<p>Dada la naturaleza Multi-Tenant del sistema, este módulo implementa una arquitectura híbrida con estrictos controles de integridad.</p>
+<ol>
+<li><strong>Datos Maestros (Public Schema):</strong> La ficha del proveedor (Nombre, RIF, Teléfono, Rating) vive en el esquema público y es visible para todos.</li>
+<li><strong>Datos Transaccionales (Tenant Schema):</strong> La contratación (<code>ServiceOrder</code>) y la opinión (<code>Review</code>) viven aisladas en el esquema del edificio para proteger la privacidad de sus gastos.</li>
+<li><strong>Integridad Referencial Lógica (Soft Delete):</strong>
+<ul>
+<li><em>Regla de Oro:</em> <strong>NADA SE BORRA FÍSICAMENTE.</strong></li>
+<li>Para evitar “datos huérfanos” (que un edificio busque un proveedor antiguo y dé error), los proveedores nunca se eliminan de la base de datos (<code>DELETE</code>).</li>
+<li>Si un proveedor es expulsado, se marca como <code>verification_status = 'BANNED'</code>. Esto lo oculta de nuevas búsquedas, pero mantiene intacto el historial contable de los edificios que lo contrataron en el pasado.</li>
+</ul>
+</li>
+</ol>
+<h3 id="funcionalidades-del-ecosistema">7.3 Funcionalidades del Ecosistema</h3>
+<h4 id="directorio-y-verificación-trust-layer">7.3.1 Directorio y Verificación (Trust Layer)</h4>
+<ul>
+<li><strong>Ingreso Controlado:</strong> Los proveedores no pueden auto-registrarse libremente. Deben ser “Invitados” por un Condominio existente o validados manualmente por el Staff del SaaS (verificación de RIF y antecedentes).</li>
+<li><strong>Insignias de Confianza:</strong> UI distintiva para proveedores con &gt;10 trabajos exitosos y Rating &gt; 4.5 (“Proveedor Certificado”).</li>
+<li><strong>Zonificación:</strong> Uso de campos <code>JSONB</code> para definir en qué ciudades opera el proveedor (ej: <code>["Caracas", "Valencia"]</code>), filtrando los resultados según la ubicación del Condominio.</li>
+</ul>
+<h4 id="ciclo-de-contratación-service-order">7.3.2 Ciclo de Contratación (Service Order)</h4>
+<ul>
+<li><strong>Vinculación con Tickets:</strong> Un administrador puede convertir un reporte de incidencia (“Portón dañado”) directamente en una solicitud de servicio al Marketplace.</li>
+<li><strong>Click-to-WhatsApp:</strong> El sistema no intermedia el chat (para evitar fricción). Genera un enlace de WhatsApp API con un mensaje pre-llenado: <em>“Hola, le escribo desde Res. Los Samanes por su perfil en MásCondominios…”</em>.</li>
+<li><strong>Cierre Fiscal:</strong> Al registrar el Gasto (<code>Expense</code>), el sistema permite vincularlo al Proveedor del Marketplace para generar estadísticas de “Costo Promedio de Reparaciones”.</li>
+</ul>
+<h3 id="algoritmo-de-reputación-ponderada">7.4 Algoritmo de Reputación Ponderada</h3>
+<p>El <code>global_rating</code> no es un promedio simple. Implementamos un algoritmo anti-fraude:</p>
+<ul>
+<li><strong>Peso por Antigüedad:</strong> Una calificación de un Condominio con 3 años en la plataforma vale más (x1.5) que la de un edificio en periodo de prueba (x0.5).</li>
+<li><strong>Validación de Transacción:</strong> Solo se permite calificar si existe una <code>ServiceOrder</code> cerrada y vinculada a un Gasto real. No se permiten reseñas fantasmas.</li>
+</ul>
+<h3 id="user-journey-ejemplo">7.5 User Journey (Ejemplo)</h3>
+<ol>
+<li><strong>Emergencia:</strong> Es domingo, el motor del portón falla. El técnico habitual no responde.</li>
+<li><strong>Discovery:</strong> La Presidenta busca “Motores” en la App. El sistema filtra proveedores en su ciudad.</li>
+<li><strong>Social Proof:</strong> Ve el perfil de “Técnicos 24H” con 4.8 estrellas. Lee un comentario anónimo: <em>“Nos resolvieron una emergencia en domingo en Res. El Parque”</em>.</li>
+<li><strong>Acción:</strong> Contacta vía WhatsApp, el técnico asiste y repara.</li>
+<li><strong>Feedback:</strong> Al registrar el pago, el sistema le pide calificar. Su opinión positiva ayuda a otros edificios y sube el ranking del técnico.</li>
+</ol>
 <h1 id="esquemas">ESQUEMAS</h1>
 <h2 id="modelo-de-negocio-y-arquitectura-física"><strong>Modelo de Negocio y Arquitectura Física:</strong></h2>
 <h3 id="esquema-1-arquitectura-de-datos-modelo-multi-tenant--suscripción-granular"><strong>ESQUEMA 1: Arquitectura de Datos (Modelo Multi-Tenant &amp; Suscripción Granular)</strong></h3>
