@@ -280,6 +280,17 @@ entity "OnboardingState" as onboarding_state {
  string visitor_id_doc
  datetime entry_time
  }
+ entity "AuditLog" as audit_log {
+        UUID id PK
+        UUID user_id FK "El responsable"
+        VARCHAR action "CREATE, UPDATE, DELETE, LOGIN, EXPORT"
+        VARCHAR table_name "Ej: BILL, PAYMENT, UNIT"
+        UUID record_id "El ID del objeto afectado"
+        JSONB changes "Diff: {old_value: 100, new_value: 50}"
+        INET ip_address "Dirección IP desde donde se hizo"
+        VARCHAR user_agent "Navegador/Dispositivo"
+        DATETIME created_at
+    }
  GuestInvitation {
  UUID id PK
  string qr_token
