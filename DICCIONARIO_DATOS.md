@@ -527,6 +527,21 @@ Mascotas.
 ## GRUPO 5: LEGAL Y GOBIERNO
 *Documentación legal y estructura de la junta.*
 
+### AdminContract
+Registro de los contratos de servicio entre la Comunidad (Junta de Condominio) y el Ente Administrador (Empresa o Persona Natural). Vital para el cumplimiento de la Ley de Propiedad Horizontal.
+
+| Columna | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único. |
+| `tenant_id` | UUID | FK | El condominio. |
+| `document_url` | VARCHAR | NOT NULL | Link al PDF digitalizado del contrato firmado. |
+| `start_date` | DATE | NOT NULL | Fecha de inicio de la gestión. |
+| `end_date` | DATE | NOT NULL | Fecha de culminación. **El sistema usará esto para enviar alertas de vencimiento 30 días antes.** |
+| `auto_renewal` | BOOLEAN | DEFAULT FALSE | Indica si el contrato se prorroga automáticamente si no hay notificación. |
+| `is_active` | BOOLEAN | DEFAULT TRUE | Marca cuál es el contrato vigente (solo uno a la vez). |
+| `administrator_name` | VARCHAR | NOT NULL | Razón Social de la Administradora o Nombre del Administrador autónomo. |
+| `administrator_id` | VARCHAR | NOT NULL | RIF o Cédula de Identidad del administrador. |
+
 ### Tabla: CondoConstitution
 Documento de condominio y reglas base.
 
