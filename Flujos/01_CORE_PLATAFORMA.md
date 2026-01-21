@@ -1011,3 +1011,60 @@ concepto: "SaaS MasCondominios Fact #1024"
 Respuesta Exitosa:
 cod_respuesta: "00" (Aprobado).
 referencia: "0876123" (Esta es la que guardamos en BD como prueba legal).
+
+**Funcion 60 Motor de Migración y ETL (Onboarding Automatizado)** 
+
+```mermaid
+graph TD
+    User((Administrador)) -->|1. Carga Excel| API[API Backend]
+    
+    subgraph "ETL & Staging (Celery Worker)"
+        API -->|2. Guarda Archivo & Crea Batch| Batch[(Tabla: ImportBatch)]
+        API -.->|3. Dispara Tarea Asíncrona| Worker{Pandas Worker}
+        
+        Worker -->|4. Selección de Estrategia| Strategy{¿Tiene API Key IA?}
+        
+        %% FASE 1: Lógica Clásica
+        Strategy -- NO (Default) --> Fuzzy[Fase 1: Fuzzy Matching\n(Librería 'thefuzz')]
+        
+        %% FASE 2: Inteligencia Artificial
+        Strategy -- SI (Future) --> AI[Fase 2: Semantic Analysis\n(OpenAI/LLM)]
+        
+        Fuzzy --> Map[Generar Mapeo de Columnas]
+        AI --> Map
+        
+        Map --> Validate[5. Aplicar Reglas de Negocio]
+        
+        Validate -->|Check Alícuotas 100%| Row1[Validación Matemática]
+        Validate -->|Check Formatos| Row2[Sanitización Email/RUT]
+        Validate -->|Check Moneda| Row3[Indexación Deuda Histórica]
+        
+        Row1 & Row2 & Row3 --> SaveStaging[6. Guardar en ImportRow]
+        SaveStaging -->|Status: WAITING_APPROVAL| Batch
+    end
+    
+    subgraph "Interfaz de Validación (React)"
+        Batch -->|7. JSON Response| UI[Frontend Data Grid]
+        UI -->|8. Visualiza Errores| User
+        User -->|9. Corrige Celda| API_Edit[Endpoint: Patch Row]
+        API_Edit -->|Actualiza| Batch
+    end
+    
+    subgraph "Commit a Producción"
+        User -->|10. Confirmar Importación| Commit[Transacción Atómica]
+        Commit -->|Lee Data Limpia| Batch
+        Commit -->|INSERT| ProdDB[(DB Producción:\nUnit, Provider, Bill)]
+        Commit -->|Update Status| Final[Batch: COMPLETED]
+    end
+
+    classDef stage fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef prod fill:#bbf,stroke:#333,stroke-width:2px;
+    class Batch,SaveStaging stage;
+    class ProdDB prod;
+```
+Explicación del Esquema Lógico (Para tu equipo)
+Entrada Asíncrona: El usuario sube el archivo y el sistema responde "Recibido" inmediatamente, mientras el trabajo pesado ocurre en segundo plano (Worker).
+Bifurcación Híbrida: El rombo ¿Tiene API Key IA? es el "Interruptor" que diseñamos. Si no hay clave, degrada elegantemente a Fuzzy Matching.
+Staging (Zona Rosa): Los datos se guardan en las tablas temporales (ImportRow). Aquí es donde ocurre la validación de deuda bimonetaria y alícuotas.
+Bucle de Corrección: Las flechas entre Frontend, User y API_Edit muestran que el usuario puede corregir datos infinitas veces sin volver a subir el archivo.
+Commit Atómico (Zona Azul): Solo cuando el usuario da el "OK", los datos pasan a las tablas reales (ProdDB).
