@@ -16,17 +16,18 @@ erDiagram
  %% =======================================================
  %% GRUPO 1: CORE SAAS (PUBLIC SCHEMA)
  %% =======================================================
- User {
- UUID id PK
- string email
- string password_hash
- string national_id
- datetime last_login
- datetime created_at
- string referral_code
- integer successful_referrals
- }
- Tenant {
+User {
+    UUID id PK
+    string email
+    string password_hash
+    string national_id
+    datetime last_login
+    datetime created_at
+    string referral_code "Nuevo: Viral"
+    integer successful_referrals "Nuevo: Gamification"
+}
+
+Tenant {
     UUID id PK
     string schema_name
     string name
@@ -34,16 +35,17 @@ erDiagram
     datetime trial_ends_at
     int purchased_capacity
     decimal credit_balance
-    jsonb ai_config "Nuevo: Config IA"
+    jsonb ai_config
     boolean requires_board_approval "Nuevo: Visto Bueno"
     string base_currency "Nuevo: USD/VES"
-    string accounting_strategy "Nuevo: Logica Contable"
+    string accounting_strategy "Nuevo: Logica Dual"
     decimal monthly_interest_rate "Nuevo: Mora"
-    string referred_by_code "Nuevo: Viralidad"
+    string referred_by_code "Nuevo: Attribution"
 }
+
 SaaSPromotion {
     UUID id PK
-    string code "Unique"
+    string code "Unique Index"
     string trigger_type "MANUAL/AUTO"
     string discount_type
     decimal discount_value
@@ -542,7 +544,7 @@ entity "TenantBackup" as tenant_backup {
  Tenant ||--o{ TenantBackup : "genera respaldos"
  Tenant ||--o{ AdminContract : "tiene contratos gestion"
  Tenant ||--o{ ExpenseSettlement : "genera cierres"
-    ExpenseSettlement ||--o{ Bill : "origina recibos"
+ ExpenseSettlement ||--o{ Bill : "origina recibos"
  tenant ||--o{ onboarding_state : "rastrea progreso usuarios"
  
  %% Identidad & Propiedad (CORREGIDO)
