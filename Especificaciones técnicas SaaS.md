@@ -243,6 +243,13 @@ Optimización de Carga: Se implementará la librería browser-image-compression 
 <li><strong>Validación Visual (Staging):</strong> Se presenta una tabla interactiva. El sistema marca en <strong>Rojo</strong> la fila 5 porque el correo no tiene “@”. Marisol corrige el dato directamente en la pantalla sin volver a subir el archivo.</li>
 <li><strong>Commit:</strong> Al estar todo en verde, Marisol confirma. El sistema migra los datos a producción y envía las invitaciones a los 100 vecinos en minutos.</li>
 </ol>
+<h2 id="x-motor-de-inmersión-y-gamificación-smart-walkthrough">3.X Motor de Inmersión y Gamificación (Smart Walkthrough)</h2>
+<ul>
+<li><strong>Tecnología de Guiado:</strong> Implementación de librerías como <strong><code>driver.js</code></strong> o <strong><code>react-joyride</code></strong> para crear recorridos interactivos que oscurecen la interfaz y resaltan elementos específicos (Spotlights) basados en el DOM, sin necesidad de videos externos.</li>
+<li><strong>Adaptabilidad por Rol:</strong> El frontend detecta el tipo de usuario (<code>Admin</code>, <code>Vigilante</code>, <code>Vecino</code>) al iniciar sesión y descarga el guion de onboarding (“JSON Tour Definition”) correspondiente a su perfil.</li>
+<li><strong>Persistencia de Estado:</strong> Sincronización bidireccional con el backend (<code>OnboardingState</code>) para guardar el progreso exacto. Si el usuario cambia de dispositivo o recarga la página, el tour continúa en el paso exacto donde quedó.</li>
+<li><strong>Modo Sandbox (Simulación):</strong> Capacidad de instanciar un entorno de datos volátil (“Residencias Demo”) con data pre-cargada para que los administradores practiquen operaciones destructivas sin riesgo antes de operar su condominio real.</li>
+</ul>
 <h2 id="aseguramiento-de-la-calidad-qa-y-testing"><strong>Aseguramiento de la Calidad (QA y Testing):</strong></h2>
 <p>Dado que el sistema maneja dinero y datos legales sensibles, se prohíbe confiar ciegamente en el código generado. Se implementará Pytest como suite de pruebas. Se establece como regla de desarrollo que cada módulo crítico (cálculo de alícuotas, conversión de divisas, generación de deuda) debe incluir sus Tests Unitarios automatizados para validar matemáticamente la lógica. Esto servirá de “red de seguridad” para evitar regresiones cuando la IA realice refactorizaciones.</p>
 <h1 id="detalles-inherentes-a-la-app-nativa"><strong>Detalles inherentes a la App nativa:</strong></h1>
