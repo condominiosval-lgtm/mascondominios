@@ -63,7 +63,15 @@ erDiagram
  string api_key
  string webhook_url
  }
- 
+ HelpContent {
+        UUID id PK
+        string title
+        string search_keywords "Palabras clave para Fuse.js"
+        string video_url "Link al micro-video"
+        string module_tag "Contexto: BILLING, SECURITY, ETC"
+        boolean is_active
+    }
+
  class User,Tenant,Domain,PlanCatalog,PlanTier,SaaSPayment,IntegrationConfig publicFill
 
  %% =======================================================
