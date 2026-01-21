@@ -250,6 +250,30 @@ Optimización de Carga: Se implementará la librería browser-image-compression 
 <li><strong>Persistencia de Estado:</strong> Sincronización bidireccional con el backend (<code>OnboardingState</code>) para guardar el progreso exacto. Si el usuario cambia de dispositivo o recarga la página, el tour continúa en el paso exacto donde quedó.</li>
 <li><strong>Modo Sandbox (Simulación):</strong> Capacidad de instanciar un entorno de datos volátil (“Residencias Demo”) con data pre-cargada para que los administradores practiquen operaciones destructivas sin riesgo antes de operar su condominio real.</li>
 </ul>
+<h3 id="sub-flujo-experiencia-de-primer-uso-ftue---first-time-user-experience">Sub-flujo: Experiencia de Primer Uso (FTUE - First Time User Experience)</h3>
+<p><strong>Actor:</strong> Usuario Nuevo (Cualquier rol)<br>
+<strong>Trigger:</strong> Primer inicio de sesión exitoso.</p>
+<ol>
+<li><strong>Detección de Estado:</strong> El sistema consulta <code>OnboardingState</code>. Si no existe registro, inicia el protocolo de bienvenida.</li>
+<li><strong>Selector de Ruta (Modal):</strong>
+<ul>
+<li>Opción A: <strong>“Modo Práctica”</strong> -&gt; Carga el <em>Sandbox</em> con datos ficticios.</li>
+<li>Opción B: <strong>“Configurar Ahora”</strong> -&gt; Inicia el <em>Tour Guiado</em> en el entorno real.</li>
+</ul>
+</li>
+<li><strong>Ejecución del Tour (Role-Based):</strong>
+<ul>
+<li><em>Si es Admin:</em> Guía hacia Configuración de Moneda -&gt; Importación de Excel -&gt; Primer Recibo.</li>
+<li><em>Si es Vigilante:</em> Guía hacia Botón de Pánico -&gt; Registro de Visitas.</li>
+</ul>
+</li>
+<li><strong>Gamificación:</strong>
+<ul>
+<li>Al completar hitos clave (ej: cargar la nómina), el sistema dispara efectos visuales (Confeti) y actualiza la barra de progreso global.</li>
+</ul>
+</li>
+<li><strong>Finalización:</strong> Marca <code>is_completed = True</code> en base de datos y libera la interfaz completa.</li>
+</ol>
 <h2 id="aseguramiento-de-la-calidad-qa-y-testing"><strong>Aseguramiento de la Calidad (QA y Testing):</strong></h2>
 <p>Dado que el sistema maneja dinero y datos legales sensibles, se prohíbe confiar ciegamente en el código generado. Se implementará Pytest como suite de pruebas. Se establece como regla de desarrollo que cada módulo crítico (cálculo de alícuotas, conversión de divisas, generación de deuda) debe incluir sus Tests Unitarios automatizados para validar matemáticamente la lógica. Esto servirá de “red de seguridad” para evitar regresiones cuando la IA realice refactorizaciones.</p>
 <h1 id="detalles-inherentes-a-la-app-nativa"><strong>Detalles inherentes a la App nativa:</strong></h1>
@@ -1298,6 +1322,53 @@ El sistema utiliza la inteligencia colectiva de todos los condominios (Tenants) 
 <li><strong>Acción:</strong> Contacta vía WhatsApp, el técnico asiste y repara.</li>
 <li><strong>Feedback:</strong> Al registrar el pago, el sistema le pide calificar. Su opinión positiva ayuda a otros edificios y sube el ranking del técnico.</li>
 </ol>
+<h2 id="infraestructura-y-devops-arquitectura-de-alta-disponibilidad">6. Infraestructura y DevOps (Arquitectura de Alta Disponibilidad)</h2>
+<p>Estrategia de despliegue diseñada para garantizar estabilidad, seguridad y actualizaciones sin interrupción del servicio.</p>
+<h3 id="los-contenedores-docker">6.1 Los Contenedores (Docker)</h3>
+<blockquote>
+<p><strong>El Concepto (La Mudanza Segura):</strong> En lugar de instalar el software directamente en el servidor (como muebles sueltos en una casa), empaquetamos cada servicio en “contenedores” sellados. Si cambiamos de servidor (nos mudamos), los contenedores llegan intactos y funcionan al instante, sin riesgo de que algo se rompa en el traslado.</p>
+</blockquote>
+<p><strong>Especificación Técnica:</strong><br>
+El sistema se orquesta mediante servicios aislados definidos en <code>docker-compose</code> para producción:</p>
+<ol>
+<li><strong>Backend API:</strong> Imagen <code>python:3.11-slim</code> con Gunicorn. Contiene la lógica core y <code>django-tenants</code>.</li>
+<li><strong>Celery Worker:</strong> Contenedor espejo del backend dedicado exclusivamente a tareas pesadas (IA, Correos, Excel) para no bloquear la web.</li>
+<li><strong>Celery Beat:</strong> El “reloj” del sistema para tareas programadas (Cron Jobs).</li>
+<li><strong>Frontend Web:</strong> Servidor Nginx sirviendo la aplicación React compilada, actuando como proxy inverso y caché.</li>
+</ol>
+<h3 id="tubería-de-automatización-cicd-pipeline">6.2 Tubería de Automatización (CI/CD Pipeline)</h3>
+<blockquote>
+<p><strong>El Concepto (La Fábrica de Robots):</strong> Reemplazamos el trabajo manual “artesanal” (que es propenso a errores humanos) por una línea de ensamblaje robótica. Nadie entra al servidor a copiar archivos; un robot recibe el código, lo revisa, lo prueba y lo instala.</p>
+</blockquote>
+<p><strong>Especificación Técnica:</strong><br>
+Implementación de <strong>GitHub Actions</strong> con las siguientes etapas:</p>
+<ol>
+<li><strong>Linting &amp; Audit:</strong> Verificación automática de estilo de código y escaneo de vulnerabilidades de seguridad.</li>
+<li><strong>Testing Automático:</strong> Ejecución de pruebas unitarias y verificación de migraciones de esquemas (retro-compatibilidad). Si esto falla, el despliegue se cancela automáticamente.</li>
+<li><strong>Build &amp; Push:</strong> Construcción de imágenes Docker y subida a registro privado (GitHub Container Registry / ECR).</li>
+</ol>
+<h3 id="estrategia-de-despliegue-zero-downtime--rolling-update">6.3 Estrategia de Despliegue (Zero-Downtime / Rolling Update)</h3>
+<blockquote>
+<p><strong>El Concepto (El Restaurante):</strong> Actualizar el sistema es como remodelar un restaurante sin cerrar. Abrimos un “Salón Nuevo” (Versión Nueva) mientras la gente sigue comiendo en el “Salón Viejo”. Cuando el nuevo está listo, pasamos a los clientes suavemente y cerramos el viejo. Nadie deja de comer.</p>
+</blockquote>
+<p><strong>Especificación Técnica:</strong><br>
+Script de despliegue automatizado que:</p>
+<ol>
+<li>Levanta los contenedores nuevos en paralelo a los viejos.</li>
+<li>Ejecuta las migraciones de base de datos (<code>migrate_schemas</code>).</li>
+<li>Nginx conmuta el tráfico a los nuevos contenedores solo cuando reportan estado “Healthy”.</li>
+<li>Apaga los contenedores viejos.<br>
+<strong>Resultado:</strong> El usuario final no percibe errores 500 durante las actualizaciones.</li>
+</ol>
+<h3 id="base-de-datos-gestionada-managed-db">6.4 Base de Datos Gestionada (Managed DB)</h3>
+<blockquote>
+<p><strong>El Concepto (La Bóveda del Banco):</strong> No guardamos el dinero (los datos) bajo el colchón (en el mismo servidor de la App). Alquilamos una bóveda blindada en el banco (AWS/DigitalOcean). Ellos se encargan de la seguridad, la energía y los respaldos.</p>
+</blockquote>
+<p><strong>Especificación Técnica:</strong></p>
+<ul>
+<li><strong>Proveedor:</strong> AWS RDS o DigitalOcean Managed PostgreSQL.</li>
+<li><strong>Configuración:</strong> Backups automáticos diarios, Point-in-Time Recovery (PITR) y aislamiento total del servidor de aplicaciones. Esto protege la data crítica ante fallos catastróficos del servidor web.</li>
+</ul>
 <h1 id="esquemas">ESQUEMAS</h1>
 <h2 id="modelo-de-negocio-y-arquitectura-física"><strong>Modelo de Negocio y Arquitectura Física:</strong></h2>
 <h3 id="esquema-1-arquitectura-de-datos-modelo-multi-tenant--suscripción-granular"><strong>ESQUEMA 1: Arquitectura de Datos (Modelo Multi-Tenant &amp; Suscripción Granular)</strong></h3>
