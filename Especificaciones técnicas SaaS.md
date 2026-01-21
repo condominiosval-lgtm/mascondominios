@@ -217,6 +217,32 @@ Optimización de Carga: Se implementará la librería browser-image-compression 
 <li><strong>Protocolos Soportados:</strong> Implementación nativa de <strong>OAuth 2.0</strong> (Gmail API / Microsoft Graph) y <strong>SMTP Estándar</strong>, gestionando el refresco de tokens automáticamente.</li>
 <li><strong>Seguridad de Credenciales:</strong> Los <em>Access Tokens</em> y contraseñas SMTP se almacenan cifrados en la base de datos del inquilino (<em>Tenant Schema</em>) utilizando librerías de criptografía simétrica (Fernet), asegurando que ninguna credencial sea legible en texto plano.</li>
 </ul>
+<h2 id="motor-de-migración-y-etl-onboarding-automatizado">2.5 Motor de Migración y ETL (Onboarding Automatizado)</h2>
+<ul>
+<li><strong>Arquitectura de Staging (Tablas Temporales):</strong> Implementación de un área de “pre-producción” (<code>ImportBatch</code> / <code>ImportRow</code>) donde los datos masivos se cargan, limpian y validan antes de impactar las tablas relacionales definitivas (<code>Unit</code>, <code>Provider</code>, <code>Bill</code>). Esto previene la corrupción de la base de datos por errores humanos en los Excel.</li>
+<li><strong>Pipeline de Procesamiento (Pandas + Celery):</strong> Uso de la librería <strong>Pandas</strong> ejecutada en tareas asíncronas (Workers) para la ingesta y manipulación eficiente de archivos Excel/CSV de gran volumen sin bloquear el hilo principal del servidor.</li>
+<li><strong>Mapeo de Columnas Híbrido (Future-Proof):</strong>
+<ul>
+<li><strong>Fase 1 (Heurística / Lógica Difusa):</strong> Implementación de algoritmos de coincidencia de texto (Levenshtein Distance via librería <code>thefuzz</code>) para inferir automáticamente la relación entre los encabezados del usuario (ej: “Nro. Depto”) y los campos del sistema (<code>unit_number</code>).</li>
+<li><strong>Fase 2 (Inferencia Semántica):</strong> Arquitectura preparada para conectar APIs de LLM (OpenAI/Anthropic) que analicen el <em>contenido</em> de las celdas para resolver mapeos complejos o ambiguos cuando la heurística falla, activable mediante API Key.</li>
+</ul>
+</li>
+<li><strong>Secuencialidad Estricta (Wizard Logic):</strong> El backend impone un orden lógico de carga obligatoria para garantizar la integridad referencial de los datos históricos:
+<ol>
+<li><strong>Inmuebles (Units):</strong> Validación matemática de alícuotas (debe sumar 100%).</li>
+<li><strong>Proveedores (Providers):</strong> Creación del catálogo de terceros.</li>
+<li><strong>Plan de Cuentas (Chart of Accounts):</strong> Mapeo de categorías de gastos.</li>
+<li><strong>Histórico (Expenses/Debts):</strong> Importación de deudas pasadas con conversión de moneda histórica (búsqueda de tasa de cambio según fecha de factura).</li>
+</ol>
+</li>
+</ul>
+<p><strong>Ejemplo de User Journey (Flujo de Migración):</strong></p>
+<ol>
+<li><strong>Ingesta:</strong> La administradora “Marisol” ingresa al Wizard y arrastra su archivo <code>Listado_Propietarios.xlsx</code>.</li>
+<li><strong>Auto-Mapeo:</strong> El sistema analiza el archivo en segundo plano. Aunque Marisol llamó a la columna “Porcentaje”, el sistema detecta 92% de similitud con <code>aliquot</code> y lo pre-selecciona automáticamente.</li>
+<li><strong>Validación Visual (Staging):</strong> Se presenta una tabla interactiva. El sistema marca en <strong>Rojo</strong> la fila 5 porque el correo no tiene “@”. Marisol corrige el dato directamente en la pantalla sin volver a subir el archivo.</li>
+<li><strong>Commit:</strong> Al estar todo en verde, Marisol confirma. El sistema migra los datos a producción y envía las invitaciones a los 100 vecinos en minutos.</li>
+</ol>
 <h2 id="aseguramiento-de-la-calidad-qa-y-testing"><strong>Aseguramiento de la Calidad (QA y Testing):</strong></h2>
 <p>Dado que el sistema maneja dinero y datos legales sensibles, se prohíbe confiar ciegamente en el código generado. Se implementará Pytest como suite de pruebas. Se establece como regla de desarrollo que cada módulo crítico (cálculo de alícuotas, conversión de divisas, generación de deuda) debe incluir sus Tests Unitarios automatizados para validar matemáticamente la lógica. Esto servirá de “red de seguridad” para evitar regresiones cuando la IA realice refactorizaciones.</p>
 <h1 id="detalles-inherentes-a-la-app-nativa"><strong>Detalles inherentes a la App nativa:</strong></h1>
