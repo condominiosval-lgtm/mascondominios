@@ -41,6 +41,9 @@ Representa el Condominio (Cliente del SaaS).
 | `credit_balance` | DECIMAL | Default: 0.00 | Saldo a favor para pagar suscripción. |
 | `ai_config` | JSONB | Nullable | **(Nuevo)** Configuración del bot (tono, permisos, bienvenida). |
 | requires_board_approval | BOOLEAN | Default: False | Si es TRUE, el cierre de mes requiere Visto Bueno de la Junta. |
+| base_currency | ENUM | 'USD', 'VES'. Default: 'USD' | Moneda base para los cálculos internos. Define si el valor numérico en los recibos se interpreta como Dólares o Bolívares. |
+| accounting_strategy | ENUM | 'USD_INDEXED', 'VES_HISTORIC'. Default: 'USD_INDEXED' | Motor de cálculo. USD_INDEXED: Deuda indexada a la tasa del día (Opción 1). VES_HISTORIC: Deuda fija en Bs + Interés de Mora (Opción 2). |
+| monthly_interest_rate | DECIMAL | Default: 0.00 | Porcentaje de interés de mora mensual (Ej: 3.00). Solo aplica si la estrategia es VES_HISTORIC. |
 
 ### Tabla: Domain
 Dominios personalizados para acceso.
