@@ -1104,6 +1104,14 @@ graph TD
     
     Commit -->|INSERT| DB[(DB Producción)]
 ```
+Pasos del Proceso
+Ingesta: El usuario sube el archivo. El sistema soporta 4 tipos de carga secuencial: Inmuebles -> Proveedores -> Plan de Cuentas -> Gastos Históricos.
+Mapeo Híbrido:
+Fase 1: Se usa la librería thefuzz para adivinar que la columna "Depto" corresponde a unit_number.
+Fase 2 (Opcional): Si está activada, una IA analiza el contenido de las celdas para inferir columnas ambiguas.
+Staging (Zona de Espera): Los datos se guardan en tablas temporales. El usuario ve una "Hoja de Cálculo Web" donde las filas con errores (ej: correos mal formados) aparecen en rojo.
+Corrección en Sitio: El usuario edita los datos directamente en la pantalla sin necesidad de volver a subir el Excel.
+Migración (Commit): Solo cuando los datos son válidos, se mueven a las tablas definitivas del sistema.
 
 
 ** Funcion 61 3.X Motor de Inmersión y Gamificación (Smart Walkthrough)**
@@ -1150,3 +1158,11 @@ graph TD
     Reward -->|Update DB| Finish[Marcar Completed = True]
     Finish --> Dashboard
     ´´´
+Pasos del Proceso
+Detección de "Primer Vuelo": Al loguearse, el sistema consulta la tabla OnboardingState. Si no existe registro, inicia el protocolo de bienvenida.
+Modo Sandbox: Se ofrece al usuario entrar a un "Edificio de Prueba" con datos ficticios para que pierda el miedo a "romper algo".
+Guiado por Roles:
+Administrador: Se le guía hacia la configuración de la moneda y la importación de datos.
+Vigilante: Se le enseña a registrar visitas y usar el botón de pánico.
+Gamificación: Al completar hitos importantes (como cargar la primera nómina), el sistema celebra con efectos visuales (confeti) para generar refuerzo positivo.
+Persistencia: El progreso se guarda en base de datos. Si el usuario cierra el navegador en el paso 3, al volver inicia exactamente allí.
