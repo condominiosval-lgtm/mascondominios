@@ -216,6 +216,24 @@ Relación entre Personas y Unidades (Propiedad/Inquilino).
 | `ownership_percent` | DECIMAL | Default: 100 | Porcentaje de propiedad. |
 | `is_responsible` | BOOLEAN | Default: False | Si es el responsable legal del pago. |
 
+### LeaseContract
+Gestión de contratos de arrendamiento de áreas comunes a terceros (Ej: Alquiler de azoteas para antenas, vallas publicitarias o locales comerciales). Centraliza las reglas de negocio, fechas de corte y garantías.
+
+| Columna | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único del contrato. |
+| `lessee_name` | VARCHAR | NOT NULL | Razón Social del arrendatario (Ej: "Telefonía Digital C.A."). |
+| `lessee_tax_id` | VARCHAR | NOT NULL | RIF o Identificación fiscal de la empresa arrendataria. |
+| `description` | VARCHAR | NOT NULL | Detalle del activo alquilado (Ej: "Azotea Torre A - 20m2"). |
+| `document_url` | VARCHAR | NULLABLE | Link al PDF digitalizado del contrato firmado. |
+| `monthly_fee` | DECIMAL | NOT NULL | Canon de arrendamiento mensual estipulado. |
+| `security_deposit` | DECIMAL | DEFAULT 0.00 | Monto retenido en garantía (Pasivo del condominio). |
+| `start_date` | DATE | NOT NULL | Fecha de inicio de la relación contractual. |
+| `end_date` | DATE | NOT NULL | Fecha de culminación. **Trigger para alertas de vencimiento.** |
+| `notification_days` | INTEGER | DEFAULT 60 | Días de anticipación para enviar la alerta de renovación. |
+| `auto_renewal` | BOOLEAN | DEFAULT FALSE | Indica si el contrato se prorroga automáticamente. |
+| `is_active` | BOOLEAN | DEFAULT TRUE | Indica si el contrato está vigente actualmente. |
+
 ## GRUPO 3: FINANZAS COMPLEJAS
 *Motor contable bimonetario y facturación.*
 
