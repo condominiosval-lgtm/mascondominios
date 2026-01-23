@@ -1,0 +1,823 @@
+# 📘 Diccionario de Datos Maestro - SaaS MásCondominios
+
+Este documento define la estructura completa de la base de datos para el ecosistema SaaS.
+
+> **⚠️ NOTA TÉCNICA (Auditoría):**
+> Todas las tablas incluyen automáticamente los campos de auditoría estándar:
+> * `created_at` (DATETIME): Fecha de creación.
+> * `updated_at` (DATETIME): Última edición.
+> * `deleted_at` (DATETIME): Borrado lógico (Soft Delete).
+
+---
+
+## GRUPO 1: CORE SAAS (PUBLIC SCHEMA)
+*Tablas globales compartidas que gestionan la identidad, los clientes (Tenants) y la facturación del software.*
+
+### Tabla: User
+Usuarios globales de la plataforma.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único del usuario. |
+| `email` | VARCHAR(255) | Unique, Not Null | Correo electrónico principal (Login). |
+| `password_hash` | VARCHAR(255) | Not Null | Hash de contraseña (Argon2). |
+| `national_id` | VARCHAR(20) | Index | Cédula de Identidad o DNI. |
+| `profile_type` | ENUM | Not Null | Valores: `INDEPENDENT`, `SELF_MANAGED`, `COMPANY`. |
+| `last_login` | DATETIME | Nullable | Fecha del último acceso. |
+| `referral_code` | VARCHAR(12) | Unique, Not Null | Código único viral del usuario. |
+| `successful_referrals` | INTEGER | Default: 0 | Contador de referidos activos. |
+
+### Tabla: Tenant
+Representa el Condominio (La Entidad Legal). *Datos de identidad y configuración.*
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador del Condominio. |
+| `schema_name` | VARCHAR(63) | Unique, Not Null | Nombre del esquema de BD. |
+| `name` | VARCHAR(100) | Not Null | Nombre legal del Condominio. |
+| `is_active` | BOOLEAN | Default: True | Interruptor maestro de acceso. |
+| `credit_balance` | DECIMAL | Default: 0.00 | Saldo a favor (Billetera). |
+| `ai_config` | JSONB | Nullable | Configuración del bot. |
+| `requires_board_approval` | BOOLEAN | Default: False | Cierre requiere Visto Bueno de la Junta. |
+| `base_currency` | ENUM | Default: 'USD' | Moneda base contable. |
+| `accounting_strategy` | ENUM | Default: 'USD_INDEXED' | Motor de cálculo de deuda. |
+| `monthly_interest_rate` | DECIMAL | Default: 0.00 | % Interés de mora mensual. |
+| `referred_by_code` | VARCHAR(12) | Nullable | Código de referido. |
+| `proration_strategy` | ENUM | Default: 'ALIQUOT' | Fórmula de reparto de gastos. |
+
+### Tabla: Subscription
+**Tabla Satélite.** Almacena el contrato de servicio.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador de la suscripción. |
+| `tenant_id` | UUID | FK -> Tenant | El edificio suscriptor. |
+| `plan_tier_id` | UUID | FK -> PlanTier | El plan base seleccionado. |
+| `unit_count` | INTEGER | Not Null | **Dato del Slider.** Cantidad inmuebles. |
+| `monthly_price_usd` | DECIMAL | Not Null | Precio congelado del ciclo. |
+| `start_date` | DATE | Not Null | Inicio del ciclo. |
+| `next_billing_date` | DATE | Not Null | **Fecha de Corte.** Vencimiento. |
+| `trial_ends_at` | DATE | Nullable | Fin prueba. |
+| `status` | ENUM | Not Null | `ACTIVE`, `PAST_DUE`, `CANCELED`, `EXPIRED`. |
+| `is_latest` | BOOLEAN | Default: True | Flag contrato vigente. |
+
+### Tabla: Domain
+Dominios personalizados.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `domain` | VARCHAR(255) | PK | URL de acceso. |
+| `is_primary` | BOOLEAN | Default: False | Si es dominio principal. |
+| `tenant_id` | UUID | FK -> Tenant | Condominio propietario. |
+
+### Tabla: PlanCatalog
+Catálogo de planes.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID del plan. |
+| `name` | VARCHAR(50) | Not Null | Nombre (ej: "Básico"). |
+| `is_active` | BOOLEAN | Default: True | Disponibilidad. |
+
+### Tabla: PlanTier
+Niveles de precio (Escalas).
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID del nivel. |
+| `min_qty` | INTEGER | Not Null | Mínimo unidades. |
+| `max_qty` | INTEGER | Not Null | Máximo unidades. |
+| `unit_price_usd` | DECIMAL | Not Null | Precio unitario. |
+| `plan_id` | UUID | FK -> PlanCatalog | Plan asociado. |
+
+### Tabla: SaaSPayment
+Registro de ingresos del SaaS.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID del pago. |
+| `subscription_id` | UUID | FK -> Subscription | Suscripción pagada. |
+| `amount_bs` | DECIMAL | Not Null | Monto en Bolívares. |
+| `plaza_transaction_id` | VARCHAR(100) | Unique | Referencia Banco Plaza. |
+
+### Tabla: IntegrationConfig
+Credenciales externas.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID configuración. |
+| `service` | ENUM | Not Null | `WHATSAPP`, `SENTRY`. |
+| `api_key` | VARCHAR(255) | Encrypted | Clave API. |
+| `webhook_url` | VARCHAR(255) | Nullable | URL eventos. |
+
+### Tabla: SaaSPromotion
+Motor de descuentos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | Identificador único. |
+| `code` | VARCHAR(20) | Unique, Not Null | Código cupón. |
+| `trigger_type` | ENUM | Not Null | `MANUAL_CODE`, `AUTO_DATE`. |
+| `discount_type` | ENUM | Not Null | `PERCENTAGE`, `FIXED_AMOUNT`. |
+| `discount_value` | DECIMAL | Not Null | Valor descuento. |
+| `start_date` | DATETIME | Not Null | Inicio validez. |
+| `end_date` | DATETIME | Not Null | Fin validez. |
+| `is_active` | BOOLEAN | Default: True | Estado. |
+
+### Tabla: MarketplaceCategory
+Categorías servicios globales.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID categoría. |
+| `name` | VARCHAR(50) | Not Null | Nombre visible. |
+| `icon_slug` | VARCHAR(20) | Nullable | Icono UI. |
+
+### Tabla: MarketplaceProvider
+Proveedores globales.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID proveedor. |
+| `name` | VARCHAR(100) | Not Null | Razón social. |
+| `rif` | VARCHAR(20) | Unique | Identificador fiscal. |
+| `category_id` | UUID | FK -> Category | Rubro. |
+| `verification_status`| ENUM | Not Null | `UNVERIFIED`, `VERIFIED`. |
+| `global_rating` | DECIMAL | Default: 0.00 | Promedio estrellas. |
+| `whatsapp` | VARCHAR(20) | Not Null | Número contacto. |
+| `service_zone` | JSONB | Not Null | Ciudades activas. |
+
+### Tabla: HelpContent
+Ayuda contextual.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID contenido. |
+| `title` | VARCHAR | Not Null | Título pregunta. |
+| `search_keywords` | TEXT | Not Null | Palabras clave. |
+| `video_url` | VARCHAR | Not Null | URL video. |
+| `module_tag` | VARCHAR | Not Null | Tag contexto. |
+| `is_active` | BOOLEAN | Default: True | Visible. |
+
+---
+
+## GRUPO 2: IDENTIDAD & UNIDADES (TENANT SCHEMA)
+
+### Tabla: TenantProfile
+Perfil local del usuario.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID del perfil. |
+| `user_id` | UUID | FK -> User | Usuario global. |
+| `role` | ENUM | Not Null | `ADMIN`, `OWNER`, `RESIDENT`. |
+| `phone_number` | VARCHAR(20) | Not Null | Teléfono local. |
+| `is_active` | BOOLEAN | Default: True | Control acceso. |
+
+### Tabla: Unit
+Inmuebles.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID unidad. |
+| `name` | VARCHAR(20) | Not Null | Ej: "1-A". |
+| `aliquot` | DECIMAL | Not Null | Porcentaje participación. |
+| `is_common_area` | BOOLEAN | Default: False | Unidad comunidad. |
+
+### Tabla: UnitOwner
+Relación Persona-Inmueble.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID relación. |
+| `unit_id` | UUID | FK -> Unit | Unidad. |
+| `profile_id` | UUID | FK -> TenantProfile | Perfil. |
+| `ownership_percent` | DECIMAL | Default: 100 | % Propiedad. |
+| `is_responsible` | BOOLEAN | Default: False | Responsable pago. |
+
+### Tabla: TenantEmailIntegration
+Configuración email.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID config. |
+| `tenant_profile_id` | UUID | FK | Perfil admin. |
+| `provider` | VARCHAR | Not Null | `GMAIL`, `SMTP`. |
+| `email_address` | VARCHAR | Not Null | Remitente. |
+| `is_active` | BOOLEAN | Default: False | Estado. |
+| `smtp_host` | VARCHAR | Nullable | Host SMTP. |
+| `smtp_user` | VARCHAR | Nullable | Usuario SMTP. |
+| `smtp_password_encrypted` | TEXT | Nullable | Pass cifrado. |
+
+### Tabla: OnboardingState
+Progreso tutoriales.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID estado. |
+| `user_id` | UUID | FK | Usuario. |
+| `tour_id` | VARCHAR | Not Null | ID Tour. |
+| `current_step_index` | INTEGER | Default: 0 | Paso actual. |
+| `is_completed` | BOOLEAN | Default: False | Completado. |
+
+### Tabla: LeaseContract
+Contratos arrendamiento áreas comunes.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID contrato. |
+| `lessee_name` | VARCHAR | Not Null | Nombre cliente. |
+| `lessee_tax_id` | VARCHAR | Not Null | RIF cliente. |
+| `description` | VARCHAR | Not Null | Qué se alquila. |
+| `monthly_fee` | DECIMAL | Not Null | Canon mensual. |
+| `security_deposit` | DECIMAL | Default: 0 | Depósito. |
+| `start_date` | DATE | Not Null | Inicio. |
+| `end_date` | DATE | Not Null | Fin. |
+| `is_active` | BOOLEAN | Default: True | Vigente. |
+
+---
+
+## GRUPO 3: FINANZAS (TENANT SCHEMA)
+
+### Tabla: Bill
+Recibo de Condominio.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID recibo. |
+| `code` | VARCHAR(20) | Unique per Tenant | Nro Control. |
+| `total_amount_usd` | DECIMAL | Not Null | Deuda en USD. |
+| `status` | ENUM | Not Null | `PAID`, `UNPAID`. |
+| `due_date` | DATE | Not Null | Vencimiento. |
+| `unit_id` | UUID | FK -> Unit | Unidad facturada. |
+
+### Tabla: Transaction
+Movimientos de dinero.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID transacción. |
+| `amount_bs` | DECIMAL | Not Null | Monto real Bs. |
+| `amount_usd` | DECIMAL | Not Null | Monto calc USD. |
+| `rate_applied` | DECIMAL | Not Null | Tasa usada. |
+| `reference` | VARCHAR(100) | Not Null | Referencia bancaria. |
+| `ocr_status` | ENUM | Not Null | `PENDING`, `PROCESSED`. |
+
+### Tabla: Payment
+Registro de pago (Agrupador).
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID pago. |
+| `amount` | DECIMAL | Not Null | Monto. |
+| `reference_number` | VARCHAR(100) | Index | Referencia. |
+| `payment_date` | DATE | Not Null | Fecha pago. |
+| `method` | ENUM | Not Null | `PAGO_MOVIL`, `ZELLE`. |
+
+### Tabla: ExchangeRate
+Histórico tasas.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `timestamp` | DATETIME | PK | Fecha exacta. |
+| `rate` | DECIMAL | Not Null | Tasa. |
+| `source` | VARCHAR(50) | Default: 'BCV' | Fuente. |
+
+### Tabla: Expense
+Gastos operativos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID gasto. |
+| `amount` | DECIMAL | Not Null | Monto total. |
+| `invoice_number` | VARCHAR(50) | Not Null | Factura proveedor. |
+| `status` | ENUM | Not Null | `PENDING`, `PAID`. |
+| `supplier_id` | UUID | FK -> Supplier | Proveedor. |
+
+### Tabla: ExpenseSettlement
+Cierre de Mes.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID cierre. |
+| `tenant_id` | UUID | FK -> Tenant | Condominio. |
+| `period_start` | DATE | Not Null | Inicio periodo. |
+| `period_end` | DATE | Not Null | Fin periodo. |
+| `total_amount` | DECIMAL | Not Null | Monto a distribuir. |
+| `status` | ENUM | Not Null | `DRAFT`, `APPROVED`. |
+
+### Tabla: Account
+Cuentas bancarias.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID cuenta. |
+| `name` | VARCHAR | Not Null | Nombre Banco. |
+| `current_balance` | DECIMAL | Not Null | Saldo. |
+| `currency` | ENUM | Not Null | Moneda. |
+
+### Tabla: BillItem
+Detalle recibo.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID item. |
+| `description` | VARCHAR | Not Null | Concepto. |
+| `amount_usd` | DECIMAL | Not Null | Monto item. |
+| `distribution_group_id` | UUID | FK | Grupo gasto. |
+
+### Tabla: DistributionGroup
+Grupos prorrateo.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID grupo. |
+| `name` | VARCHAR | Not Null | Nombre grupo. |
+| `total_relative_aliquot` | DECIMAL | Default: 100 | Total %. |
+
+### Tabla: PaymentAgreement
+Convenios pago.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID convenio. |
+| `frozen_debt` | DECIMAL | Not Null | Deuda congelada. |
+| `installments` | INTEGER | Not Null | Cuotas. |
+| `interest_rate` | DECIMAL | Default: 0 | Interés. |
+
+### Tabla: BankRule
+Reglas conciliación.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID regla. |
+| `keyword_pattern` | VARCHAR | Not Null | Regex. |
+| `target_account_id` | UUID | FK | Cuenta destino. |
+
+### Tabla: TaxRetention
+Retenciones.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID retención. |
+| `type` | VARCHAR | Not Null | ISLR/IVA. |
+| `retained_amount` | DECIMAL | Not Null | Monto. |
+| `proof_doc_url` | VARCHAR | Nullable | URL PDF. |
+
+### Tabla: AmenityExclusion
+Bloqueos amenidades.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID exclusión. |
+| `amenity_id` | UUID | FK | Área. |
+| `unit_id` | UUID | FK | Unidad. |
+| `reason` | VARCHAR | Not Null | Motivo. |
+
+### Tabla: Supplier
+Proveedores locales.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID proveedor. |
+| `name` | VARCHAR | Not Null | Nombre. |
+| `rif` | VARCHAR | Not Null | RIF. |
+| `is_special_taxpayer` | BOOLEAN | Default: False | Contribuyente especial. |
+
+### Tabla: BiddingProcess
+Licitaciones.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID proceso. |
+| `title` | VARCHAR | Not Null | Título. |
+| `status` | ENUM | Not Null | Estado. |
+
+### Tabla: BiddingQuote
+Cotizaciones.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID cotización. |
+| `amount_usd` | DECIMAL | Not Null | Monto. |
+| `is_winner` | BOOLEAN | Default: False | Ganador. |
+| `supplier_id` | UUID | FK | Proveedor. |
+
+---
+
+## GRUPO 4: OPERACIONES (TENANT SCHEMA)
+
+### Tabla: Ticket
+Tickets mantenimiento.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID ticket. |
+| `type` | ENUM | Not Null | `MAINTENANCE`, `COMPLAINT`. |
+| `status` | ENUM | Not Null | `OPEN`, `CLOSED`. |
+| `subject` | VARCHAR(100) | Not Null | Asunto. |
+
+### Tabla: AccessLog
+Bitácora acceso.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID registro. |
+| `visitor_name` | VARCHAR(100) | Not Null | Nombre visitante. |
+| `visitor_id_doc` | VARCHAR(20) | Not Null | Cédula. |
+| `entry_time` | DATETIME | Default: Now | Hora entrada. |
+
+### Tabla: Reservation
+Reservas áreas comunes.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID reserva. |
+| `start_time` | DATETIME | Not Null | Inicio. |
+| `end_time` | DATETIME | Not Null | Fin. |
+| `status` | ENUM | Not Null | `CONFIRMED`, `CANCELLED`. |
+
+### Tabla: OwnershipTransfer
+Traspasos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID traspaso. |
+| `old_owner_id` | UUID | FK | Vendedor. |
+| `debt_at_transfer` | DECIMAL | Not Null | Deuda al vender. |
+| `transfer_date` | DATE | Not Null | Fecha. |
+
+### Tabla: Amenity
+Amenidades.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID área. |
+| `name` | VARCHAR | Not Null | Nombre. |
+| `is_luxury` | BOOLEAN | Default: False | Es lujo. |
+
+### Tabla: SupplierRating
+Calificaciones.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID rating. |
+| `stars` | INTEGER | Not Null | 1-5. |
+| `comment` | TEXT | Nullable | Opinión. |
+
+### Tabla: AuditLog
+Auditoría.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID evento. |
+| `user_id` | UUID | FK | Usuario. |
+| `action` | VARCHAR | Not Null | Acción. |
+| `table_name` | VARCHAR | Not Null | Tabla. |
+| `record_id` | UUID | Not Null | Registro. |
+| `changes` | JSONB | Nullable | Cambios. |
+
+### Tabla: GuestInvitation
+Invitaciones QR.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID invitación. |
+| `qr_token` | VARCHAR | Unique | Token. |
+| `expires_at` | DATETIME | Not Null | Expira. |
+
+### Tabla: PanicAlert
+Botón pánico.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID alerta. |
+| `triggered_at` | DATETIME | Default: Now | Hora. |
+| `gps_coords` | VARCHAR | Nullable | GPS. |
+
+### Tabla: Assembly
+Asambleas.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID asamblea. |
+| `topic` | VARCHAR | Not Null | Tema. |
+| `date` | DATETIME | Not Null | Fecha. |
+| `status` | ENUM | Not Null | Estado. |
+| `quorum_current` | DECIMAL | Default: 0 | Quorum. |
+
+### Tabla: Poll
+Votaciones.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID votación. |
+| `title` | VARCHAR | Not Null | Título. |
+| `end_date` | DATE | Not Null | Fin. |
+
+### Tabla: Vote
+Votos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID voto. |
+| `choice` | ENUM | Not Null | Opción. |
+| `weight` | DECIMAL | Not Null | Peso. |
+| `unit_id` | UUID | FK | Unidad. |
+
+### Tabla: Parcel
+Paquetería.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID paquete. |
+| `pickup_code` | VARCHAR | Unique | Código. |
+| `status` | ENUM | Not Null | Estado. |
+
+### Tabla: Vehicle
+Vehículos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID vehículo. |
+| `plate_number` | VARCHAR | Unique | Placa. |
+
+### Tabla: Pet
+Mascotas.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID mascota. |
+| `name` | VARCHAR | Not Null | Nombre. |
+| `breed` | VARCHAR | Nullable | Raza. |
+
+---
+
+## GRUPO 5: LEGAL Y GOBIERNO (TENANT SCHEMA)
+
+### Tabla: AdminContract
+Contrato administración.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID contrato. |
+| `tenant_id` | UUID | FK | Condominio. |
+| `document_url` | VARCHAR | Not Null | URL PDF. |
+| `start_date` | DATE | Not Null | Inicio. |
+| `end_date` | DATE | Not Null | Fin. |
+| `auto_renewal` | BOOLEAN | Default: False | Prórroga. |
+| `is_active` | BOOLEAN | Default: True | Estado. |
+| `administrator_name` | VARCHAR | Not Null | Nombre. |
+| `administrator_id` | VARCHAR | Not Null | RIF. |
+
+### Tabla: CondoConstitution
+Documento condominio.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID doc. |
+| `fiscal_year_start` | INTEGER | Not Null | Mes inicio fiscal. |
+| `reserve_fund_pct` | DECIMAL | Not Null | % Reserva. |
+| `expense_method` | ENUM | Default: 'ALIQUOT' | Método cobro. |
+
+### Tabla: AdministratorBond
+Fianza.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID fianza. |
+| `amount` | DECIMAL | Not Null | Monto. |
+| `expiry_date` | DATE | Not Null | Vencimiento. |
+
+### Tabla: BuildingInsurance
+Seguro edificio.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID póliza. |
+| `policy_number` | VARCHAR | Not Null | Número. |
+| `expiry_date` | DATE | Not Null | Vencimiento. |
+
+### Tabla: BoardTerm
+Periodo Junta.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID periodo. |
+| `start_date` | DATE | Not Null | Inicio. |
+| `end_date` | DATE | Nullable | Fin. |
+| `status` | ENUM | Not Null | Estado. |
+
+### Tabla: BoardPosition
+Cargo Junta.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID cargo. |
+| `title` | ENUM | Not Null | Nombre cargo. |
+| `tenant_profile_id` | UUID | FK | Persona. |
+
+### Tabla: LegalCase
+Casos legales.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID caso. |
+| `case_number` | VARCHAR | Not Null | Expediente. |
+| `status` | ENUM | Not Null | Estado. |
+
+### Tabla: LegalConsultation
+Consultas kiosco.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID consulta. |
+| `legal_text` | TEXT | Not Null | Texto. |
+| `deadline_date` | DATE | Not Null | Tope. |
+
+### Tabla: ConsultationResponse
+Respuestas consulta.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID respuesta. |
+| `vote_type` | ENUM | Not Null | Voto. |
+| `dissent_reason` | TEXT | Nullable | Razón. |
+
+### Tabla: LegalBook
+Libros legales.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID libro. |
+| `name` | VARCHAR | Not Null | Nombre. |
+| `current_folio` | INTEGER | Default: 1 | Folio. |
+
+### Tabla: LegalDocument
+Documentos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID doc. |
+| `type` | ENUM | Not Null | Tipo. |
+| `url` | VARCHAR | Not Null | URL. |
+
+---
+
+## GRUPO 6: RRHH Y ACTIVOS (TENANT SCHEMA)
+
+### Tabla: EmployeeProfile
+Perfil empleado.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID empleado. |
+| `base_salary_bs` | DECIMAL | Not Null | Salario ley. |
+| `bonus_usd` | DECIMAL | Default: 0 | Bono divisa. |
+
+### Tabla: WorkShift
+Turnos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID turno. |
+| `check_in` | DATETIME | Not Null | Entrada. |
+| `gps_verified` | BOOLEAN | Default: False | GPS OK. |
+
+### Tabla: PayrollReceipt
+Recibo nómina.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID recibo. |
+| `total_paid` | DECIMAL | Not Null | Total. |
+
+### Tabla: Asset
+Activos fijos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID activo. |
+| `qr_code` | VARCHAR | Unique | QR. |
+| `status` | ENUM | Not Null | Estado. |
+| `name` | VARCHAR | Not Null | Nombre. |
+
+### Tabla: InventoryItem
+Inventario.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID item. |
+| `name` | VARCHAR | Not Null | Nombre. |
+| `current_stock` | INTEGER | Default: 0 | Stock. |
+
+### Tabla: InventoryLog
+Movimientos inventario.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID log. |
+| `quantity_change` | INTEGER | Not Null | Cambio. |
+
+### Tabla: Project
+Proyectos.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID proyecto. |
+| `name` | VARCHAR | Not Null | Nombre. |
+| `goal_amount` | DECIMAL | Not Null | Meta. |
+
+---
+
+## GRUPO 7: INTELIGENCIA ARTIFICIAL (TENANT SCHEMA)
+
+### Tabla: AIKnowledgeBase
+Memoria vectorial.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID fragmento. |
+| `source_doc` | VARCHAR(255) | Not Null | Archivo origen. |
+| `content` | TEXT | Not Null | Texto plano. |
+| `embedding` | VECTOR(1536) | Extension | Vector semántico. |
+
+### Tabla: AIChatSession
+Sesiones chat.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID sesión. |
+| `user_id` | UUID | FK -> TenantProfile | Usuario. |
+| `channel` | ENUM | Not Null | `WA`, `APP`. |
+| `is_active` | BOOLEAN | Default: True | Estado ventana. |
+
+### Tabla: AIChatMessage
+Mensajes.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID mensaje. |
+| `session_id` | UUID | FK | Sesión. |
+| `role` | ENUM | Not Null | `USER`, `ASSISTANT`. |
+| `content` | TEXT | Not Null | Texto. |
+| `intent` | VARCHAR | Nullable | Intención. |
+| `tool_logs` | JSONB | Nullable | Logs herramientas. |
+| `tokens` | INTEGER | Nullable | Tokens. |
+
+---
+
+## GRUPO 8: MARKETPLACE LOCAL (TENANT SCHEMA)
+
+### Tabla: ServiceOrder
+Orden servicio.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID orden. |
+| `ticket_id` | UUID | FK | Ticket origen. |
+| `provider_public_id`| UUID | Logical Ref | ID proveedor global. |
+| `status` | ENUM | Not Null | Estado. |
+| `cost_usd` | DECIMAL | Nullable | Costo. |
+| `invoiced` | BOOLEAN | Default: False | Factura. |
+
+### Tabla: ProviderReview
+Reviews.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID review. |
+| `service_order_id` | UUID | FK | Orden. |
+| `rating` | INTEGER | Check (1-5) | Puntos. |
+| `comment` | TEXT | Nullable | Comentario. |
+| `is_public` | BOOLEAN | Default: True | Publico. |
+
+---
+
+## GRUPO 9: ONBOARDING (STAGING)
+
+### Tabla: ImportBatch
+Lotes importación.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID lote. |
+| `file_name` | VARCHAR | Not Null | Archivo. |
+| `batch_type` | VARCHAR | Not Null | Tipo. |
+| `status` | VARCHAR | Not Null | Estado. |
+| `total_rows` | INTEGER | Default: 0 | Filas. |
+| `error_count` | INTEGER | Default: 0 | Errores. |
+| `used_ai_mapping` | BOOLEAN | Default: False | IA usada. |
+
+### Tabla: ImportRow
+Filas staging.
+
+| Campo | Tipo | Restricciones | Descripción |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PK | ID fila. |
+| `batch_id` | UUID | FK | Lote. |
+| `row_number` | INTEGER | Not Null | Nro fila. |
+| `raw_data` | JSONB | Not Null | Crudos. |
+| `mapped_data` | JSONB | Nullable | Limpios. |
+| `validation_errors` | JSONB | Default: [] | Errores. |
+| `is_valid` | BOOLEAN | Default: False | Valido. |
