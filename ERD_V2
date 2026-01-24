@@ -42,6 +42,7 @@ erDiagram
     decimal monthly_interest_rate 
     string referred_by_code 
     string proration_strategy 
+    datetime created_at
   }
 
   Subscription {
