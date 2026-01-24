@@ -32,6 +32,8 @@ erDiagram
     UUID id PK
     string schema_name
     string name
+    string fiscal_id     
+    string address       
     UUID owner_id FK
     boolean is_active
     decimal credit_balance
