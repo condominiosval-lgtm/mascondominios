@@ -32,6 +32,7 @@ erDiagram
     UUID id PK
     string schema_name
     string name
+    UUID owner_id FK
     boolean is_active
     decimal credit_balance
     jsonb ai_config
