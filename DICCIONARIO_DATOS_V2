@@ -37,6 +37,7 @@ Representa el Condominio (La Entidad Legal). *Datos de identidad y configuració
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | Identificador del Condominio. |
 | `schema_name` | VARCHAR(63) | Unique, Not Null | Nombre del esquema de BD. |
+| `owner_id` | UUID | FK -> User, Not Null | **Dueño de la Suscripción.** Responsable legal y financiero. |
 | `name` | VARCHAR(100) | Not Null | Nombre legal del Condominio. |
 | `is_active` | BOOLEAN | Default: True | Interruptor maestro de acceso. |
 | `credit_balance` | DECIMAL | Default: 0.00 | Saldo a favor (Billetera). |
