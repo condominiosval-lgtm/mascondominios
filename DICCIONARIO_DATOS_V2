@@ -48,6 +48,7 @@ Representa el Condominio (La Entidad Legal). *Datos de identidad y configuració
 | `monthly_interest_rate` | DECIMAL | Default: 0.00 | % Interés de mora mensual. |
 | `referred_by_code` | VARCHAR(12) | Nullable | Código de referido. |
 | `proration_strategy` | ENUM | Default: 'ALIQUOT' | Fórmula de reparto de gastos. |
+| `created_at` | DATETIME | Not Null | Fecha de registro del condominio. |
 
 ### Tabla: Subscription
 **Tabla Satélite.** Almacena el contrato de servicio.
