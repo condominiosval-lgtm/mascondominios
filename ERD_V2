@@ -17,6 +17,7 @@ erDiagram
     UUID id PK
     string first_name 
     string last_name 
+    string phone_number
     string email
     string password_hash
     string national_id
