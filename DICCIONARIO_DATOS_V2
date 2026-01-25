@@ -99,15 +99,17 @@ Niveles de precio (Escalas).
 | `plan_id` | UUID | FK -> PlanCatalog | Plan asociado. |
 
 ### Tabla: SaaSPayment
-Registro de ingresos del SaaS.
+Registro de ingresos del SaaS (Multimoneda / Multi-Pasarela).
 
 | Campo | Tipo | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
-| `id` | UUID | PK | ID del pago. |
-| `subscription_id` | UUID | FK -> Subscription | Suscripción pagada. |
-| `amount_bs` | DECIMAL | Not Null | Monto en Bolívares. |
-| `plaza_transaction_id` | VARCHAR(100) | Unique | Referencia Banco Plaza. |
-| `status` | ENUM | Not Null | `PENDING`, `COMPLETED`, `FAILED`. |
+| `id` | UUID | PK | ID único del pago. |
+| `subscription_id` | UUID | FK -> Subscription | Suscripción asociada. |
+| `amount` | DECIMAL | Not Null | **Monto.** Cantidad nominal (El sistema infiere moneda según `provider`). |
+| `transaction_reference` | VARCHAR(100) | Unique | **Referencia.** ID del Banco Plaza, Hash de Binance o Código Zelle. |
+| `provider` | ENUM | Not Null | **Pasarela.** Valores: `BANCO_PLAZA`, `ZELLE`, `BINANCE`, `CASH`. |
+| `status` | ENUM | Not Null | **Estado.** Valores: `PENDING`, `COMPLETED`, `FAILED`. |
+| `created_at` | DATETIME | Not Null | Fecha exacta. |
 
 ### Tabla: IntegrationConfig
 Credenciales externas.
