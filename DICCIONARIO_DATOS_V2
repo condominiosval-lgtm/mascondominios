@@ -23,7 +23,7 @@ Usuarios globales de la plataforma.
 | `last_name` | VARCHAR(50) | Not Null | Apellido(s) del usuario. |
 | `phone_number` | VARCHAR(20) | Unique, Not Null | Teléfono móvil (WhatsApp). |
 | `email` | VARCHAR(255) | Unique, Not Null | Correo electrónico principal (Login). |
-| `password_hash` | VARCHAR(255) | Not Null | Hash de contraseña (Argon2). |
+| `password_hash` | VARCHAR(255) | Nullable | Hash de contraseña. **(Vacío si usa Google Login)**. |
 | `national_id` | VARCHAR(20) | Index | Cédula de Identidad o DNI. |
 | `profile_type` | ENUM | Not Null | Valores: `INDEPENDENT`, `SELF_MANAGED`, `COMPANY`. |
 | `last_login` | DATETIME | Nullable | Fecha del último acceso. |
