@@ -93,14 +93,15 @@ erDiagram
     UUID plan_id FK
   }
 
-  SaaSPayment {
+SaaSPayment {
     UUID id PK
     UUID subscription_id FK
-    decimal amount_bs
-    string plaza_transaction_id
-    enum status [note: "PENDING, COMPLETED, FAILED"]  
+    decimal amount             
+    string transaction_reference 
+    enum provider              
+    enum status                
     datetime created_at
-  }
+}
 
   IntegrationConfig {
     UUID id PK
