@@ -82,6 +82,7 @@ erDiagram
     UUID id PK
     string name
     boolean is_active
+    enum unit_type    
   }
 
   PlanTier {
