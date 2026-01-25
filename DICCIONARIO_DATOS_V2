@@ -106,6 +106,7 @@ Registro de ingresos del SaaS.
 | `subscription_id` | UUID | FK -> Subscription | Suscripción pagada. |
 | `amount_bs` | DECIMAL | Not Null | Monto en Bolívares. |
 | `plaza_transaction_id` | VARCHAR(100) | Unique | Referencia Banco Plaza. |
+| `status` | ENUM | Not Null | `PENDING`, `COMPLETED`, `FAILED`. |
 
 ### Tabla: IntegrationConfig
 Credenciales externas.
