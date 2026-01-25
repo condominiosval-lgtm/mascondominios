@@ -19,7 +19,8 @@ erDiagram
     string last_name 
     string phone_number
     string email
-    string password_hash
+    string password_hash "Nullable (Google)"
+    string auth_provider "Nuevo: EMAIL o GOOGLE"
     string national_id
     enum profile_type
     datetime last_login
