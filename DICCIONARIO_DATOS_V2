@@ -29,6 +29,7 @@ Usuarios globales de la plataforma.
 | `last_login` | DATETIME | Nullable | Fecha del último acceso. |
 | `referral_code` | VARCHAR(12) | Unique, Not Null | Código único viral del usuario. |
 | `successful_referrals` | INTEGER | Default: 0 | Contador de referidos activos. |
+| `auth_provider` | ENUM | Default: 'EMAIL' | Identifica el origen. Valores: `EMAIL`, `GOOGLE`. |
 
 ### Tabla: Tenant
 Representa el Condominio (La Entidad Legal). *Datos de identidad y configuración.*
