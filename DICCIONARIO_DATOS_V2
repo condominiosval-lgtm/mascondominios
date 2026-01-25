@@ -85,6 +85,7 @@ Catálogo de planes.
 | `id` | UUID | PK | ID del plan. |
 | `name` | VARCHAR(50) | Not Null | Nombre (ej: "Básico"). |
 | `is_active` | BOOLEAN | Default: True | Disponibilidad. |
+| `unit_type` | ENUM | Not Null | Define la unidad de cobro. Valores: `APARTMENT` (Residencial), `BUILDING` (Corporativo/Consorcio). |
 
 ### Tabla: PlanTier
 Niveles de precio (Escalas).
