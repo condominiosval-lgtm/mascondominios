@@ -36,7 +36,7 @@ Representa el Condominio (La Entidad Legal). *Datos de identidad y configuració
 | Campo | Tipo | Restricciones | Descripción |
 | :--- | :--- | :--- | :--- |
 | `id` | UUID | PK | Identificador del Condominio. |
-| `schema_name` | VARCHAR(63) | Unique, Not Null | Nombre del esquema de BD. |
+| `schema_name` | VARCHAR(63) | Unique, Not Null | **CRÍTICO: Solo caracteres alfanuméricos. Backend DEBE sanitizar o usar UUID. Alto riesgo de SQL Injection.** |
 | `owner_id` | UUID | FK -> User, Not Null | **Dueño de la Suscripción.** Responsable legal y financiero. |
 | `name` | VARCHAR(100) | Not Null | Nombre legal del Condominio. |
 | `fiscal_id` | VARCHAR(20) | Not Null | **RIF o Documento Legal.** (Ej. "J-12345678-9"). Vital para facturación. |
