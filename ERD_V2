@@ -97,6 +97,7 @@ erDiagram
     UUID subscription_id FK
     decimal amount_bs
     string plaza_transaction_id
+    enum status [note: "PENDING, COMPLETED, FAILED"]  
     datetime created_at
   }
 
