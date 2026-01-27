@@ -119,6 +119,13 @@ SaaSPayment {
     string module_tag 
     boolean is_active
   }
+Domain {
+        UUID id PK
+        string domain
+        UUID tenant_id FK
+        boolean is_primary
+        datetime created_at
+    }
 
   class User,Tenant,Subscription,Domain,PlanCatalog,PlanTier,SaaSPayment,IntegrationConfig,SaaSPromotion,HelpContent publicFill
 
@@ -714,4 +721,7 @@ SaaSPayment {
   
   %% RELACION LOGICA ENTRE ESQUEMAS
   MarketplaceProvider |o..o{ ServiceOrder : "contratado en"
+
+  %% Relación de Dominios
+  Tenant ||--|{ Domain : "tiene_accesos"
 ```
