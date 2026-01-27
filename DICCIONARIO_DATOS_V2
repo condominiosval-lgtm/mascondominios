@@ -295,6 +295,19 @@ Histórico tasas.
 | `rate` | DECIMAL | Not Null | Tasa. |
 | `source` | VARCHAR(50) | Default: 'BCV' | Fuente. |
 
+### Tabla: Domain
+*Descripción:** Gestiona las direcciones URL de acceso. Permite que un Tenant tenga múltiples puntos de entrada (ej: subdominio del sistema `torre.sistema.com` y dominio propio `mitorre.com`). Es el motor de la **Marca Blanca**.
+
+| Columna | Tipo de Dato | Restricciones | Descripción / Lógica de Negocio |
+| :--- | :--- | :--- | :--- |
+| **id** | UUID | PK, Default UUID4 | Identificador único del dominio. |
+| **domain** | VARCHAR(253) | Unique, Not Null | La URL real (ej: `torre.com`). Límite 253 chars (estándar DNS). |
+| **tenant_id** | UUID | FK (Tenant), Cascade | Edificio al que pertenece esta dirección. |
+| **is_primary** | BOOLEAN | Default True | Indica si es la URL principal (Canónica). |
+| **created_at** | DATETIME | AutoNowAdd | Fecha de creación. |
+| **updated_at** | DATETIME | AutoNow | Fecha de última modificación. |
+| **deleted_at** | DATETIME | Nullable | Soft Delete. |
+
 ### Tabla: Expense
 Gastos operativos.
 
