@@ -1,0 +1,5031 @@
+
+============================================================
+ DIAGNÓSTICO DEL SISTEMA Y DOCKER
+============================================================
+
+Fecha reporte: 2026-01-28 18:44:26.559594
+Sistema Operativo: Windows 10
+
+$ docker-compose ps
+
+no configuration file provided: not found
+
+
+--- IMÁGENES DOCKER ---
+$ docker images
+IMAGE                                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+eclipse-mosquitto:2                   077fe4ff4c49       18.5MB         5.31MB   U    
+mascondominios-root-backend:latest    9f909ecb1eff       1.09GB          257MB   U    
+mascondominios-root-beat:latest       71097e92fc8c       1.09GB          257MB   U    
+mascondominios-root-whatsapp:latest   ed492ab7bcae        223MB         56.2MB   U    
+mascondominios-root-worker:latest     1fb56e566bd6       1.09GB          257MB   U    
+minio/minio:latest                    14cea493d9a3        241MB         62.2MB   U    
+pgvector/pgvector:pg15                82b87aba3a76        705MB          180MB   U    
+redis:7-alpine                        ee64a64eaab6       61.2MB         17.7MB   U    
+
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+
+
+--- PYTHON LOCAL ---
+$ python --version
+
+Python was not found but can be installed from the Microsoft Store: ms-windows-store://pdp/?productid=9NJ46SX7X90P$ pip freeze
+
+"pip" no se reconoce como un comando interno o externo,
+programa o archivo por lotes ejecutable.
+
+============================================================
+ ESTRUCTURA VISUAL DEL PROYECTO
+============================================================
+
+📁 mascondominios2/
+    📄 AUDITORIA_TOTAL_GOD_MODE.txt  [0.00 KB | Modificado: 2026-01-28 18:44:26]
+    📄 codigo_completo.txt  [74.30 KB | Modificado: 2026-01-28 17:45:33]
+    📄 crear_estructura.bat  [2.41 KB | Modificado: 2026-01-25 21:43:22]
+    📄 generar_estructura.py  [4.10 KB | Modificado: 2026-01-25 21:37:49]
+    📄 GOD_MODE.py  [5.42 KB | Modificado: 2026-01-28 18:43:15]
+    📁 mascondominios-root/
+        📄 .env  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+        📄 .gitignore  [0.14 KB | Modificado: 2026-01-26 19:05:51]
+        📄 docker-compose.yml  [4.88 KB | Modificado: 2026-01-27 12:50:42]
+        📄 generar_contexto.py  [2.60 KB | Modificado: 2026-01-28 17:45:23]
+        📄 README.md  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+        📄 refactor_master.py  [13.04 KB | Modificado: 2026-01-28 09:29:21]
+        📁 .docker/
+            📁 nginx/
+                📄 default.conf  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📁 postgres/
+                📄 init.sql  [0.45 KB | Modificado: 2026-01-26 07:25:07]
+        📁 backend/
+            📄 celerybeat-schedule  [2.00 KB | Modificado: 2026-01-28 14:42:35]
+            📄 Dockerfile  [1.71 KB | Modificado: 2026-01-26 09:02:24]
+            📄 entrypoint.sh  [0.26 KB | Modificado: 2026-01-26 08:44:39]
+            📄 manage.py  [0.72 KB | Modificado: 2026-01-26 09:20:23]
+            📄 requirements.txt  [0.84 KB | Modificado: 2026-01-27 13:28:38]
+            📁 apps/
+                📄 __init__.py  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📁 ai_assistant/
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📁 core/
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📁 finance/
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📁 legal/
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📁 operations/
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📁 social/
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📁 billing/
+                📄 admin.py  [0.79 KB | Modificado: 2026-01-28 14:48:12]
+                📄 apps.py  [0.21 KB | Modificado: 2026-01-28 10:59:48]
+                📄 models.py  [3.77 KB | Modificado: 2026-01-28 14:51:47]
+                📄 signals.py  [0.83 KB | Modificado: 2026-01-28 09:32:15]
+                📄 tests.py  [0.06 KB | Modificado: 2026-01-26 10:55:47]
+                📄 views.py  [0.06 KB | Modificado: 2026-01-26 10:55:47]
+                📄 __init__.py  [0.00 KB | Modificado: 2026-01-26 10:55:47]
+                📁 migrations/
+                    📄 0001_initial.py  [3.17 KB | Modificado: 2026-01-28 10:27:26]
+                    📄 0002_saaspayment.py  [1.57 KB | Modificado: 2026-01-28 14:25:40]
+                    📄 0003_alter_plancatalog_options.py  [0.40 KB | Modificado: 2026-01-28 16:47:30]
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-26 10:55:47]
+            📁 config/
+                📄 asgi.py  [0.17 KB | Modificado: 2026-01-26 09:29:25]
+                📄 celery.py  [0.75 KB | Modificado: 2026-01-26 08:19:55]
+                📄 settings.py  [8.44 KB | Modificado: 2026-01-28 13:21:44]
+                📄 urls.py  [0.77 KB | Modificado: 2026-01-27 23:06:42]
+                📄 urls_public.py  [0.54 KB | Modificado: 2026-01-27 18:34:46]
+                📄 wsgi.py  [0.17 KB | Modificado: 2026-01-28 15:31:31]
+                📄 __init__.py  [0.06 KB | Modificado: 2026-01-26 08:20:17]
+            📁 core/
+                📄 admin.py  [0.50 KB | Modificado: 2026-01-28 14:15:42]
+                📄 apps.py  [0.25 KB | Modificado: 2026-01-27 09:30:26]
+                📄 models.py  [6.15 KB | Modificado: 2026-01-28 15:16:46]
+                📄 serializers.py  [1.83 KB | Modificado: 2026-01-28 09:57:50]
+                📄 signals.py  [0.68 KB | Modificado: 2026-01-28 09:50:56]
+                📄 tests.py  [0.06 KB | Modificado: 2026-01-26 10:55:21]
+                📄 urls.py  [0.20 KB | Modificado: 2026-01-27 14:09:50]
+                📄 views.py  [0.87 KB | Modificado: 2026-01-28 09:58:32]
+                📄 __init__.py  [0.00 KB | Modificado: 2026-01-26 10:55:21]
+                📁 migrations/
+                    📄 0001_initial.py  [6.04 KB | Modificado: 2026-01-28 10:27:26]
+                    📄 0002_alter_bankaccount_options_and_more.py  [2.39 KB | Modificado: 2026-01-28 14:25:40]
+                    📄 0003_alter_exchangerate_options.py  [0.41 KB | Modificado: 2026-01-28 16:47:30]
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-26 10:55:21]
+            📁 properties/
+                📄 admin.py  [0.06 KB | Modificado: 2026-01-27 14:00:25]
+                📄 apps.py  [0.15 KB | Modificado: 2026-01-27 14:00:25]
+                📄 models.py  [0.06 KB | Modificado: 2026-01-27 14:00:25]
+                📄 tests.py  [0.06 KB | Modificado: 2026-01-27 14:00:25]
+                📄 views.py  [0.06 KB | Modificado: 2026-01-27 14:00:25]
+                📄 __init__.py  [0.00 KB | Modificado: 2026-01-27 14:00:25]
+                📁 migrations/
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-27 14:00:25]
+            📁 users/
+                📄 admin.py  [1.72 KB | Modificado: 2026-01-28 17:54:55]
+                📄 apps.py  [0.14 KB | Modificado: 2026-01-26 11:33:05]
+                📄 models.py  [5.51 KB | Modificado: 2026-01-28 16:58:41]
+                📄 serializers.py  [1.40 KB | Modificado: 2026-01-27 14:05:29]
+                📄 tests.py  [0.06 KB | Modificado: 2026-01-26 10:54:01]
+                📄 views.py  [1.37 KB | Modificado: 2026-01-27 23:27:34]
+                📄 __init__.py  [0.00 KB | Modificado: 2026-01-26 10:54:01]
+                📁 migrations/
+                    📄 0001_initial.py  [2.95 KB | Modificado: 2026-01-28 10:27:14]
+                    📄 0002_tenantprofile.py  [1.62 KB | Modificado: 2026-01-28 14:25:40]
+                    📄 0003_user_successful_referrals_alter_user_email_and_more.py  [1.09 KB | Modificado: 2026-01-28 16:59:02]
+                    📄 __init__.py  [0.00 KB | Modificado: 2026-01-26 10:54:01]
+        📁 frontend-saas/
+            📄 .env  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📄 Dockerfile  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📄 package.json  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📄 vite.config.js  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📁 src/
+                📄 App.jsx  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📄 main.jsx  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+                📁 components/
+                📁 hooks/
+                📁 pages/
+                📁 services/
+                📁 store/
+        📁 landing-page/
+            📄 astro.config.mjs  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📄 Dockerfile  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📄 package.json  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📁 src/
+                📁 components/
+                📁 layouts/
+                📁 pages/
+                    📄 index.astro  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+        📁 mobile-app/
+            📄 app.json  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📄 package.json  [0.00 KB | Modificado: 2026-01-25 21:44:34]
+            📁 src/
+                📁 components/
+                📁 database/
+                📁 screens/
+        📁 mosquitto/
+            📁 config/
+                📄 mosquitto.conf  [0.27 KB | Modificado: 2026-01-26 08:15:16]
+        📁 whatsapp-gateway/
+            📄 Dockerfile  [0.36 KB | Modificado: 2026-01-26 07:16:11]
+            📄 index.js  [0.20 KB | Modificado: 2026-01-26 07:18:20]
+            📄 package.json  [0.31 KB | Modificado: 2026-01-26 07:16:44]
+============================================================
+ CONTENIDO DE ARCHIVOS
+============================================================
+
+
+--------------------------------------------------------------------------------
+RUTA: codigo_completo.txt
+--------------------------------------------------------------------------------
+=== ESTRUCTURA DE DIRECTORIOS ===
+./
+    codigo_completo.txt
+    generar_estructura.py
+    mascondominios-root/
+        docker-compose.yml
+        refactor_master.py
+        .docker/
+            nginx/
+                default.conf
+            postgres/
+        backend/
+            Dockerfile
+            entrypoint.sh
+            manage.py
+            requirements.txt
+            apps/
+                __init__.py
+                ai_assistant/
+                    __init__.py
+                core/
+                    __init__.py
+                finance/
+                    __init__.py
+                legal/
+                    __init__.py
+                operations/
+                    __init__.py
+                social/
+                    __init__.py
+            billing/
+                admin.py
+                apps.py
+                models.py
+                signals.py
+                tests.py
+                views.py
+                __init__.py
+            config/
+                asgi.py
+                celery.py
+                settings.py
+                urls.py
+                urls_public.py
+                wsgi.py
+                __init__.py
+            core/
+                admin.py
+                apps.py
+                models.py
+                serializers.py
+                signals.py
+                tests.py
+                urls.py
+                views.py
+                __init__.py
+            properties/
+                admin.py
+                apps.py
+                models.py
+                tests.py
+                views.py
+                __init__.py
+            users/
+                admin.py
+                apps.py
+                models.py
+                serializers.py
+                tests.py
+                views.py
+                __init__.py
+        frontend-saas/
+            Dockerfile
+            src/
+                components/
+                hooks/
+                pages/
+                services/
+                store/
+        landing-page/
+            Dockerfile
+            src/
+                components/
+                layouts/
+                pages/
+        mobile-app/
+            src/
+                components/
+                database/
+                screens/
+        mosquitto/
+            config/
+                mosquitto.conf
+        whatsapp-gateway/
+            Dockerfile
+
+
+=== CONTENIDO DE ARCHIVOS ===
+
+--- INICIO ARCHIVO: .\codigo_completo.txt ---
+
+--- FIN ARCHIVO: .\codigo_completo.txt ---
+
+--- INICIO ARCHIVO: .\generar_estructura.py ---
+import os
+import pathlib
+
+# Nombre de la raíz del proyecto
+ROOT_NAME = "mascondominios-root"
+
+# Estructura de carpetas y archivos a crear
+# Las claves son carpetas, los valores son listas de archivos dentro de ellas.
+# Si una ruta tiene '/' se crearán las subcarpetas automáticamente.
+structure = {
+    "": [  # Archivos en la raíz
+        "docker-compose.yml",
+        ".env",
+        ".gitignore",
+        "README.md"
+    ],
+    ".docker/nginx": [
+        "default.conf"
+    ],
+    ".docker/postgres": [
+        "init.sql"
+    ],
+    "backend": [
+        "Dockerfile",
+        "requirements.txt",
+        "entrypoint.sh",
+        "manage.py"
+    ],
+    "backend/config": [
+        "__init__.py",
+        "settings.py",
+        "urls.py",
+        "celery.py",
+        "wsgi.py",
+        "asgi.py"
+    ],
+    # Módulos de Negocio (Django Apps)
+    "backend/apps": [
+        "__init__.py"
+    ],
+    "backend/apps/core": [ # Usuarios, Tenants
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/finance": [ # Pagos, Tasas, Multimoneda
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/operations": [ # Mantenimiento, Inventario
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/social": [ # Votaciones, Muro
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/legal": [ # Sanciones, Documentos
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/ai_assistant": [ # Chatbot, RAG
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    # Frontend SaaS (React)
+    "frontend-saas": [
+        "Dockerfile",
+        "package.json",
+        "vite.config.js",
+        ".env"
+    ],
+    "frontend-saas/src": [
+        "main.jsx",
+        "App.jsx"
+    ],
+    "frontend-saas/src/components": [],
+    "frontend-saas/src/pages": [],
+    "frontend-saas/src/hooks": [],
+    "frontend-saas/src/services": [],
+    "frontend-saas/src/store": [],
+    
+    # Landing Page (Astro)
+    "landing-page": [
+        "Dockerfile",
+        "package.json",
+        "astro.config.mjs"
+    ],
+    "landing-page/src/pages": [
+        "index.astro"
+    ],
+    "landing-page/src/layouts": [],
+    "landing-page/src/components": [],
+
+    # Mobile App (React Native)
+    "mobile-app": [
+        "package.json",
+        "app.json"
+    ],
+    "mobile-app/src/screens": [],
+    "mobile-app/src/components": [],
+    "mobile-app/src/database": [] # WatermelonDB
+}
+
+def create_structure():
+    base_path = pathlib.Path.cwd() / ROOT_NAME
+    
+    print(f"🚀 Iniciando creación de la arquitectura en: {base_path}")
+    
+    # Crear carpeta raíz
+    if not base_path.exists():
+        base_path.mkdir()
+        print(f"✅ Carpeta raíz creada: {ROOT_NAME}")
+    else:
+        print(f"⚠️ La carpeta {ROOT_NAME} ya existe. Se agregarán archivos faltantes.")
+
+    for folder, files in structure.items():
+        # Crear la ruta completa de la carpeta
+        current_folder = base_path / folder
+        
+        # Crear directorios (y subdirectorios si es necesario)
+        if not current_folder.exists():
+            current_folder.mkdir(parents=True, exist_ok=True)
+            # print(f"   📂 Carpeta creada: {folder}")
+        
+        # Crear archivos dentro de esa carpeta
+        for filename in files:
+            file_path = current_folder / filename
+            if not file_path.exists():
+                with open(file_path, 'w') as f:
+                    pass # Crear archivo vacío
+                print(f"   📄 Archivo creado: {folder}/{filename}" if folder else f"   📄 Archivo creado: {filename}")
+            else:
+                pass
+                # print(f"   ➡️ Archivo ya existe: {filename}")
+
+    print("\n✨ ¡Estructura completada con éxito!")
+    print(f"👉 Ahora abre la carpeta '{ROOT_NAME}' en tu editor para empezar.")
+
+if __name__ == "__main__":
+    create_structure()
+--- FIN ARCHIVO: .\generar_estructura.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\docker-compose.yml ---
+services:
+  # ==========================================
+  # CAPA DE DATOS (PERSISTENCIA & IA)
+  # ==========================================
+
+  # 1. Base de Datos
+  db:
+    image: pgvector/pgvector:pg15
+    container_name: mascondominios_db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=mascondominios_db
+      - POSTGRES_USER=admin_db
+      - POSTGRES_PASSWORD=seguridad_local_dev
+    ports:
+      - "5432:5432"
+    networks:
+      - saas_network
+
+  # 2. Broker de Mensajería (Redis)
+  redis:
+    image: redis:7-alpine
+    container_name: mascondominios_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - saas_network
+
+  # 3. Object Storage Local (MinIO)
+  minio:
+    image: minio/minio:latest
+    container_name: mascondominios_minio
+    restart: always
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minio_admin
+      - MINIO_ROOT_PASSWORD=minio_secret_key
+    volumes:
+      - minio_data:/data
+    networks:
+      - saas_network
+
+  # 4. Broker IoT (MQTT - Mosquitto)
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: mascondominios_mqtt
+    restart: always
+    ports:
+      - "1883:1883"
+      - "9002:9001" # WebSockets en puerto 9002 para no chocar con MinIO
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+      - ./mosquitto/config:/mosquitto/config
+    networks:
+      - saas_network
+
+  # ==========================================
+  # CAPA DE LÓGICA (BACKEND DJANGO)
+  # ==========================================
+
+  # 5. API Cluster
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mascondominios_api
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE=postgres
+      - SQL_ENGINE=django_tenants.postgresql_backend
+      - SQL_DATABASE=mascondominios_db
+      - SQL_USER=admin_db
+      - SQL_PASSWORD=seguridad_local_dev
+      - SQL_HOST=db
+      - SQL_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - AWS_ACCESS_KEY_ID=minio_admin
+      - AWS_SECRET_ACCESS_KEY=minio_secret_key
+      - AWS_STORAGE_BUCKET_NAME=mascondominios-media
+      - AWS_S3_ENDPOINT_URL=http://minio:9000
+      - USE_S3=True
+      - MQTT_BROKER_URL=mqtt://mqtt:1883
+      - SECRET_KEY=django-insecure-clave-desarrollo-local-super-segura
+      - FERNET_KEY=b6Qv4_clave_segura_de_desarrollo_local_32bytes=
+    depends_on:
+      - db
+      - redis
+      - minio
+      - mqtt
+    networks:
+      - saas_network
+
+  # 6. Task Workers (QUIRÚRGICO APLICADO AQUÍ)
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mascondominios_worker
+    # CAMBIO: Agregado --concurrency=4 y -Q default,billing,notifications
+    command: celery -A config worker --loglevel=info --concurrency=4 -Q default,billing,notifications
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE=postgres
+      - SQL_HOST=db
+      - SQL_PORT=5432
+      - SQL_DATABASE=mascondominios_db
+      - SQL_USER=admin_db
+      - SQL_PASSWORD=seguridad_local_dev
+      - REDIS_URL=redis://redis:6379/0
+      - AWS_ACCESS_KEY_ID=minio_admin
+      - AWS_SECRET_ACCESS_KEY=minio_secret_key
+      - AWS_STORAGE_BUCKET_NAME=mascondominios-media
+      - AWS_S3_ENDPOINT_URL=http://minio:9000
+      - USE_S3=True
+      - FERNET_KEY=b6Qv4_clave_segura_de_desarrollo_local_32bytes=
+      - SECRET_KEY=django-insecure-clave-desarrollo-local-super-segura
+    depends_on:
+      - backend
+      - redis
+      - minio
+    networks:
+      - saas_network
+
+  # 7. Task Scheduler
+  beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mascondominios_beat
+    command: celery -A config beat -l info
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE=postgres
+      - SQL_HOST=db
+      - SQL_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - SQL_DATABASE=mascondominios_db
+      - SQL_USER=admin_db
+      - SQL_PASSWORD=seguridad_local_dev
+      - SECRET_KEY=django-insecure-clave-desarrollo-local-super-segura
+      - FERNET_KEY=b6Qv4_clave_segura_de_desarrollo_local_32bytes=
+    depends_on:
+      - backend
+    networks:
+      - saas_network
+
+  # 8. Gateway WhatsApp
+  whatsapp:
+    build:
+      context: ./whatsapp-gateway
+      dockerfile: Dockerfile
+    container_name: mascondominios_whatsapp
+    restart: always
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - saas_network
+
+volumes:
+  postgres_data:
+  minio_data:
+  mosquitto_data:
+  mosquitto_log:
+
+
+networks:
+  saas_network:
+    driver: bridge
+
+--- FIN ARCHIVO: .\mascondominios-root\docker-compose.yml ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\refactor_master.py ---
+import os
+import shutil
+
+# CONFIGURACIÓN DE RUTAS
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BACKEND_DIR = os.path.join(BASE_DIR, 'backend')
+
+# ---------------------------------------------------------
+# 1. CONTENIDO NUEVO PARA CORE (Solo Infraestructura)
+# ---------------------------------------------------------
+CORE_MODELS = """import uuid
+from django.db import models
+from django_tenants.models import TenantMixin, DomainMixin
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
+from django.utils.text import slugify
+
+class SoftDeleteManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted_at__isnull=True)
+
+class SoftDeleteModel(models.Model):
+    deleted_at = models.DateTimeField(blank=True, null=True, editable=False)
+    objects = SoftDeleteManager()
+    all_objects = models.Manager()
+
+    def delete(self, **kwargs):
+        from django.utils import timezone
+        self.deleted_at = timezone.now()
+        self.save()
+
+    class Meta:
+        abstract = True
+
+def tenant_directory_path(instance, filename):
+    tenant_id = getattr(instance, 'tenant_id', 'shared')
+    return f'tenant_{tenant_id}/{instance.__class__.__name__.lower()}/{filename}'
+
+class FileModel(models.Model):
+    attachment = models.FileField(upload_to=tenant_directory_path, null=True, blank=True)
+    class Meta:
+        abstract = True
+
+class Tenant(TenantMixin, SoftDeleteModel):
+    # --- INFRAESTRUCTURA PURA ---
+    CURRENCY_CHOICES = [('USD', 'Dólares (USD)'), ('VES', 'Bolívares (VES)')]
+    STRATEGY_CHOICES = [('USD_INDEXED', 'Indexado'), ('NOMINAL', 'Nominal')]
+    PRORATION_CHOICES = [('ALIQUOT', 'Por Alícuota')]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    schema_name = models.CharField(
+        max_length=63, unique=True, db_index=True, blank=True,
+        validators=[RegexValidator(regex=r'^[a-z0-9]+$')]
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='owned_tenants')
+    name = models.CharField(max_length=100)
+    fiscal_id = models.CharField(max_length=20)
+    address = models.TextField()
+    is_active = models.BooleanField(default=True)
+    
+    # Finanzas del EDIFICIO (No del SaaS)
+    base_currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+    accounting_strategy = models.CharField(max_length=20, choices=STRATEGY_CHOICES, default='USD_INDEXED')
+    proration_strategy = models.CharField(max_length=20, choices=PRORATION_CHOICES, default='ALIQUOT')
+    
+    credit_balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    monthly_interest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    referred_by_code = models.CharField(max_length=12, blank=True, null=True)
+    ai_config = models.JSONField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    auto_create_schema = True
+
+    class Meta:
+        db_table = 'core_tenant'
+        verbose_name = 'Condominio'
+
+    def save(self, *args, **kwargs):
+        if not self.schema_name and self.name:
+            self.schema_name = slugify(self.name).replace('-', '')
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} ({self.schema_name})"
+
+class Domain(DomainMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    domain = models.CharField(max_length=253, unique=True, db_index=True)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='domains')
+    is_primary = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_domain'
+
+class ExchangeRate(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    source = models.CharField(max_length=50, default='BCV')
+    rate = models.DecimalField(max_digits=15, decimal_places=4)
+    date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_exchangerate'
+
+class BankAccount(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='bank_accounts')
+    name = models.CharField(max_length=100)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=30)
+    currency = models.CharField(max_length=3, choices=Tenant.CURRENCY_CHOICES, default='VES')
+    initial_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    current_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_bankaccount'
+
+class Fund(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='funds')
+    name = models.CharField(max_length=100)
+    fund_type = models.CharField(max_length=20, default='RESERVE')
+    currency = models.CharField(max_length=3, choices=Tenant.CURRENCY_CHOICES, default='USD')
+    balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_fund'
+"""
+
+CORE_ADMIN = """from django.contrib import admin
+from .models import Tenant, Domain, BankAccount, Fund, ExchangeRate
+
+@admin.register(Tenant)
+class TenantAdmin(admin.ModelAdmin):
+    list_display = ('name', 'schema_name', 'fiscal_id', 'is_active')
+
+@admin.register(BankAccount)
+class BankAccountAdmin(admin.ModelAdmin):
+    list_display = ('name', 'bank_name', 'tenant')
+
+@admin.register(Fund)
+class FundAdmin(admin.ModelAdmin):
+    list_display = ('name', 'balance', 'tenant')
+
+@admin.register(ExchangeRate)
+class ExchangeRateAdmin(admin.ModelAdmin):
+    list_display = ('date', 'rate', 'source')
+"""
+
+# ---------------------------------------------------------
+# 2. CONTENIDO NUEVO PARA BILLING (Negocio SaaS)
+# ---------------------------------------------------------
+BILLING_MODELS = """import uuid
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from core.models import SoftDeleteModel
+
+class PlanCatalog(SoftDeleteModel):
+    UNIT_TYPE_CHOICES = [('APARTMENT', 'Por Apartamento'), ('BUILDING', 'Por Edificio')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    is_active = models.BooleanField(default=True)
+    unit_type = models.CharField(max_length=20, choices=UNIT_TYPE_CHOICES, default='APARTMENT')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'billing_plancatalog'
+        verbose_name = 'Catálogo de Planes'
+    def __str__(self):
+        return self.name
+
+class PlanTier(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    plan = models.ForeignKey(PlanCatalog, on_delete=models.CASCADE, related_name='tiers')
+    min_qty = models.IntegerField()
+    max_qty = models.IntegerField()
+    unit_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'billing_plantier'
+    def __str__(self):
+        return f"{self.plan.name}: {self.min_qty}-{self.max_qty}"
+
+class Subscription(SoftDeleteModel):
+    STATUS_CHOICES = [('ACTIVE', 'Activa'), ('PAST_DUE', 'Pendiente'), ('CANCELED', 'Cancelada')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    # ENLACE CRÍTICO: Referencia lazy a 'core.Tenant'
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='billing_subscriptions')
+    
+    plan_tier = models.ForeignKey(PlanTier, on_delete=models.PROTECT)
+    unit_count = models.IntegerField()
+    monthly_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')
+    next_billing_date = models.DateField()
+    is_latest = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'billing_subscription'
+"""
+
+BILLING_ADMIN = """from django.contrib import admin
+from .models import PlanCatalog, PlanTier, Subscription
+
+@admin.register(PlanCatalog)
+class PlanCatalogAdmin(admin.ModelAdmin):
+    list_display = ('name', 'unit_type', 'is_active')
+
+@admin.register(PlanTier)
+class PlanTierAdmin(admin.ModelAdmin):
+    list_display = ('plan', 'min_qty', 'max_qty', 'unit_price_usd')
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('tenant', 'status', 'monthly_price_usd', 'next_billing_date')
+"""
+
+BILLING_APPS = """from django.apps import AppConfig
+
+class BillingConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'billing'
+
+    def ready(self):
+        import billing.signals
+"""
+
+BILLING_SIGNALS = """from django.db.models.signals import post_save
+from django.dispatch import receiver
+from core.models import Tenant
+from .models import Subscription, PlanTier
+from django.utils import timezone
+from datetime import timedelta
+
+@receiver(post_save, sender=Tenant)
+def create_default_subscription(sender, instance, created, **kwargs):
+    if created:
+        print(f"💰 BILLING: Detectado nuevo cliente {instance.name}, asignando plan...")
+        first_plan = PlanTier.objects.first()
+        if first_plan:
+            Subscription.objects.create(
+                tenant=instance,
+                plan_tier=first_plan,
+                unit_count=0,
+                monthly_price_usd=first_plan.unit_price_usd,
+                next_billing_date=timezone.now().date() + timedelta(days=30),
+                status='ACTIVE'
+            )
+"""
+
+# ---------------------------------------------------------
+# 3. EJECUCIÓN DE LA CIRUGÍA
+# ---------------------------------------------------------
+def write_file(path, content):
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print(f"✅ Archivo actualizado: {path}")
+
+def clean_migrations(app_name):
+    migration_path = os.path.join(BACKEND_DIR, app_name, 'migrations')
+    if os.path.exists(migration_path):
+        for filename in os.listdir(migration_path):
+            if filename != '__init__.py':
+                os.remove(os.path.join(migration_path, filename))
+        print(f"🧹 Migraciones limpiadas para: {app_name}")
+
+def run_refactor():
+    print("🚀 INICIANDO REFACTORIZACIÓN A ARQUITECTURA PURISTA...")
+    
+    # 1. Core
+    write_file(os.path.join(BACKEND_DIR, 'core', 'models.py'), CORE_MODELS)
+    write_file(os.path.join(BACKEND_DIR, 'core', 'admin.py'), CORE_ADMIN)
+    clean_migrations('core')
+
+    # 2. Billing
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'models.py'), BILLING_MODELS)
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'admin.py'), BILLING_ADMIN)
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'apps.py'), BILLING_APPS)
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'signals.py'), BILLING_SIGNALS)
+    clean_migrations('billing')
+    
+    # 3. Users (Solo limpieza de migraciones por seguridad)
+    clean_migrations('users')
+
+    print("\n🏁 REFACTORIZACIÓN DE CÓDIGO COMPLETADA.")
+    print("⚠️  AHORA DEBES EJECUTAR ESTOS COMANDOS EN TU TERMINAL:")
+    print("   1. docker-compose down -v")
+    print("   2. docker-compose up -d --build")
+    print("   3. docker-compose exec backend python manage.py makemigrations core billing users")
+    print("   4. docker-compose exec backend python manage.py migrate_schemas --shared")
+    print("   5. docker-compose exec backend python manage.py createsuperuser")
+
+if __name__ == "__main__":
+    run_refactor()
+--- FIN ARCHIVO: .\mascondominios-root\refactor_master.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\.docker\nginx\default.conf ---
+
+--- FIN ARCHIVO: .\mascondominios-root\.docker\nginx\default.conf ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\Dockerfile ---
+# ETAPA 1: BASE DE PYTHON 3.11
+FROM python:3.11-slim
+
+# Variables de entorno
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Directorio de trabajo
+WORKDIR /app
+
+# Instalación de dependencias del sistema (Solo lo necesario para compilar)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalación de librerías Python
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copia del código fuente
+COPY . /app/
+
+# --- SOLUCIÓN ESTRUCTURAL: ENTRYPOINT EN PYTHON ---
+# Creamos un script de Python que espera a la DB y ejecuta el comando.
+# Esto es inmune a los errores de formato de texto de Windows/Linux.
+RUN echo "import os, socket, sys, time" > /entrypoint.py && \
+    echo "host = os.environ.get('SQL_HOST', 'db')" >> /entrypoint.py && \
+    echo "port = int(os.environ.get('SQL_PORT', '5432'))" >> /entrypoint.py && \
+    echo "print(f'Verificando Base de Datos {host}:{port}...')" >> /entrypoint.py && \
+    echo "while True:" >> /entrypoint.py && \
+    echo "    try:" >> /entrypoint.py && \
+    echo "        with socket.create_connection((host, port), timeout=1): pass" >> /entrypoint.py && \
+    echo "        break" >> /entrypoint.py && \
+    echo "    except OSError:" >> /entrypoint.py && \
+    echo "        time.sleep(0.5)" >> /entrypoint.py && \
+    echo "print('¡Conexión Exitosa! Ejecutando comando...')" >> /entrypoint.py && \
+    echo "if len(sys.argv) > 1:" >> /entrypoint.py && \
+    echo "    os.execvp(sys.argv[1], sys.argv[1:])" >> /entrypoint.py
+
+# Usamos Python como el ejecutable del entrypoint
+ENTRYPOINT ["python", "/entrypoint.py"]
+--- FIN ARCHIVO: .\mascondominios-root\backend\Dockerfile ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\entrypoint.sh ---
+#!/bin/sh
+
+if [ "$DATABASE" = "postgres" ]
+then
+    echo "Espérame... verificando si PostgreSQL ($SQL_HOST:$SQL_PORT) está despierto..."
+
+    while ! nc -z $SQL_HOST $SQL_PORT; do
+      sleep 0.1
+    done
+
+    echo "¡PostgreSQL inició correctamente!"
+fi
+
+exec "$@"
+--- FIN ARCHIVO: .\mascondominios-root\backend\entrypoint.sh ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\manage.py ---
+#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
+
+def main():
+    """Run administrative tasks."""
+    # Aquí le decimos a Django dónde está tu configuración
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+
+if __name__ == '__main__':
+    main()
+--- FIN ARCHIVO: .\mascondominios-root\backend\manage.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\requirements.txt ---
+# --- Core Framework & API ---
+Django>=5.0,<5.1
+djangorestframework>=3.14
+django-cors-headers
+
+# --- Multi-Tenancy (Núcleo del Negocio) ---
+django-tenants>=3.6.0
+
+# --- Base de Datos & Servidor ---
+psycopg2-binary
+gunicorn
+python-dotenv
+dj-database-url>=2.1.0
+
+# --- IA y Vectores (Concierge AI) ---
+pgvector>=0.2.0
+
+# --- IoT & Hardware (Mosquitto) ---
+paho-mqtt>=1.6.1
+
+# --- Finanzas & Moneda ---
+django-money>=3.0.0
+
+# --- Seguridad & Cifrado ---
+cryptography>=41.0.0
+
+# --- Tareas Asíncronas & Colas ---
+celery>=5.3.0
+redis>=5.0.0
+
+# --- Archivos Multimedia ---
+Pillow>=10.0.0
+django-storages
+boto3
+
+# --- Utilidades Extra ---
+django-filter>=23.0
+
+# --- Documentación & Monitoreo ---
+drf-spectacular
+sentry-sdk
+
+djangorestframework
+django-cors-headers
+djoser
+djangorestframework-simplejwt
+social-auth-app-django
+--- FIN ARCHIVO: .\mascondominios-root\backend\requirements.txt ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\apps\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\apps\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\apps\ai_assistant\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\apps\ai_assistant\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\apps\core\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\apps\core\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\apps\finance\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\apps\finance\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\apps\legal\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\apps\legal\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\apps\operations\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\apps\operations\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\apps\social\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\apps\social\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\billing\admin.py ---
+from django.contrib import admin
+from .models import PlanCatalog, PlanTier, Subscription, SaaSPayment
+
+@admin.register(PlanCatalog)
+class PlanCatalogAdmin(admin.ModelAdmin):
+    list_display = ('name', 'unit_type', 'is_active')
+
+@admin.register(PlanTier)
+class PlanTierAdmin(admin.ModelAdmin):
+    list_display = ('plan', 'min_qty', 'max_qty', 'unit_price_usd')
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('tenant', 'status', 'monthly_price_usd', 'next_billing_date')
+
+@admin.register(SaaSPayment)
+class SaaSPaymentAdmin(admin.ModelAdmin):
+    list_display = ('tenant', 'amount', 'currency', 'payment_method', 'date_paid')
+    list_filter = ('payment_method', 'currency', 'date_paid')
+    search_fields = ('tenant__name', 'reference_code')
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\billing\admin.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\billing\apps.py ---
+from django.apps import AppConfig
+
+class BillingConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'billing'
+
+    def ready(self):
+         import billing.signals
+        
+--- FIN ARCHIVO: .\mascondominios-root\backend\billing\apps.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\billing\models.py ---
+import uuid
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from core.models import SoftDeleteModel
+
+class PlanCatalog(SoftDeleteModel):
+    UNIT_TYPE_CHOICES = [('APARTMENT', 'Por Apartamento'), ('BUILDING', 'Por Edificio')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    is_active = models.BooleanField(default=True)
+    unit_type = models.CharField(max_length=20, choices=UNIT_TYPE_CHOICES, default='APARTMENT')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'billing_plancatalog'
+        verbose_name = 'Catálogo de Planes'
+        verbose_name_plural = 'Catálogo de Planes'
+
+    def __str__(self):
+        return self.name
+
+class PlanTier(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    plan = models.ForeignKey(PlanCatalog, on_delete=models.CASCADE, related_name='tiers')
+    min_qty = models.IntegerField()
+    max_qty = models.IntegerField()
+    unit_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'billing_plantier'
+
+    def __str__(self):
+        return f"{self.plan.name}: {self.min_qty}-{self.max_qty}"
+
+class Subscription(SoftDeleteModel):
+    STATUS_CHOICES = [('ACTIVE', 'Activa'), ('PAST_DUE', 'Pendiente'), ('CANCELED', 'Cancelada')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='billing_subscriptions')
+    plan_tier = models.ForeignKey(PlanTier, on_delete=models.PROTECT)
+    unit_count = models.IntegerField()
+    monthly_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')
+    next_billing_date = models.DateField()
+    is_latest = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'billing_subscription'
+
+# --- AHORA ESTÁ FUERA DE SUBSCRIPTION (AL RAS DE LA IZQUIERDA) ---
+class SaaSPayment(models.Model):
+    """
+    Registro de Pagos RECIBIDOS por el SaaS (Tu dinero).
+    """
+    PAYMENT_METHOD_CHOICES = [
+        ('ZELLE', 'Zelle'),
+        ('PAGO_MOVIL', 'Pago Móvil / C2P'),
+        ('TRANSFERENCIA', 'Transferencia Bancaria'),
+        ('EFECTIVO', 'Efectivo USD'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='saas_payments')
+    subscription = models.ForeignKey(Subscription, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=3, default='USD')
+    reference_code = models.CharField(max_length=50, blank=True, help_text="Ref bancaria")
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
+    
+    date_paid = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Pago Recibido (SaaS)"
+        verbose_name_plural = "Pagos Recibidos (SaaS)"
+
+    def __str__(self):
+        return f"Pago {self.amount}$ - {self.tenant.name}"
+--- FIN ARCHIVO: .\mascondominios-root\backend\billing\models.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\billing\signals.py ---
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from core.models import Tenant
+from .models import Subscription, PlanTier
+from django.utils import timezone
+from datetime import timedelta
+
+@receiver(post_save, sender=Tenant)
+def create_default_subscription(sender, instance, created, **kwargs):
+    if created:
+        print(f"💰 BILLING: Detectado nuevo cliente {instance.name}, asignando plan...")
+        first_plan = PlanTier.objects.first()
+        if first_plan:
+            Subscription.objects.create(
+                tenant=instance,
+                plan_tier=first_plan,
+                unit_count=0,
+                monthly_price_usd=first_plan.unit_price_usd,
+                next_billing_date=timezone.now().date() + timedelta(days=30),
+                status='ACTIVE'
+            )
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\billing\signals.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\billing\tests.py ---
+from django.test import TestCase
+
+# Create your tests here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\billing\tests.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\billing\views.py ---
+from django.shortcuts import render
+
+# Create your views here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\billing\views.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\billing\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\billing\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\config\asgi.py ---
+import os
+
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+application = get_asgi_application()
+--- FIN ARCHIVO: .\mascondominios-root\backend\config\asgi.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\config\celery.py ---
+import os
+from celery import Celery
+
+# Establecer el módulo de configuración predeterminado de Django para el programa 'celery'.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+app = Celery('config')
+
+# Usar una cadena aquí significa que el worker no tiene que serializar
+# el objeto de configuración a los procesos hijos.
+# - namespace='CELERY' significa que todas las claves de configuración relacionadas con celery
+#   deben tener el prefijo 'CELERY_'.
+app.config_from_object('django.conf:settings', namespace='CELERY')
+
+# Cargar módulos de tareas de todas las aplicaciones de Django registradas.
+app.autodiscover_tasks()
+
+@app.task(bind=True, ignore_result=True)
+def debug_task(self):
+    print(f'Request: {self.request!r}')
+--- FIN ARCHIVO: .\mascondominios-root\backend\config\celery.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\config\settings.py ---
+from pathlib import Path
+import os
+import dj_database_url
+from kombu import Queue, Exchange
+from datetime import timedelta
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SEGURIDAD: Leer claves de entorno o usar valores por defecto para desarrollo
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-clave-desarrollo')
+FERNET_KEY = os.environ.get('FERNET_KEY', '')
+
+# IMPORTANTE: En Docker, DEBUG debe ser True para ver errores
+DEBUG = True
+
+# Permitir conexiones desde cualquier lugar (necesario para Docker)
+ALLOWED_HOSTS = ['*']
+
+# ==========================================
+# 1. CONFIGURACIÓN DE APPS
+# ==========================================
+
+# --- APPS COMPARTIDAS (Public Schema) ---
+SHARED_APPS = (
+    'django_tenants',  # Obligatorio primero
+    'core',            # Tu app principal (Tenant y Domain)
+    'billing',
+
+    # Apps nativas de Django
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    
+    # App de Usuarios (Global)
+    'users', 
+    
+    # --- LIBRERÍAS API & UTILIDADES ---
+    'rest_framework',              
+    'rest_framework_simplejwt',
+    'corsheaders',
+    'djoser',
+    'social_django', # Para Google Login
+    'storages',      # Para MinIO/S3
+    'django_filters',
+)
+
+# --- APPS DE INQUILINOS (Tenant Schemas) ---
+TENANT_APPS = (
+    'django.contrib.contenttypes',
+    'users',      # Datos específicos del usuario en el condominio
+    'properties', # Inmuebles
+)
+
+# --- FÓRMULA MATEMÁTICA ANTI-DUPLICADOS ---
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+# Define quién es el modelo de Tenant y de Dominio
+# CORRECCIÓN: Tu modelo se llama Tenant, no Client.
+TENANT_MODEL = "core.Tenant" 
+TENANT_DOMAIN_MODEL = "core.Domain"
+
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
+
+# ==========================================
+# 2. MIDDLEWARE (ORDEN CRÍTICO)
+# ==========================================
+MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware', # SIEMPRE PRIMERO
+    'corsheaders.middleware.CorsMiddleware',               # SIEMPRE SEGUNDO
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Social Auth Middleware (Opcional, pero recomendado si da problemas)
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+]
+
+# Configuración de URLS
+ROOT_URLCONF = 'config.urls'
+PUBLIC_SCHEMA_URLCONF = 'config.urls' # Usamos el mismo para simplificar por ahora
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends', # Necesario para Social Auth
+                'social_django.context_processors.login_redirect',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'config.wsgi.application'
+
+# ==========================================
+# 3. BASE DE DATOS (PostgreSQL)
+# ==========================================
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': os.environ.get('SQL_DATABASE', 'mascondominios_db'),
+        'USER': os.environ.get('SQL_USER', 'admin_db'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', 'seguridad_local_dev'),
+        'HOST': os.environ.get('SQL_HOST', 'db'),
+        'PORT': os.environ.get('SQL_PORT', '5432'),
+    }
+}
+
+# ==========================================
+# 4. AUTENTICACIÓN & SOCIAL AUTH (GOOGLE)
+# ==========================================
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',  # Login con Google
+    'django.contrib.auth.backends.ModelBackend', # Login tradicional
+)
+
+# Tus credenciales de Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '746493348796-6k54g13u3lcumfcu6rdlpc1htm0e5k63.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+# Configuraciones de Social Django
+SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = False # False porque es localhost
+SOCIAL_AUTH_USER_MODEL = 'users.User' # Vincula con tu usuario personalizado
+
+# ==========================================
+# 5. API REST, JWT & DJOSER (LA SOLUCIÓN)
+# ==========================================
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+# AQUÍ ESTABA EL ERROR: CONFIGURACIÓN UNIFICADA DE DJOSER
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserCreateSerializer',
+        'current_user': 'users.serializers.UserSerializer',
+    },
+    # Configuración Social
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        'http://localhost:8000/auth/google/callback/',
+    ],
+}
+
+# ==========================================
+# 6. CELERY & REDIS
+# ==========================================
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 3600,
+    'max_connections': 20,
+    'socket_timeout': 30,
+    'socket_keepalive': True,
+}
+CELERY_TASK_ACKS_LATE = True
+CELERY_TASK_REJECT_ON_WORKER_LOST = True 
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+    Queue('billing', Exchange('billing'), routing_key='billing'),
+    Queue('notifications', Exchange('notifications'), routing_key='notifications'),
+)
+CELERY_TASK_ROUTES = {
+    'billing.tasks.*': {'queue': 'billing'},
+    'notifications.tasks.*': {'queue': 'notifications'},
+    'core.tasks.*': {'queue': 'default'},
+}
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'America/Caracas'
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 500
+
+# ==========================================
+# 7. OTROS (Passwords, Idioma, Static)
+# ==========================================
+AUTH_PASSWORD_VALIDATORS = [
+    { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
+]
+AUTH_USER_MODEL = 'users.User'
+
+LANGUAGE_CODE = 'es-ve'
+TIME_ZONE = 'America/Caracas'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuración MinIO / S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'minio_admin')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'minio_secret_key')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'mascondominios-media')
+AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL', 'http://minio:9000')
+AWS_S3_USE_SSL = False
+AWS_QUERYSTRING_AUTH = True 
+AWS_S3_FILE_OVERWRITE = False
+
+# Configuración CORS
+CORS_ALLOW_ALL_ORIGINS = True
+--- FIN ARCHIVO: .\mascondominios-root\backend\config\settings.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\config\urls.py ---
+from django.contrib import admin
+from django.urls import path, include
+from users.views import GoogleLoginCallback
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    
+    # Rutas para el manejo de Tenants (lo que probamos antes)
+    path('api/core/', include('core.urls')),
+
+    # --- SISTEMA DE AUTENTICACIÓN ---
+    # Rutas básicas: registro de usuario, cambio de clave, etc.
+    path('api/auth/', include('djoser.urls')),
+    
+    # Rutas JWT: Login y Refresco de tokens (el "pasaporte")
+    path('api/auth/', include('djoser.urls.jwt')),
+    
+    # Rutas Social: Aquí es donde Google enviará la respuesta
+    path('api/auth/', include('djoser.social.urls')),
+    path('auth/google/callback/', GoogleLoginCallback.as_view(), name='google_callback'),
+    
+]
+--- FIN ARCHIVO: .\mascondominios-root\backend\config\urls.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\config\urls_public.py ---
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    
+    # --- API AUTH (Usuarios) ---
+    # Esto habilita: /auth/users/ (registro), /auth/jwt/create/ (login), etc.
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.jwt')),
+    path('api/auth/', include('djoser.social.urls')),
+
+    # --- API CORE (Condominios) ---
+    # Esto habilita: /api/core/tenants/ (crear condominio)
+    path('api/core/', include('core.urls')),
+]
+--- FIN ARCHIVO: .\mascondominios-root\backend\config\urls_public.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\config\wsgi.py ---
+import os
+
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+application = get_wsgi_application()
+--- FIN ARCHIVO: .\mascondominios-root\backend\config\wsgi.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\config\__init__.py ---
+from .celery import app as celery_app
+
+__all__ = ('celery_app',)
+--- FIN ARCHIVO: .\mascondominios-root\backend\config\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\admin.py ---
+from django.contrib import admin
+from .models import Tenant, Domain, BankAccount, ExchangeRate
+
+@admin.register(Tenant)
+class TenantAdmin(admin.ModelAdmin):
+    list_display = ('name', 'schema_name', 'fiscal_id', 'is_active')
+
+@admin.register(BankAccount)
+class BankAccountAdmin(admin.ModelAdmin):
+
+    list_display = ('bank_name', 'account_number', 'currency', 'is_active')
+
+@admin.register(ExchangeRate)
+class ExchangeRateAdmin(admin.ModelAdmin):
+    list_display = ('date', 'rate', 'source')
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\admin.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\apps.py ---
+from django.apps import AppConfig
+
+class CoreConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'core'
+
+    def ready(self):
+        # IMPORTANTE: Aquí se conectan los disparadores (Signals)
+        import core.signals
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\apps.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\models.py ---
+import uuid
+from django.db import models
+from django_tenants.models import TenantMixin, DomainMixin
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
+from django.utils.text import slugify
+
+class SoftDeleteManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted_at__isnull=True)
+
+class SoftDeleteModel(models.Model):
+    deleted_at = models.DateTimeField(blank=True, null=True, editable=False)
+    objects = SoftDeleteManager()
+    all_objects = models.Manager()
+
+    def delete(self, **kwargs):
+        from django.utils import timezone
+        self.deleted_at = timezone.now()
+        self.save()
+
+    class Meta:
+        abstract = True
+
+def tenant_directory_path(instance, filename):
+    tenant_id = getattr(instance, 'tenant_id', 'shared')
+    return f'tenant_{tenant_id}/{instance.__class__.__name__.lower()}/{filename}'
+
+class FileModel(models.Model):
+    attachment = models.FileField(upload_to=tenant_directory_path, null=True, blank=True)
+    class Meta:
+        abstract = True
+
+class Tenant(TenantMixin, SoftDeleteModel):
+    # --- INFRAESTRUCTURA PURA ---
+    CURRENCY_CHOICES = [('USD', 'Dólares (USD)'), ('VES', 'Bolívares (VES)')]
+    STRATEGY_CHOICES = [('USD_INDEXED', 'Indexado'), ('NOMINAL', 'Nominal')]
+    PRORATION_CHOICES = [('ALIQUOT', 'Por Alícuota')]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    schema_name = models.CharField(
+        max_length=63, unique=True, db_index=True, blank=True,
+        validators=[RegexValidator(regex=r'^[a-z0-9]+$')]
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='owned_tenants')
+    name = models.CharField(max_length=100)
+    fiscal_id = models.CharField(max_length=20)
+    address = models.TextField()
+    is_active = models.BooleanField(default=True)
+    
+    # Finanzas del EDIFICIO (No del SaaS)
+    base_currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+    accounting_strategy = models.CharField(max_length=20, choices=STRATEGY_CHOICES, default='USD_INDEXED')
+    proration_strategy = models.CharField(max_length=20, choices=PRORATION_CHOICES, default='ALIQUOT')
+    
+    credit_balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    monthly_interest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    referred_by_code = models.CharField(max_length=12, blank=True, null=True)
+    ai_config = models.JSONField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    auto_create_schema = True
+
+    class Meta:
+        db_table = 'core_tenant'
+        verbose_name = 'Condominio'
+
+    def save(self, *args, **kwargs):
+        if not self.schema_name and self.name:
+            self.schema_name = slugify(self.name).replace('-', '')
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} ({self.schema_name})"
+
+class Domain(DomainMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    domain = models.CharField(max_length=253, unique=True, db_index=True)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='domains')
+    is_primary = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_domain'
+
+class ExchangeRate(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    source = models.CharField(max_length=50, default='BCV')
+    rate = models.DecimalField(max_digits=15, decimal_places=4)
+    date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_exchangerate'
+        verbose_name = "Tasa de Cambio"
+        verbose_name_plural = "Tasas de Cambio"
+
+class BankAccount(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='bank_accounts')
+    name = models.CharField(max_length=100)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=30)
+    currency = models.CharField(max_length=3, choices=Tenant.CURRENCY_CHOICES, default='VES')
+    initial_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    current_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_bankaccount'
+
+class BankAccount(SoftDeleteModel):
+    """
+    Cuentas Bancarias PROPIAS del SaaS (Tu Tesorería).
+    Aquí registras Banesco, Plaza, Zelle donde recibes el dinero.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # <--- AGREGA ESTA LÍNEA
+    bank_name = models.CharField(max_length=50, verbose_name="Banco")
+    account_number = models.CharField(max_length=50, verbose_name="Número de Cuenta")
+    account_holder = models.CharField(max_length=100, verbose_name="Titular")
+    currency = models.CharField(max_length=3, default='USD', verbose_name="Moneda")
+    is_active = models.BooleanField(default=True, verbose_name="Activa")
+    
+    # SoftDeleteModel ya trae created_at, updated_at y deleted_at,
+    # así que no necesitas escribirlos de nuevo aquí.
+
+    class Meta:
+        verbose_name = "Cuenta Bancaria SaaS"
+        verbose_name_plural = "Cuentas Bancarias SaaS"
+
+    def __str__(self):
+        return f"{self.bank_name} - {self.currency}"
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\models.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\serializers.py ---
+from rest_framework import serializers
+from .models import Tenant, Domain  # <--- CAMBIO: Client por Tenant
+
+class DomainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Domain
+        fields = ('id', 'domain', 'is_primary')
+
+class TenantSerializer(serializers.ModelSerializer):
+    """
+    Este es el 'Traductor' que la Vista está buscando.
+    """
+    domains = DomainSerializer(many=True, read_only=True)
+    domain_name = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = Tenant  # <--- CAMBIO: Client por Tenant
+        fields = ('id', 'schema_name', 'name', 'credit_balance', 'created_at', 'domains', 'domain_name')
+        # Nota: 'paid_until' y 'on_trial' se movieron a Billing, así que los quitamos de aquí por ahora
+        read_only_fields = ('credit_balance', 'created_at', 'schema_name')
+
+    def create(self, validated_data):
+        from django.utils.text import slugify 
+
+        # 1. Sacamos el nombre del dominio enviado desde el formulario
+        domain_part = validated_data.pop('domain_name')
+        
+        # 2. SANITIZACIÓN
+        clean_schema = slugify(domain_part).replace('-', '')
+
+        # 3. Asignamos el nombre al esquema interno
+        validated_data['schema_name'] = clean_schema
+
+        # 4. Crear el registro en la tabla Tenant (Antes Client)
+        tenant = Tenant.objects.create(**validated_data) # <--- CAMBIO
+        
+        # 5. Crear el registro en la tabla Domain (Esto también lo hace el Signal, pero aquí aseguramos el primary)
+        full_domain = f"{clean_schema}.localhost"
+        
+        # Usamos get_or_create por si el Signal ya se nos adelantó
+        Domain.objects.get_or_create(
+            domain=full_domain, 
+            defaults={'tenant': tenant, 'is_primary': True}
+        )
+        
+        return tenant
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\serializers.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\signals.py ---
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import Tenant, Domain
+
+# NOTA: Ya no importamos Subscription aquí. Eso lo hace Billing ahora.
+
+@receiver(post_save, sender=Tenant)
+def automatizar_infraestructura_tenant(sender, instance, created, **kwargs):
+    if created:
+        print(f"⚡ [SIGNAL CORE] Creando dominio para: '{instance.name}'")
+        
+        # Generar dominio automático: nombre_esquema.localhost
+        domain_name = f"{instance.schema_name}.localhost"
+        
+        Domain.objects.get_or_create(
+            domain=domain_name,
+            defaults={'tenant': instance, 'is_primary': True}
+        )
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\signals.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\tests.py ---
+from django.test import TestCase
+
+# Create your tests here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\tests.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\urls.py ---
+from rest_framework.routers import DefaultRouter
+from .views import TenantViewSet
+
+router = DefaultRouter()
+router.register(r'tenants', TenantViewSet, basename='tenants')
+
+urlpatterns = router.urls
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\urls.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\views.py ---
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .models import Tenant  # <--- CAMBIO: Client por Tenant
+from .serializers import TenantSerializer
+
+class TenantViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar Condominios (Tenants).
+    """
+    queryset = Tenant.objects.all()  # <--- CAMBIO: Client por Tenant
+    serializer_class = TenantSerializer
+
+    def get_permissions(self):
+        """
+        Definimos permisos dinámicos:
+        - Para CREAR (POST): Cualquiera puede entrar (AllowAny) -> Necesario para el Registro.
+        - Para VER/LISTAR: Solo usuarios autenticados (IsAuthenticated).
+        """
+        if self.action == 'create':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\views.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\core\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\core\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\properties\admin.py ---
+from django.contrib import admin
+
+# Register your models here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\properties\admin.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\properties\apps.py ---
+from django.apps import AppConfig
+
+
+class PropertiesConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'properties'
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\properties\apps.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\properties\models.py ---
+from django.db import models
+
+# Create your models here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\properties\models.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\properties\tests.py ---
+from django.test import TestCase
+
+# Create your tests here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\properties\tests.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\properties\views.py ---
+from django.shortcuts import render
+
+# Create your views here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\properties\views.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\properties\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\properties\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\users\admin.py ---
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import User
+
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    model = User
+    # Campos que se verán en la lista principal
+    list_display = ('email', 'first_name', 'last_name', 'profile_type', 'is_staff')
+    list_filter = ('profile_type', 'is_staff', 'is_active')
+    
+    # Configuración de los formularios de edición según DICCIONARIO_DATOS_V2
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Información Personal', {'fields': ('first_name', 'last_name', 'phone_number', 'national_id')}),
+        ('Perfil SaaS', {'fields': ('profile_type', 'referral_code', 'successful_referrals', 'auth_provider')}),
+        ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Fechas Importantes', {'fields': ('last_login', 'date_joined')}),
+    )
+
+    # Configuración para crear usuarios nuevos
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password', 'first_name', 'last_name', 'phone_number', 'referral_code'),
+        }),
+    )
+    search_fields = ('email', 'national_id')
+    ordering = ('email',)
+
+from .models import TenantProfile
+
+@admin.register(TenantProfile)
+class TenantProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'tenant', 'role', 'unit_number', 'is_active')
+    list_filter = ('role', 'tenant')
+--- FIN ARCHIVO: .\mascondominios-root\backend\users\admin.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\users\apps.py ---
+from django.apps import AppConfig
+
+
+class UsersConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'users'
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\users\apps.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\users\models.py ---
+import uuid
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from django.conf import settings
+
+# 1. MANAGER (Lógica de creación de usuarios)
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError(_('El Email es obligatorio'))
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        
+        # Valores por defecto para superusuario
+        extra_fields.setdefault('first_name', 'Admin')
+        extra_fields.setdefault('last_name', 'SaaS')
+        extra_fields.setdefault('phone_number', '+58000000000') 
+        extra_fields.setdefault('profile_type', 'COMPANY')
+        extra_fields.setdefault('referral_code', 'ADMIN-001')
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError(_('Superuser must have is_staff=True.'))
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(_('Superuser must have is_superuser=True.'))
+
+        return self.create_user(email, password, **extra_fields)
+
+# 2. MODELO USER (Tabla 1 - CORE SAAS)
+class User(AbstractBaseUser, PermissionsMixin):
+    """
+    Tabla 1: User
+    Fuente: DICCIONARIO_DATOS_V2
+    Ajustes Quirúrgicos: email(255), profile_type(NN), referral(NN), successful_referrals(Added)
+    """
+    
+    # ENUMS
+    PROFILE_TYPE_CHOICES = [
+        ('INDEPENDENT', 'Administrador Independiente'),
+        ('SELF_MANAGED', 'Junta de Condominio (Autogestión)'),
+        ('COMPANY', 'Empresa Administradora'),
+    ]
+    
+    AUTH_PROVIDER_CHOICES = [
+        ('EMAIL', 'Email'),
+        ('GOOGLE', 'Google'),
+    ]
+
+    # CAMPOS PRINCIPALES
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    # AJUSTE 1: max_length=255 explícito
+    email = models.EmailField(_('email address'), unique=True, db_index=True, max_length=255)
+    
+    first_name = models.CharField(_('first name'), max_length=50)
+    last_name = models.CharField(_('last name'), max_length=50)
+    
+    phone_number = models.CharField(_('phone number'), max_length=20, unique=True)
+    
+    national_id = models.CharField(_('cédula/rif'), max_length=20, blank=True, null=True, db_index=True)
+    
+    # AJUSTE 2: Eliminado null=True, blank=True (Ahora es Not Null según Diccionario)
+    profile_type = models.CharField(
+        max_length=20,
+        choices=PROFILE_TYPE_CHOICES,
+        default='INDEPENDENT' # Se sugiere un default si la BD no acepta nulos, o el frontend debe enviarlo siempre.
+    )
+    
+    # AJUSTE 3: Eliminado null=True, blank=True (Ahora es Not Null según Diccionario)
+    referral_code = models.CharField(max_length=12, unique=True, default="TEMP")
+    
+    # AJUSTE 4: Nuevo campo agregado
+    successful_referrals = models.IntegerField(default=0)
+    
+    # Seguridad
+    auth_provider = models.CharField(
+        max_length=10,
+        choices=AUTH_PROVIDER_CHOICES,
+        default='EMAIL'
+    )
+    
+    # Control de Django
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+    last_login = models.DateTimeField(blank=True, null=True)
+
+    # Auditoría Obligatoria
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+        db_table = 'users_user'
+
+    def __str__(self):
+        return self.email
+
+class TenantProfile(models.Model):
+    """
+    Perfil Local (Rol en un Edificio).
+    Define qué es el usuario DENTRO de un condominio específico.
+    """
+    ROLE_CHOICES = [
+        ('ADMIN', 'Administrador Global'),
+        ('OWNER', 'Propietario'),
+        ('RESIDENT', 'Residente (Inquilino)'),
+        ('STAFF', 'Personal / Vigilancia'),
+        ('ACCOUNTANT', 'Contador'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # Vincula al Usuario Global
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tenant_profiles')
+    # Vincula al Edificio
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='profiles')
+    
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='RESIDENT')
+    unit_number = models.CharField(max_length=20, blank=True, help_text="Apto 5B, Local 2")
+    
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'tenant') 
+        verbose_name = "Perfil de Condominio"
+        verbose_name_plural = "Perfiles de Condominio"
+
+    def __str__(self):
+        return f"{self.user.email} -> {self.role} en {self.tenant.name}"
+--- FIN ARCHIVO: .\mascondominios-root\backend\users\models.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\users\serializers.py ---
+from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
+from djoser.serializers import UserSerializer as BaseUserSerializer
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserCreateSerializer(BaseUserCreateSerializer):
+    """
+    Se usa cuando alguien se REGISTRA (Sign Up).
+    Heredamos de Djoser para mantener la seguridad de la contraseña,
+    pero agregamos nuestros campos personalizados.
+    """
+    class Meta(BaseUserCreateSerializer.Meta):
+        model = User
+        # Agregamos los campos que definimos en tu modelo User
+        fields = ('id', 'email', 'password', 'first_name', 'last_name', 
+                  'phone_number', 'national_id', 'profile_type', 'referral_code')
+
+class UserSerializer(BaseUserSerializer):
+    """
+    Se usa cuando alguien consulta SU PROPIO PERFIL (Me).
+    Aquí no mostramos la contraseña.
+    """
+    # Campo calculado para mostrar el nombre completo bonito
+    full_name = serializers.SerializerMethodField()
+
+    class Meta(BaseUserSerializer.Meta):
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name', 'full_name',
+                  'phone_number', 'national_id', 'profile_type', 'is_staff')
+        read_only_fields = ('email', 'is_staff')
+
+    def get_full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+--- FIN ARCHIVO: .\mascondominios-root\backend\users\serializers.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\users\tests.py ---
+from django.test import TestCase
+
+# Create your tests here.
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\users\tests.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\users\views.py ---
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+import requests
+
+class GoogleLoginCallback(APIView):
+    """
+    TRAFFIC CONTROLLER:
+    Recibe el código de Google, lo canjea por un JWT y decide el destino.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        code = request.GET.get('code')
+        state = request.GET.get('state')
+
+        if not code or not state:
+            return Response({'error': 'Faltan credenciales de Google'}, status=400)
+
+        # 1. URL interna para canjear el código por el Token
+        token_url = "http://localhost:8000/api/auth/o/google-oauth2/"
+        
+        # 2. Datos para el canje
+        data = {
+            'code': code,
+            'state': state,
+        }
+
+        try:
+            # --- AQUÍ ESTÁ EL TRUCO ---
+            # Pasamos las 'cookies' del navegador a la petición interna.
+            # Así el backend sabe que somos nosotros y encuentra el 'state'.
+            response = requests.post(token_url, data=data, cookies=request.COOKIES)
+            
+            # 4. Retornamos la respuesta (Tus Tokens o el error real)
+            return Response(response.json(), status=response.status_code)
+            
+        except Exception as e:
+            return Response({'error': f'Error de conexión interna: {str(e)}'}, status=500)
+--- FIN ARCHIVO: .\mascondominios-root\backend\users\views.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\backend\users\__init__.py ---
+
+--- FIN ARCHIVO: .\mascondominios-root\backend\users\__init__.py ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\frontend-saas\Dockerfile ---
+
+--- FIN ARCHIVO: .\mascondominios-root\frontend-saas\Dockerfile ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\landing-page\Dockerfile ---
+
+--- FIN ARCHIVO: .\mascondominios-root\landing-page\Dockerfile ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\mosquitto\config\mosquitto.conf ---
+persistence true
+persistence_location /mosquitto/data/
+log_dest file /mosquitto/log/mosquitto.log
+
+# Puerto estándar MQTT (Para sensores y Backend)
+listener 1883
+allow_anonymous true
+
+# Puerto WebSockets (Para Frontend en el futuro)
+listener 9001
+protocol websockets
+--- FIN ARCHIVO: .\mascondominios-root\mosquitto\config\mosquitto.conf ---
+
+--- INICIO ARCHIVO: .\mascondominios-root\whatsapp-gateway\Dockerfile ---
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Instalamos dependencias de sistema mínimas
+RUN apk add --no-cache git
+
+# Copiamos archivos de dependencias
+COPY package*.json ./
+
+# Instalamos dependencias de Node
+RUN npm install --production
+
+# Copiamos el código
+COPY . .
+
+# El servicio correrá en segundo plano escuchando a Redis
+CMD ["node", "index.js"]
+--- FIN ARCHIVO: .\mascondominios-root\whatsapp-gateway\Dockerfile ---
+
+
+
+--------------------------------------------------------------------------------
+RUTA: crear_estructura.bat
+--------------------------------------------------------------------------------
+@echo off
+echo 🚀 Iniciando creacion de la arquitectura MasCondominios...
+
+:: 1. Crear carpeta raiz
+mkdir mascondominios-root
+cd mascondominios-root
+
+:: 2. Crear Archivos Base
+type nul > docker-compose.yml
+type nul > .env
+type nul > .gitignore
+type nul > README.md
+
+:: 3. Estructura Docker
+mkdir .docker\nginx
+type nul > .docker\nginx\default.conf
+mkdir .docker\postgres
+type nul > .docker\postgres\init.sql
+
+:: 4. Estructura Backend (Django)
+mkdir backend\config
+mkdir backend\apps\core
+mkdir backend\apps\finance
+mkdir backend\apps\operations
+mkdir backend\apps\social
+mkdir backend\apps\legal
+mkdir backend\apps\ai_assistant
+
+type nul > backend\Dockerfile
+type nul > backend\requirements.txt
+type nul > backend\entrypoint.sh
+type nul > backend\manage.py
+
+:: Archivos de Configuración Django
+type nul > backend\config\__init__.py
+type nul > backend\config\settings.py
+type nul > backend\config\urls.py
+type nul > backend\config\celery.py
+type nul > backend\config\wsgi.py
+type nul > backend\config\asgi.py
+
+:: Inicializadores de Apps
+type nul > backend\apps\__init__.py
+type nul > backend\apps\core\__init__.py
+type nul > backend\apps\finance\__init__.py
+type nul > backend\apps\operations\__init__.py
+type nul > backend\apps\social\__init__.py
+type nul > backend\apps\legal\__init__.py
+type nul > backend\apps\ai_assistant\__init__.py
+
+:: 5. Estructura Frontend SaaS (React)
+mkdir frontend-saas\src\components
+mkdir frontend-saas\src\hooks
+mkdir frontend-saas\src\pages
+mkdir frontend-saas\src\services
+mkdir frontend-saas\src\store
+
+type nul > frontend-saas\Dockerfile
+type nul > frontend-saas\package.json
+type nul > frontend-saas\vite.config.js
+type nul > frontend-saas\.env
+type nul > frontend-saas\src\main.jsx
+type nul > frontend-saas\src\App.jsx
+
+:: 6. Estructura Landing Page (Astro)
+mkdir landing-page\src\components
+mkdir landing-page\src\layouts
+mkdir landing-page\src\pages
+
+type nul > landing-page\Dockerfile
+type nul > landing-page\package.json
+type nul > landing-page\astro.config.mjs
+type nul > landing-page\src\pages\index.astro
+
+:: 7. Estructura Mobile (React Native)
+mkdir mobile-app\src\screens
+mkdir mobile-app\src\components
+mkdir mobile-app\src\database
+
+type nul > mobile-app\package.json
+type nul > mobile-app\app.json
+
+echo.
+echo ✨ ¡Estructura completada con exito!
+echo 👉 Ahora entra en la carpeta 'mascondominios-root' y abre VS Code.
+pause
+
+--------------------------------------------------------------------------------
+RUTA: generar_estructura.py
+--------------------------------------------------------------------------------
+import os
+import pathlib
+
+# Nombre de la raíz del proyecto
+ROOT_NAME = "mascondominios-root"
+
+# Estructura de carpetas y archivos a crear
+# Las claves son carpetas, los valores son listas de archivos dentro de ellas.
+# Si una ruta tiene '/' se crearán las subcarpetas automáticamente.
+structure = {
+    "": [  # Archivos en la raíz
+        "docker-compose.yml",
+        ".env",
+        ".gitignore",
+        "README.md"
+    ],
+    ".docker/nginx": [
+        "default.conf"
+    ],
+    ".docker/postgres": [
+        "init.sql"
+    ],
+    "backend": [
+        "Dockerfile",
+        "requirements.txt",
+        "entrypoint.sh",
+        "manage.py"
+    ],
+    "backend/config": [
+        "__init__.py",
+        "settings.py",
+        "urls.py",
+        "celery.py",
+        "wsgi.py",
+        "asgi.py"
+    ],
+    # Módulos de Negocio (Django Apps)
+    "backend/apps": [
+        "__init__.py"
+    ],
+    "backend/apps/core": [ # Usuarios, Tenants
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/finance": [ # Pagos, Tasas, Multimoneda
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/operations": [ # Mantenimiento, Inventario
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/social": [ # Votaciones, Muro
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/legal": [ # Sanciones, Documentos
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    "backend/apps/ai_assistant": [ # Chatbot, RAG
+        "__init__.py", "models.py", "views.py", "serializers.py", "apps.py"
+    ],
+    # Frontend SaaS (React)
+    "frontend-saas": [
+        "Dockerfile",
+        "package.json",
+        "vite.config.js",
+        ".env"
+    ],
+    "frontend-saas/src": [
+        "main.jsx",
+        "App.jsx"
+    ],
+    "frontend-saas/src/components": [],
+    "frontend-saas/src/pages": [],
+    "frontend-saas/src/hooks": [],
+    "frontend-saas/src/services": [],
+    "frontend-saas/src/store": [],
+    
+    # Landing Page (Astro)
+    "landing-page": [
+        "Dockerfile",
+        "package.json",
+        "astro.config.mjs"
+    ],
+    "landing-page/src/pages": [
+        "index.astro"
+    ],
+    "landing-page/src/layouts": [],
+    "landing-page/src/components": [],
+
+    # Mobile App (React Native)
+    "mobile-app": [
+        "package.json",
+        "app.json"
+    ],
+    "mobile-app/src/screens": [],
+    "mobile-app/src/components": [],
+    "mobile-app/src/database": [] # WatermelonDB
+}
+
+def create_structure():
+    base_path = pathlib.Path.cwd() / ROOT_NAME
+    
+    print(f"🚀 Iniciando creación de la arquitectura en: {base_path}")
+    
+    # Crear carpeta raíz
+    if not base_path.exists():
+        base_path.mkdir()
+        print(f"✅ Carpeta raíz creada: {ROOT_NAME}")
+    else:
+        print(f"⚠️ La carpeta {ROOT_NAME} ya existe. Se agregarán archivos faltantes.")
+
+    for folder, files in structure.items():
+        # Crear la ruta completa de la carpeta
+        current_folder = base_path / folder
+        
+        # Crear directorios (y subdirectorios si es necesario)
+        if not current_folder.exists():
+            current_folder.mkdir(parents=True, exist_ok=True)
+            # print(f"   📂 Carpeta creada: {folder}")
+        
+        # Crear archivos dentro de esa carpeta
+        for filename in files:
+            file_path = current_folder / filename
+            if not file_path.exists():
+                with open(file_path, 'w') as f:
+                    pass # Crear archivo vacío
+                print(f"   📄 Archivo creado: {folder}/{filename}" if folder else f"   📄 Archivo creado: {filename}")
+            else:
+                pass
+                # print(f"   ➡️ Archivo ya existe: {filename}")
+
+    print("\n✨ ¡Estructura completada con éxito!")
+    print(f"👉 Ahora abre la carpeta '{ROOT_NAME}' en tu editor para empezar.")
+
+if __name__ == "__main__":
+    create_structure()
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\.env
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\docker-compose.yml
+--------------------------------------------------------------------------------
+services:
+  # ==========================================
+  # CAPA DE DATOS (PERSISTENCIA & IA)
+  # ==========================================
+
+  # 1. Base de Datos
+  db:
+    image: pgvector/pgvector:pg15
+    container_name: mascondominios_db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=mascondominios_db
+      - POSTGRES_USER=admin_db
+      - POSTGRES_PASSWORD=seguridad_local_dev
+    ports:
+      - "5432:5432"
+    networks:
+      - saas_network
+
+  # 2. Broker de Mensajería (Redis)
+  redis:
+    image: redis:7-alpine
+    container_name: mascondominios_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - saas_network
+
+  # 3. Object Storage Local (MinIO)
+  minio:
+    image: minio/minio:latest
+    container_name: mascondominios_minio
+    restart: always
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minio_admin
+      - MINIO_ROOT_PASSWORD=minio_secret_key
+    volumes:
+      - minio_data:/data
+    networks:
+      - saas_network
+
+  # 4. Broker IoT (MQTT - Mosquitto)
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: mascondominios_mqtt
+    restart: always
+    ports:
+      - "1883:1883"
+      - "9002:9001" # WebSockets en puerto 9002 para no chocar con MinIO
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+      - ./mosquitto/config:/mosquitto/config
+    networks:
+      - saas_network
+
+  # ==========================================
+  # CAPA DE LÓGICA (BACKEND DJANGO)
+  # ==========================================
+
+  # 5. API Cluster
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mascondominios_api
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE=postgres
+      - SQL_ENGINE=django_tenants.postgresql_backend
+      - SQL_DATABASE=mascondominios_db
+      - SQL_USER=admin_db
+      - SQL_PASSWORD=seguridad_local_dev
+      - SQL_HOST=db
+      - SQL_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - AWS_ACCESS_KEY_ID=minio_admin
+      - AWS_SECRET_ACCESS_KEY=minio_secret_key
+      - AWS_STORAGE_BUCKET_NAME=mascondominios-media
+      - AWS_S3_ENDPOINT_URL=http://minio:9000
+      - USE_S3=True
+      - MQTT_BROKER_URL=mqtt://mqtt:1883
+      - SECRET_KEY=django-insecure-clave-desarrollo-local-super-segura
+      - FERNET_KEY=b6Qv4_clave_segura_de_desarrollo_local_32bytes=
+    depends_on:
+      - db
+      - redis
+      - minio
+      - mqtt
+    networks:
+      - saas_network
+
+  # 6. Task Workers (QUIRÚRGICO APLICADO AQUÍ)
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mascondominios_worker
+    # CAMBIO: Agregado --concurrency=4 y -Q default,billing,notifications
+    command: celery -A config worker --loglevel=info --concurrency=4 -Q default,billing,notifications
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE=postgres
+      - SQL_HOST=db
+      - SQL_PORT=5432
+      - SQL_DATABASE=mascondominios_db
+      - SQL_USER=admin_db
+      - SQL_PASSWORD=seguridad_local_dev
+      - REDIS_URL=redis://redis:6379/0
+      - AWS_ACCESS_KEY_ID=minio_admin
+      - AWS_SECRET_ACCESS_KEY=minio_secret_key
+      - AWS_STORAGE_BUCKET_NAME=mascondominios-media
+      - AWS_S3_ENDPOINT_URL=http://minio:9000
+      - USE_S3=True
+      - FERNET_KEY=b6Qv4_clave_segura_de_desarrollo_local_32bytes=
+      - SECRET_KEY=django-insecure-clave-desarrollo-local-super-segura
+    depends_on:
+      - backend
+      - redis
+      - minio
+    networks:
+      - saas_network
+
+  # 7. Task Scheduler
+  beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mascondominios_beat
+    command: celery -A config beat -l info
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE=postgres
+      - SQL_HOST=db
+      - SQL_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - SQL_DATABASE=mascondominios_db
+      - SQL_USER=admin_db
+      - SQL_PASSWORD=seguridad_local_dev
+      - SECRET_KEY=django-insecure-clave-desarrollo-local-super-segura
+      - FERNET_KEY=b6Qv4_clave_segura_de_desarrollo_local_32bytes=
+    depends_on:
+      - backend
+    networks:
+      - saas_network
+
+  # 8. Gateway WhatsApp
+  whatsapp:
+    build:
+      context: ./whatsapp-gateway
+      dockerfile: Dockerfile
+    container_name: mascondominios_whatsapp
+    restart: always
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - saas_network
+
+volumes:
+  postgres_data:
+  minio_data:
+  mosquitto_data:
+  mosquitto_log:
+
+
+networks:
+  saas_network:
+    driver: bridge
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\generar_contexto.py
+--------------------------------------------------------------------------------
+import os
+
+# CONFIGURACIÓN
+OUTPUT_FILE = "codigo_completo.txt"
+# Extensiones que me interesa leer para entender tu arquitectura
+EXTENSIONS = {'.py', '.yml', '.yaml', '.sh', '.txt', 'Dockerfile', '.ini', '.conf'}
+# Carpetas que VAMOS A IGNORAR (para no llenar de basura)
+IGNORE_DIRS = {
+    '__pycache__', 'venv', 'env', '.git', '.idea', '.vscode', 
+    'node_modules', 'staticfiles', 'media', 'migrations'
+}
+# Archivos específicos a ignorar
+IGNORE_FILES = {'db.sqlite3', '.DS_Store', 'generar_contexto.py', 'poetry.lock', 'yarn.lock'}
+
+def should_process(file_path):
+    filename = os.path.basename(file_path)
+    if filename in IGNORE_FILES:
+        return False
+    # Incluir Dockerfiles y requerimientos sin extensión o extensión específica
+    if filename.startswith('Dockerfile') or filename == 'requirements.txt':
+        return True
+    return os.path.splitext(filename)[1] in EXTENSIONS
+
+def main():
+    with open(OUTPUT_FILE, 'w', encoding='utf-8') as outfile:
+        # 1. Escribir estructura del directorio primero
+        outfile.write("=== ESTRUCTURA DE DIRECTORIOS ===\n")
+        for root, dirs, files in os.walk('.'):
+            # Filtrar directorios ignorados
+            dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
+            level = root.replace('.', '').count(os.sep)
+            indent = ' ' * 4 * (level)
+            outfile.write('{}{}/\n'.format(indent, os.path.basename(root)))
+            subindent = ' ' * 4 * (level + 1)
+            for f in files:
+                if should_process(os.path.join(root, f)):
+                    outfile.write('{}{}\n'.format(subindent, f))
+        
+        outfile.write("\n\n=== CONTENIDO DE ARCHIVOS ===\n\n")
+
+        # 2. Escribir contenido de los archivos
+        for root, dirs, files in os.walk('.'):
+            dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
+            
+            for file in files:
+                file_path = os.path.join(root, file)
+                if should_process(file_path):
+                    outfile.write(f"--- INICIO ARCHIVO: {file_path} ---\n")
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            outfile.write(f.read())
+                    except Exception as e:
+                        outfile.write(f"[Error leyendo archivo: {e}]\n")
+                    outfile.write(f"\n--- FIN ARCHIVO: {file_path} ---\n\n")
+
+    print(f"✅ ¡Listo! Se ha creado el archivo '{OUTPUT_FILE}'.")
+    print("Sube ese archivo al chat para que pueda analizar tu proyecto completo.")
+
+if __name__ == "__main__":
+    main()
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\README.md
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\refactor_master.py
+--------------------------------------------------------------------------------
+import os
+import shutil
+
+# CONFIGURACIÓN DE RUTAS
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BACKEND_DIR = os.path.join(BASE_DIR, 'backend')
+
+# ---------------------------------------------------------
+# 1. CONTENIDO NUEVO PARA CORE (Solo Infraestructura)
+# ---------------------------------------------------------
+CORE_MODELS = """import uuid
+from django.db import models
+from django_tenants.models import TenantMixin, DomainMixin
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
+from django.utils.text import slugify
+
+class SoftDeleteManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted_at__isnull=True)
+
+class SoftDeleteModel(models.Model):
+    deleted_at = models.DateTimeField(blank=True, null=True, editable=False)
+    objects = SoftDeleteManager()
+    all_objects = models.Manager()
+
+    def delete(self, **kwargs):
+        from django.utils import timezone
+        self.deleted_at = timezone.now()
+        self.save()
+
+    class Meta:
+        abstract = True
+
+def tenant_directory_path(instance, filename):
+    tenant_id = getattr(instance, 'tenant_id', 'shared')
+    return f'tenant_{tenant_id}/{instance.__class__.__name__.lower()}/{filename}'
+
+class FileModel(models.Model):
+    attachment = models.FileField(upload_to=tenant_directory_path, null=True, blank=True)
+    class Meta:
+        abstract = True
+
+class Tenant(TenantMixin, SoftDeleteModel):
+    # --- INFRAESTRUCTURA PURA ---
+    CURRENCY_CHOICES = [('USD', 'Dólares (USD)'), ('VES', 'Bolívares (VES)')]
+    STRATEGY_CHOICES = [('USD_INDEXED', 'Indexado'), ('NOMINAL', 'Nominal')]
+    PRORATION_CHOICES = [('ALIQUOT', 'Por Alícuota')]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    schema_name = models.CharField(
+        max_length=63, unique=True, db_index=True, blank=True,
+        validators=[RegexValidator(regex=r'^[a-z0-9]+$')]
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='owned_tenants')
+    name = models.CharField(max_length=100)
+    fiscal_id = models.CharField(max_length=20)
+    address = models.TextField()
+    is_active = models.BooleanField(default=True)
+    
+    # Finanzas del EDIFICIO (No del SaaS)
+    base_currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+    accounting_strategy = models.CharField(max_length=20, choices=STRATEGY_CHOICES, default='USD_INDEXED')
+    proration_strategy = models.CharField(max_length=20, choices=PRORATION_CHOICES, default='ALIQUOT')
+    
+    credit_balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    monthly_interest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    referred_by_code = models.CharField(max_length=12, blank=True, null=True)
+    ai_config = models.JSONField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    auto_create_schema = True
+
+    class Meta:
+        db_table = 'core_tenant'
+        verbose_name = 'Condominio'
+
+    def save(self, *args, **kwargs):
+        if not self.schema_name and self.name:
+            self.schema_name = slugify(self.name).replace('-', '')
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} ({self.schema_name})"
+
+class Domain(DomainMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    domain = models.CharField(max_length=253, unique=True, db_index=True)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='domains')
+    is_primary = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_domain'
+
+class ExchangeRate(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    source = models.CharField(max_length=50, default='BCV')
+    rate = models.DecimalField(max_digits=15, decimal_places=4)
+    date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_exchangerate'
+
+class BankAccount(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='bank_accounts')
+    name = models.CharField(max_length=100)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=30)
+    currency = models.CharField(max_length=3, choices=Tenant.CURRENCY_CHOICES, default='VES')
+    initial_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    current_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_bankaccount'
+
+class Fund(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='funds')
+    name = models.CharField(max_length=100)
+    fund_type = models.CharField(max_length=20, default='RESERVE')
+    currency = models.CharField(max_length=3, choices=Tenant.CURRENCY_CHOICES, default='USD')
+    balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_fund'
+"""
+
+CORE_ADMIN = """from django.contrib import admin
+from .models import Tenant, Domain, BankAccount, Fund, ExchangeRate
+
+@admin.register(Tenant)
+class TenantAdmin(admin.ModelAdmin):
+    list_display = ('name', 'schema_name', 'fiscal_id', 'is_active')
+
+@admin.register(BankAccount)
+class BankAccountAdmin(admin.ModelAdmin):
+    list_display = ('name', 'bank_name', 'tenant')
+
+@admin.register(Fund)
+class FundAdmin(admin.ModelAdmin):
+    list_display = ('name', 'balance', 'tenant')
+
+@admin.register(ExchangeRate)
+class ExchangeRateAdmin(admin.ModelAdmin):
+    list_display = ('date', 'rate', 'source')
+"""
+
+# ---------------------------------------------------------
+# 2. CONTENIDO NUEVO PARA BILLING (Negocio SaaS)
+# ---------------------------------------------------------
+BILLING_MODELS = """import uuid
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from core.models import SoftDeleteModel
+
+class PlanCatalog(SoftDeleteModel):
+    UNIT_TYPE_CHOICES = [('APARTMENT', 'Por Apartamento'), ('BUILDING', 'Por Edificio')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    is_active = models.BooleanField(default=True)
+    unit_type = models.CharField(max_length=20, choices=UNIT_TYPE_CHOICES, default='APARTMENT')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'billing_plancatalog'
+        verbose_name = 'Catálogo de Planes'
+    def __str__(self):
+        return self.name
+
+class PlanTier(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    plan = models.ForeignKey(PlanCatalog, on_delete=models.CASCADE, related_name='tiers')
+    min_qty = models.IntegerField()
+    max_qty = models.IntegerField()
+    unit_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'billing_plantier'
+    def __str__(self):
+        return f"{self.plan.name}: {self.min_qty}-{self.max_qty}"
+
+class Subscription(SoftDeleteModel):
+    STATUS_CHOICES = [('ACTIVE', 'Activa'), ('PAST_DUE', 'Pendiente'), ('CANCELED', 'Cancelada')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    # ENLACE CRÍTICO: Referencia lazy a 'core.Tenant'
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='billing_subscriptions')
+    
+    plan_tier = models.ForeignKey(PlanTier, on_delete=models.PROTECT)
+    unit_count = models.IntegerField()
+    monthly_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')
+    next_billing_date = models.DateField()
+    is_latest = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'billing_subscription'
+"""
+
+BILLING_ADMIN = """from django.contrib import admin
+from .models import PlanCatalog, PlanTier, Subscription
+
+@admin.register(PlanCatalog)
+class PlanCatalogAdmin(admin.ModelAdmin):
+    list_display = ('name', 'unit_type', 'is_active')
+
+@admin.register(PlanTier)
+class PlanTierAdmin(admin.ModelAdmin):
+    list_display = ('plan', 'min_qty', 'max_qty', 'unit_price_usd')
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('tenant', 'status', 'monthly_price_usd', 'next_billing_date')
+"""
+
+BILLING_APPS = """from django.apps import AppConfig
+
+class BillingConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'billing'
+
+    def ready(self):
+        import billing.signals
+"""
+
+BILLING_SIGNALS = """from django.db.models.signals import post_save
+from django.dispatch import receiver
+from core.models import Tenant
+from .models import Subscription, PlanTier
+from django.utils import timezone
+from datetime import timedelta
+
+@receiver(post_save, sender=Tenant)
+def create_default_subscription(sender, instance, created, **kwargs):
+    if created:
+        print(f"💰 BILLING: Detectado nuevo cliente {instance.name}, asignando plan...")
+        first_plan = PlanTier.objects.first()
+        if first_plan:
+            Subscription.objects.create(
+                tenant=instance,
+                plan_tier=first_plan,
+                unit_count=0,
+                monthly_price_usd=first_plan.unit_price_usd,
+                next_billing_date=timezone.now().date() + timedelta(days=30),
+                status='ACTIVE'
+            )
+"""
+
+# ---------------------------------------------------------
+# 3. EJECUCIÓN DE LA CIRUGÍA
+# ---------------------------------------------------------
+def write_file(path, content):
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print(f"✅ Archivo actualizado: {path}")
+
+def clean_migrations(app_name):
+    migration_path = os.path.join(BACKEND_DIR, app_name, 'migrations')
+    if os.path.exists(migration_path):
+        for filename in os.listdir(migration_path):
+            if filename != '__init__.py':
+                os.remove(os.path.join(migration_path, filename))
+        print(f"🧹 Migraciones limpiadas para: {app_name}")
+
+def run_refactor():
+    print("🚀 INICIANDO REFACTORIZACIÓN A ARQUITECTURA PURISTA...")
+    
+    # 1. Core
+    write_file(os.path.join(BACKEND_DIR, 'core', 'models.py'), CORE_MODELS)
+    write_file(os.path.join(BACKEND_DIR, 'core', 'admin.py'), CORE_ADMIN)
+    clean_migrations('core')
+
+    # 2. Billing
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'models.py'), BILLING_MODELS)
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'admin.py'), BILLING_ADMIN)
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'apps.py'), BILLING_APPS)
+    write_file(os.path.join(BACKEND_DIR, 'billing', 'signals.py'), BILLING_SIGNALS)
+    clean_migrations('billing')
+    
+    # 3. Users (Solo limpieza de migraciones por seguridad)
+    clean_migrations('users')
+
+    print("\n🏁 REFACTORIZACIÓN DE CÓDIGO COMPLETADA.")
+    print("⚠️  AHORA DEBES EJECUTAR ESTOS COMANDOS EN TU TERMINAL:")
+    print("   1. docker-compose down -v")
+    print("   2. docker-compose up -d --build")
+    print("   3. docker-compose exec backend python manage.py makemigrations core billing users")
+    print("   4. docker-compose exec backend python manage.py migrate_schemas --shared")
+    print("   5. docker-compose exec backend python manage.py createsuperuser")
+
+if __name__ == "__main__":
+    run_refactor()
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\.docker\nginx\default.conf
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\Dockerfile
+--------------------------------------------------------------------------------
+# ETAPA 1: BASE DE PYTHON 3.11
+FROM python:3.11-slim
+
+# Variables de entorno
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Directorio de trabajo
+WORKDIR /app
+
+# Instalación de dependencias del sistema (Solo lo necesario para compilar)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalación de librerías Python
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copia del código fuente
+COPY . /app/
+
+# --- SOLUCIÓN ESTRUCTURAL: ENTRYPOINT EN PYTHON ---
+# Creamos un script de Python que espera a la DB y ejecuta el comando.
+# Esto es inmune a los errores de formato de texto de Windows/Linux.
+RUN echo "import os, socket, sys, time" > /entrypoint.py && \
+    echo "host = os.environ.get('SQL_HOST', 'db')" >> /entrypoint.py && \
+    echo "port = int(os.environ.get('SQL_PORT', '5432'))" >> /entrypoint.py && \
+    echo "print(f'Verificando Base de Datos {host}:{port}...')" >> /entrypoint.py && \
+    echo "while True:" >> /entrypoint.py && \
+    echo "    try:" >> /entrypoint.py && \
+    echo "        with socket.create_connection((host, port), timeout=1): pass" >> /entrypoint.py && \
+    echo "        break" >> /entrypoint.py && \
+    echo "    except OSError:" >> /entrypoint.py && \
+    echo "        time.sleep(0.5)" >> /entrypoint.py && \
+    echo "print('¡Conexión Exitosa! Ejecutando comando...')" >> /entrypoint.py && \
+    echo "if len(sys.argv) > 1:" >> /entrypoint.py && \
+    echo "    os.execvp(sys.argv[1], sys.argv[1:])" >> /entrypoint.py
+
+# Usamos Python como el ejecutable del entrypoint
+ENTRYPOINT ["python", "/entrypoint.py"]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\entrypoint.sh
+--------------------------------------------------------------------------------
+#!/bin/sh
+
+if [ "$DATABASE" = "postgres" ]
+then
+    echo "Espérame... verificando si PostgreSQL ($SQL_HOST:$SQL_PORT) está despierto..."
+
+    while ! nc -z $SQL_HOST $SQL_PORT; do
+      sleep 0.1
+    done
+
+    echo "¡PostgreSQL inició correctamente!"
+fi
+
+exec "$@"
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\manage.py
+--------------------------------------------------------------------------------
+#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
+
+def main():
+    """Run administrative tasks."""
+    # Aquí le decimos a Django dónde está tu configuración
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+
+if __name__ == '__main__':
+    main()
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\requirements.txt
+--------------------------------------------------------------------------------
+# --- Core Framework & API ---
+Django>=5.0,<5.1
+djangorestframework>=3.14
+django-cors-headers
+
+# --- Multi-Tenancy (Núcleo del Negocio) ---
+django-tenants>=3.6.0
+
+# --- Base de Datos & Servidor ---
+psycopg2-binary
+gunicorn
+python-dotenv
+dj-database-url>=2.1.0
+
+# --- IA y Vectores (Concierge AI) ---
+pgvector>=0.2.0
+
+# --- IoT & Hardware (Mosquitto) ---
+paho-mqtt>=1.6.1
+
+# --- Finanzas & Moneda ---
+django-money>=3.0.0
+
+# --- Seguridad & Cifrado ---
+cryptography>=41.0.0
+
+# --- Tareas Asíncronas & Colas ---
+celery>=5.3.0
+redis>=5.0.0
+
+# --- Archivos Multimedia ---
+Pillow>=10.0.0
+django-storages
+boto3
+
+# --- Utilidades Extra ---
+django-filter>=23.0
+
+# --- Documentación & Monitoreo ---
+drf-spectacular
+sentry-sdk
+
+djangorestframework
+django-cors-headers
+djoser
+djangorestframework-simplejwt
+social-auth-app-django
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\apps\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\apps\ai_assistant\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\apps\core\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\apps\finance\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\apps\legal\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\apps\operations\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\apps\social\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\admin.py
+--------------------------------------------------------------------------------
+from django.contrib import admin
+from .models import PlanCatalog, PlanTier, Subscription, SaaSPayment
+
+@admin.register(PlanCatalog)
+class PlanCatalogAdmin(admin.ModelAdmin):
+    list_display = ('name', 'unit_type', 'is_active')
+
+@admin.register(PlanTier)
+class PlanTierAdmin(admin.ModelAdmin):
+    list_display = ('plan', 'min_qty', 'max_qty', 'unit_price_usd')
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('tenant', 'status', 'monthly_price_usd', 'next_billing_date')
+
+@admin.register(SaaSPayment)
+class SaaSPaymentAdmin(admin.ModelAdmin):
+    list_display = ('tenant', 'amount', 'currency', 'payment_method', 'date_paid')
+    list_filter = ('payment_method', 'currency', 'date_paid')
+    search_fields = ('tenant__name', 'reference_code')
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\apps.py
+--------------------------------------------------------------------------------
+from django.apps import AppConfig
+
+class BillingConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'billing'
+
+    def ready(self):
+         import billing.signals
+        
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\models.py
+--------------------------------------------------------------------------------
+import uuid
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from core.models import SoftDeleteModel
+
+class PlanCatalog(SoftDeleteModel):
+    UNIT_TYPE_CHOICES = [('APARTMENT', 'Por Apartamento'), ('BUILDING', 'Por Edificio')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    is_active = models.BooleanField(default=True)
+    unit_type = models.CharField(max_length=20, choices=UNIT_TYPE_CHOICES, default='APARTMENT')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'billing_plancatalog'
+        verbose_name = 'Catálogo de Planes'
+        verbose_name_plural = 'Catálogo de Planes'
+
+    def __str__(self):
+        return self.name
+
+class PlanTier(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    plan = models.ForeignKey(PlanCatalog, on_delete=models.CASCADE, related_name='tiers')
+    min_qty = models.IntegerField()
+    max_qty = models.IntegerField()
+    unit_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'billing_plantier'
+
+    def __str__(self):
+        return f"{self.plan.name}: {self.min_qty}-{self.max_qty}"
+
+class Subscription(SoftDeleteModel):
+    STATUS_CHOICES = [('ACTIVE', 'Activa'), ('PAST_DUE', 'Pendiente'), ('CANCELED', 'Cancelada')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='billing_subscriptions')
+    plan_tier = models.ForeignKey(PlanTier, on_delete=models.PROTECT)
+    unit_count = models.IntegerField()
+    monthly_price_usd = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')
+    next_billing_date = models.DateField()
+    is_latest = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'billing_subscription'
+
+# --- AHORA ESTÁ FUERA DE SUBSCRIPTION (AL RAS DE LA IZQUIERDA) ---
+class SaaSPayment(models.Model):
+    """
+    Registro de Pagos RECIBIDOS por el SaaS (Tu dinero).
+    """
+    PAYMENT_METHOD_CHOICES = [
+        ('ZELLE', 'Zelle'),
+        ('PAGO_MOVIL', 'Pago Móvil / C2P'),
+        ('TRANSFERENCIA', 'Transferencia Bancaria'),
+        ('EFECTIVO', 'Efectivo USD'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='saas_payments')
+    subscription = models.ForeignKey(Subscription, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=3, default='USD')
+    reference_code = models.CharField(max_length=50, blank=True, help_text="Ref bancaria")
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
+    
+    date_paid = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Pago Recibido (SaaS)"
+        verbose_name_plural = "Pagos Recibidos (SaaS)"
+
+    def __str__(self):
+        return f"Pago {self.amount}$ - {self.tenant.name}"
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\signals.py
+--------------------------------------------------------------------------------
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from core.models import Tenant
+from .models import Subscription, PlanTier
+from django.utils import timezone
+from datetime import timedelta
+
+@receiver(post_save, sender=Tenant)
+def create_default_subscription(sender, instance, created, **kwargs):
+    if created:
+        print(f"💰 BILLING: Detectado nuevo cliente {instance.name}, asignando plan...")
+        first_plan = PlanTier.objects.first()
+        if first_plan:
+            Subscription.objects.create(
+                tenant=instance,
+                plan_tier=first_plan,
+                unit_count=0,
+                monthly_price_usd=first_plan.unit_price_usd,
+                next_billing_date=timezone.now().date() + timedelta(days=30),
+                status='ACTIVE'
+            )
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\tests.py
+--------------------------------------------------------------------------------
+from django.test import TestCase
+
+# Create your tests here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\views.py
+--------------------------------------------------------------------------------
+from django.shortcuts import render
+
+# Create your views here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\migrations\0001_initial.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 14:27
+
+import django.db.models.deletion
+import uuid
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+        ('core', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='PlanCatalog',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('name', models.CharField(max_length=50)),
+                ('is_active', models.BooleanField(default=True)),
+                ('unit_type', models.CharField(choices=[('APARTMENT', 'Por Apartamento'), ('BUILDING', 'Por Edificio')], default='APARTMENT', max_length=20)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+            ],
+            options={
+                'verbose_name': 'Catálogo de Planes',
+                'db_table': 'billing_plancatalog',
+            },
+        ),
+        migrations.CreateModel(
+            name='PlanTier',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('min_qty', models.IntegerField()),
+                ('max_qty', models.IntegerField()),
+                ('unit_price_usd', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+                ('plan', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tiers', to='billing.plancatalog')),
+            ],
+            options={
+                'db_table': 'billing_plantier',
+            },
+        ),
+        migrations.CreateModel(
+            name='Subscription',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('unit_count', models.IntegerField()),
+                ('monthly_price_usd', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('status', models.CharField(choices=[('ACTIVE', 'Activa'), ('PAST_DUE', 'Pendiente'), ('CANCELED', 'Cancelada')], default='ACTIVE', max_length=20)),
+                ('next_billing_date', models.DateField()),
+                ('is_latest', models.BooleanField(default=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+                ('plan_tier', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='billing.plantier')),
+                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='billing_subscriptions', to='core.tenant')),
+            ],
+            options={
+                'db_table': 'billing_subscription',
+            },
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\migrations\0002_saaspayment.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 18:25
+
+import django.db.models.deletion
+import uuid
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('billing', '0001_initial'),
+        ('core', '0002_alter_bankaccount_options_and_more'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='SaaSPayment',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('amount', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('currency', models.CharField(default='USD', max_length=3)),
+                ('reference_code', models.CharField(blank=True, help_text='Ref bancaria', max_length=50)),
+                ('payment_method', models.CharField(choices=[('ZELLE', 'Zelle'), ('PAGO_MOVIL', 'Pago Móvil / C2P'), ('TRANSFERENCIA', 'Transferencia Bancaria'), ('EFECTIVO', 'Efectivo USD')], max_length=20)),
+                ('date_paid', models.DateTimeField(auto_now_add=True)),
+                ('notes', models.TextField(blank=True)),
+                ('subscription', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='billing.subscription')),
+                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='saas_payments', to='core.tenant')),
+            ],
+            options={
+                'verbose_name': 'Pago Recibido (SaaS)',
+                'verbose_name_plural': 'Pagos Recibidos (SaaS)',
+            },
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\migrations\0003_alter_plancatalog_options.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 20:47
+
+from django.db import migrations
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('billing', '0002_saaspayment'),
+    ]
+
+    operations = [
+        migrations.AlterModelOptions(
+            name='plancatalog',
+            options={'verbose_name': 'Catálogo de Planes', 'verbose_name_plural': 'Catálogo de Planes'},
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\billing\migrations\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\config\asgi.py
+--------------------------------------------------------------------------------
+import os
+
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+application = get_asgi_application()
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\config\celery.py
+--------------------------------------------------------------------------------
+import os
+from celery import Celery
+
+# Establecer el módulo de configuración predeterminado de Django para el programa 'celery'.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+app = Celery('config')
+
+# Usar una cadena aquí significa que el worker no tiene que serializar
+# el objeto de configuración a los procesos hijos.
+# - namespace='CELERY' significa que todas las claves de configuración relacionadas con celery
+#   deben tener el prefijo 'CELERY_'.
+app.config_from_object('django.conf:settings', namespace='CELERY')
+
+# Cargar módulos de tareas de todas las aplicaciones de Django registradas.
+app.autodiscover_tasks()
+
+@app.task(bind=True, ignore_result=True)
+def debug_task(self):
+    print(f'Request: {self.request!r}')
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\config\settings.py
+--------------------------------------------------------------------------------
+from pathlib import Path
+import os
+import dj_database_url
+from kombu import Queue, Exchange
+from datetime import timedelta
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# SEGURIDAD: Leer claves de entorno o usar valores por defecto para desarrollo
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-clave-desarrollo')
+FERNET_KEY = os.environ.get('FERNET_KEY', '')
+
+# IMPORTANTE: En Docker, DEBUG debe ser True para ver errores
+DEBUG = True
+
+# Permitir conexiones desde cualquier lugar (necesario para Docker)
+ALLOWED_HOSTS = ['*']
+
+# ==========================================
+# 1. CONFIGURACIÓN DE APPS
+# ==========================================
+
+# --- APPS COMPARTIDAS (Public Schema) ---
+SHARED_APPS = (
+    'django_tenants',  # Obligatorio primero
+    'core',            # Tu app principal (Tenant y Domain)
+    'billing',
+
+    # Apps nativas de Django
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    
+    # App de Usuarios (Global)
+    'users', 
+    
+    # --- LIBRERÍAS API & UTILIDADES ---
+    'rest_framework',              
+    'rest_framework_simplejwt',
+    'corsheaders',
+    'djoser',
+    'social_django', # Para Google Login
+    'storages',      # Para MinIO/S3
+    'django_filters',
+)
+
+# --- APPS DE INQUILINOS (Tenant Schemas) ---
+TENANT_APPS = (
+    'django.contrib.contenttypes',
+    'users',      # Datos específicos del usuario en el condominio
+    'properties', # Inmuebles
+)
+
+# --- FÓRMULA MATEMÁTICA ANTI-DUPLICADOS ---
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+# Define quién es el modelo de Tenant y de Dominio
+# CORRECCIÓN: Tu modelo se llama Tenant, no Client.
+TENANT_MODEL = "core.Tenant" 
+TENANT_DOMAIN_MODEL = "core.Domain"
+
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
+
+# ==========================================
+# 2. MIDDLEWARE (ORDEN CRÍTICO)
+# ==========================================
+MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware', # SIEMPRE PRIMERO
+    'corsheaders.middleware.CorsMiddleware',               # SIEMPRE SEGUNDO
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Social Auth Middleware (Opcional, pero recomendado si da problemas)
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+]
+
+# Configuración de URLS
+ROOT_URLCONF = 'config.urls'
+PUBLIC_SCHEMA_URLCONF = 'config.urls' # Usamos el mismo para simplificar por ahora
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends', # Necesario para Social Auth
+                'social_django.context_processors.login_redirect',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'config.wsgi.application'
+
+# ==========================================
+# 3. BASE DE DATOS (PostgreSQL)
+# ==========================================
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': os.environ.get('SQL_DATABASE', 'mascondominios_db'),
+        'USER': os.environ.get('SQL_USER', 'admin_db'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', 'seguridad_local_dev'),
+        'HOST': os.environ.get('SQL_HOST', 'db'),
+        'PORT': os.environ.get('SQL_PORT', '5432'),
+    }
+}
+
+# ==========================================
+# 4. AUTENTICACIÓN & SOCIAL AUTH (GOOGLE)
+# ==========================================
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',  # Login con Google
+    'django.contrib.auth.backends.ModelBackend', # Login tradicional
+)
+
+# Tus credenciales de Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '746493348796-6k54g13u3lcumfcu6rdlpc1htm0e5k63.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+# Configuraciones de Social Django
+SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = False # False porque es localhost
+SOCIAL_AUTH_USER_MODEL = 'users.User' # Vincula con tu usuario personalizado
+
+# ==========================================
+# 5. API REST, JWT & DJOSER (LA SOLUCIÓN)
+# ==========================================
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+# AQUÍ ESTABA EL ERROR: CONFIGURACIÓN UNIFICADA DE DJOSER
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserCreateSerializer',
+        'current_user': 'users.serializers.UserSerializer',
+    },
+    # Configuración Social
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        'http://localhost:8000/auth/google/callback/',
+    ],
+}
+
+# ==========================================
+# 6. CELERY & REDIS
+# ==========================================
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 3600,
+    'max_connections': 20,
+    'socket_timeout': 30,
+    'socket_keepalive': True,
+}
+CELERY_TASK_ACKS_LATE = True
+CELERY_TASK_REJECT_ON_WORKER_LOST = True 
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+    Queue('billing', Exchange('billing'), routing_key='billing'),
+    Queue('notifications', Exchange('notifications'), routing_key='notifications'),
+)
+CELERY_TASK_ROUTES = {
+    'billing.tasks.*': {'queue': 'billing'},
+    'notifications.tasks.*': {'queue': 'notifications'},
+    'core.tasks.*': {'queue': 'default'},
+}
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'America/Caracas'
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 500
+
+# ==========================================
+# 7. OTROS (Passwords, Idioma, Static)
+# ==========================================
+AUTH_PASSWORD_VALIDATORS = [
+    { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
+]
+AUTH_USER_MODEL = 'users.User'
+
+LANGUAGE_CODE = 'es-ve'
+TIME_ZONE = 'America/Caracas'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuración MinIO / S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'minio_admin')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'minio_secret_key')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'mascondominios-media')
+AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL', 'http://minio:9000')
+AWS_S3_USE_SSL = False
+AWS_QUERYSTRING_AUTH = True 
+AWS_S3_FILE_OVERWRITE = False
+
+# Configuración CORS
+CORS_ALLOW_ALL_ORIGINS = True
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\config\urls.py
+--------------------------------------------------------------------------------
+from django.contrib import admin
+from django.urls import path, include
+from users.views import GoogleLoginCallback
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    
+    # Rutas para el manejo de Tenants (lo que probamos antes)
+    path('api/core/', include('core.urls')),
+
+    # --- SISTEMA DE AUTENTICACIÓN ---
+    # Rutas básicas: registro de usuario, cambio de clave, etc.
+    path('api/auth/', include('djoser.urls')),
+    
+    # Rutas JWT: Login y Refresco de tokens (el "pasaporte")
+    path('api/auth/', include('djoser.urls.jwt')),
+    
+    # Rutas Social: Aquí es donde Google enviará la respuesta
+    path('api/auth/', include('djoser.social.urls')),
+    path('auth/google/callback/', GoogleLoginCallback.as_view(), name='google_callback'),
+    
+]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\config\urls_public.py
+--------------------------------------------------------------------------------
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    
+    # --- API AUTH (Usuarios) ---
+    # Esto habilita: /auth/users/ (registro), /auth/jwt/create/ (login), etc.
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.jwt')),
+    path('api/auth/', include('djoser.social.urls')),
+
+    # --- API CORE (Condominios) ---
+    # Esto habilita: /api/core/tenants/ (crear condominio)
+    path('api/core/', include('core.urls')),
+]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\config\wsgi.py
+--------------------------------------------------------------------------------
+import os
+
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+application = get_wsgi_application()
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\config\__init__.py
+--------------------------------------------------------------------------------
+from .celery import app as celery_app
+
+__all__ = ('celery_app',)
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\admin.py
+--------------------------------------------------------------------------------
+from django.contrib import admin
+from .models import Tenant, Domain, BankAccount, ExchangeRate
+
+@admin.register(Tenant)
+class TenantAdmin(admin.ModelAdmin):
+    list_display = ('name', 'schema_name', 'fiscal_id', 'is_active')
+
+@admin.register(BankAccount)
+class BankAccountAdmin(admin.ModelAdmin):
+
+    list_display = ('bank_name', 'account_number', 'currency', 'is_active')
+
+@admin.register(ExchangeRate)
+class ExchangeRateAdmin(admin.ModelAdmin):
+    list_display = ('date', 'rate', 'source')
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\apps.py
+--------------------------------------------------------------------------------
+from django.apps import AppConfig
+
+class CoreConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'core'
+
+    def ready(self):
+        # IMPORTANTE: Aquí se conectan los disparadores (Signals)
+        import core.signals
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\models.py
+--------------------------------------------------------------------------------
+import uuid
+from django.db import models
+from django_tenants.models import TenantMixin, DomainMixin
+from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
+from django.utils.text import slugify
+
+class SoftDeleteManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted_at__isnull=True)
+
+class SoftDeleteModel(models.Model):
+    deleted_at = models.DateTimeField(blank=True, null=True, editable=False)
+    objects = SoftDeleteManager()
+    all_objects = models.Manager()
+
+    def delete(self, **kwargs):
+        from django.utils import timezone
+        self.deleted_at = timezone.now()
+        self.save()
+
+    class Meta:
+        abstract = True
+
+def tenant_directory_path(instance, filename):
+    tenant_id = getattr(instance, 'tenant_id', 'shared')
+    return f'tenant_{tenant_id}/{instance.__class__.__name__.lower()}/{filename}'
+
+class FileModel(models.Model):
+    attachment = models.FileField(upload_to=tenant_directory_path, null=True, blank=True)
+    class Meta:
+        abstract = True
+
+class Tenant(TenantMixin, SoftDeleteModel):
+    # --- INFRAESTRUCTURA PURA ---
+    CURRENCY_CHOICES = [('USD', 'Dólares (USD)'), ('VES', 'Bolívares (VES)')]
+    STRATEGY_CHOICES = [('USD_INDEXED', 'Indexado'), ('NOMINAL', 'Nominal')]
+    PRORATION_CHOICES = [('ALIQUOT', 'Por Alícuota')]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    schema_name = models.CharField(
+        max_length=63, unique=True, db_index=True, blank=True,
+        validators=[RegexValidator(regex=r'^[a-z0-9]+$')]
+    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='owned_tenants')
+    name = models.CharField(max_length=100)
+    fiscal_id = models.CharField(max_length=20)
+    address = models.TextField()
+    is_active = models.BooleanField(default=True)
+    
+    # Finanzas del EDIFICIO (No del SaaS)
+    base_currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
+    accounting_strategy = models.CharField(max_length=20, choices=STRATEGY_CHOICES, default='USD_INDEXED')
+    proration_strategy = models.CharField(max_length=20, choices=PRORATION_CHOICES, default='ALIQUOT')
+    
+    credit_balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    monthly_interest_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    referred_by_code = models.CharField(max_length=12, blank=True, null=True)
+    ai_config = models.JSONField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    auto_create_schema = True
+
+    class Meta:
+        db_table = 'core_tenant'
+        verbose_name = 'Condominio'
+
+    def save(self, *args, **kwargs):
+        if not self.schema_name and self.name:
+            self.schema_name = slugify(self.name).replace('-', '')
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} ({self.schema_name})"
+
+class Domain(DomainMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    domain = models.CharField(max_length=253, unique=True, db_index=True)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='domains')
+    is_primary = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_domain'
+
+class ExchangeRate(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    source = models.CharField(max_length=50, default='BCV')
+    rate = models.DecimalField(max_digits=15, decimal_places=4)
+    date = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_exchangerate'
+        verbose_name = "Tasa de Cambio"
+        verbose_name_plural = "Tasas de Cambio"
+
+class BankAccount(SoftDeleteModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    tenant = models.ForeignKey('Tenant', on_delete=models.CASCADE, related_name='bank_accounts')
+    name = models.CharField(max_length=100)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=30)
+    currency = models.CharField(max_length=3, choices=Tenant.CURRENCY_CHOICES, default='VES')
+    initial_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    current_balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        db_table = 'core_bankaccount'
+
+class BankAccount(SoftDeleteModel):
+    """
+    Cuentas Bancarias PROPIAS del SaaS (Tu Tesorería).
+    Aquí registras Banesco, Plaza, Zelle donde recibes el dinero.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # <--- AGREGA ESTA LÍNEA
+    bank_name = models.CharField(max_length=50, verbose_name="Banco")
+    account_number = models.CharField(max_length=50, verbose_name="Número de Cuenta")
+    account_holder = models.CharField(max_length=100, verbose_name="Titular")
+    currency = models.CharField(max_length=3, default='USD', verbose_name="Moneda")
+    is_active = models.BooleanField(default=True, verbose_name="Activa")
+    
+    # SoftDeleteModel ya trae created_at, updated_at y deleted_at,
+    # así que no necesitas escribirlos de nuevo aquí.
+
+    class Meta:
+        verbose_name = "Cuenta Bancaria SaaS"
+        verbose_name_plural = "Cuentas Bancarias SaaS"
+
+    def __str__(self):
+        return f"{self.bank_name} - {self.currency}"
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\serializers.py
+--------------------------------------------------------------------------------
+from rest_framework import serializers
+from .models import Tenant, Domain  # <--- CAMBIO: Client por Tenant
+
+class DomainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Domain
+        fields = ('id', 'domain', 'is_primary')
+
+class TenantSerializer(serializers.ModelSerializer):
+    """
+    Este es el 'Traductor' que la Vista está buscando.
+    """
+    domains = DomainSerializer(many=True, read_only=True)
+    domain_name = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = Tenant  # <--- CAMBIO: Client por Tenant
+        fields = ('id', 'schema_name', 'name', 'credit_balance', 'created_at', 'domains', 'domain_name')
+        # Nota: 'paid_until' y 'on_trial' se movieron a Billing, así que los quitamos de aquí por ahora
+        read_only_fields = ('credit_balance', 'created_at', 'schema_name')
+
+    def create(self, validated_data):
+        from django.utils.text import slugify 
+
+        # 1. Sacamos el nombre del dominio enviado desde el formulario
+        domain_part = validated_data.pop('domain_name')
+        
+        # 2. SANITIZACIÓN
+        clean_schema = slugify(domain_part).replace('-', '')
+
+        # 3. Asignamos el nombre al esquema interno
+        validated_data['schema_name'] = clean_schema
+
+        # 4. Crear el registro en la tabla Tenant (Antes Client)
+        tenant = Tenant.objects.create(**validated_data) # <--- CAMBIO
+        
+        # 5. Crear el registro en la tabla Domain (Esto también lo hace el Signal, pero aquí aseguramos el primary)
+        full_domain = f"{clean_schema}.localhost"
+        
+        # Usamos get_or_create por si el Signal ya se nos adelantó
+        Domain.objects.get_or_create(
+            domain=full_domain, 
+            defaults={'tenant': tenant, 'is_primary': True}
+        )
+        
+        return tenant
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\signals.py
+--------------------------------------------------------------------------------
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import Tenant, Domain
+
+# NOTA: Ya no importamos Subscription aquí. Eso lo hace Billing ahora.
+
+@receiver(post_save, sender=Tenant)
+def automatizar_infraestructura_tenant(sender, instance, created, **kwargs):
+    if created:
+        print(f"⚡ [SIGNAL CORE] Creando dominio para: '{instance.name}'")
+        
+        # Generar dominio automático: nombre_esquema.localhost
+        domain_name = f"{instance.schema_name}.localhost"
+        
+        Domain.objects.get_or_create(
+            domain=domain_name,
+            defaults={'tenant': instance, 'is_primary': True}
+        )
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\tests.py
+--------------------------------------------------------------------------------
+from django.test import TestCase
+
+# Create your tests here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\urls.py
+--------------------------------------------------------------------------------
+from rest_framework.routers import DefaultRouter
+from .views import TenantViewSet
+
+router = DefaultRouter()
+router.register(r'tenants', TenantViewSet, basename='tenants')
+
+urlpatterns = router.urls
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\views.py
+--------------------------------------------------------------------------------
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .models import Tenant  # <--- CAMBIO: Client por Tenant
+from .serializers import TenantSerializer
+
+class TenantViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar Condominios (Tenants).
+    """
+    queryset = Tenant.objects.all()  # <--- CAMBIO: Client por Tenant
+    serializer_class = TenantSerializer
+
+    def get_permissions(self):
+        """
+        Definimos permisos dinámicos:
+        - Para CREAR (POST): Cualquiera puede entrar (AllowAny) -> Necesario para el Registro.
+        - Para VER/LISTAR: Solo usuarios autenticados (IsAuthenticated).
+        """
+        if self.action == 'create':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\migrations\0001_initial.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 14:27
+
+import django.core.validators
+import django.db.models.deletion
+import uuid
+from django.conf import settings
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='ExchangeRate',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('source', models.CharField(default='BCV', max_length=50)),
+                ('rate', models.DecimalField(decimal_places=4, max_digits=15)),
+                ('date', models.DateTimeField()),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+            ],
+            options={
+                'db_table': 'core_exchangerate',
+            },
+        ),
+        migrations.CreateModel(
+            name='Tenant',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('schema_name', models.CharField(blank=True, db_index=True, max_length=63, unique=True, validators=[django.core.validators.RegexValidator(regex='^[a-z0-9]+$')])),
+                ('name', models.CharField(max_length=100)),
+                ('fiscal_id', models.CharField(max_length=20)),
+                ('address', models.TextField()),
+                ('is_active', models.BooleanField(default=True)),
+                ('base_currency', models.CharField(choices=[('USD', 'Dólares (USD)'), ('VES', 'Bolívares (VES)')], default='USD', max_length=3)),
+                ('accounting_strategy', models.CharField(choices=[('USD_INDEXED', 'Indexado'), ('NOMINAL', 'Nominal')], default='USD_INDEXED', max_length=20)),
+                ('proration_strategy', models.CharField(choices=[('ALIQUOT', 'Por Alícuota')], default='ALIQUOT', max_length=20)),
+                ('credit_balance', models.DecimalField(decimal_places=2, default=0.0, max_digits=12)),
+                ('monthly_interest_rate', models.DecimalField(decimal_places=2, default=0.0, max_digits=5)),
+                ('referred_by_code', models.CharField(blank=True, max_length=12, null=True)),
+                ('ai_config', models.JSONField(blank=True, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='owned_tenants', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'verbose_name': 'Condominio',
+                'db_table': 'core_tenant',
+            },
+        ),
+        migrations.CreateModel(
+            name='Fund',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('name', models.CharField(max_length=100)),
+                ('fund_type', models.CharField(default='RESERVE', max_length=20)),
+                ('currency', models.CharField(choices=[('USD', 'Dólares (USD)'), ('VES', 'Bolívares (VES)')], default='USD', max_length=3)),
+                ('balance', models.DecimalField(decimal_places=2, default=0.0, max_digits=15)),
+                ('is_active', models.BooleanField(default=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='funds', to='core.tenant')),
+            ],
+            options={
+                'db_table': 'core_fund',
+            },
+        ),
+        migrations.CreateModel(
+            name='Domain',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('domain', models.CharField(db_index=True, max_length=253, unique=True)),
+                ('is_primary', models.BooleanField(default=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='domains', to='core.tenant')),
+            ],
+            options={
+                'db_table': 'core_domain',
+            },
+        ),
+        migrations.CreateModel(
+            name='BankAccount',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('name', models.CharField(max_length=100)),
+                ('bank_name', models.CharField(max_length=100)),
+                ('account_number', models.CharField(max_length=30)),
+                ('currency', models.CharField(choices=[('USD', 'Dólares (USD)'), ('VES', 'Bolívares (VES)')], default='VES', max_length=3)),
+                ('initial_balance', models.DecimalField(decimal_places=2, default=0.0, max_digits=15)),
+                ('current_balance', models.DecimalField(decimal_places=2, default=0.0, max_digits=15)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bank_accounts', to='core.tenant')),
+            ],
+            options={
+                'db_table': 'core_bankaccount',
+            },
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\migrations\0002_alter_bankaccount_options_and_more.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 18:25
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('core', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.AlterModelOptions(
+            name='bankaccount',
+            options={'verbose_name': 'Cuenta Bancaria SaaS', 'verbose_name_plural': 'Cuentas Bancarias SaaS'},
+        ),
+        migrations.RemoveField(
+            model_name='bankaccount',
+            name='created_at',
+        ),
+        migrations.RemoveField(
+            model_name='bankaccount',
+            name='current_balance',
+        ),
+        migrations.RemoveField(
+            model_name='bankaccount',
+            name='initial_balance',
+        ),
+        migrations.RemoveField(
+            model_name='bankaccount',
+            name='name',
+        ),
+        migrations.RemoveField(
+            model_name='bankaccount',
+            name='tenant',
+        ),
+        migrations.RemoveField(
+            model_name='bankaccount',
+            name='updated_at',
+        ),
+        migrations.AddField(
+            model_name='bankaccount',
+            name='account_holder',
+            field=models.CharField(default='ADMIN', max_length=100, verbose_name='Titular'),
+            preserve_default=False,
+        ),
+        migrations.AddField(
+            model_name='bankaccount',
+            name='is_active',
+            field=models.BooleanField(default=True, verbose_name='Activa'),
+        ),
+        migrations.AlterField(
+            model_name='bankaccount',
+            name='account_number',
+            field=models.CharField(max_length=50, verbose_name='Número de Cuenta'),
+        ),
+        migrations.AlterField(
+            model_name='bankaccount',
+            name='bank_name',
+            field=models.CharField(max_length=50, verbose_name='Banco'),
+        ),
+        migrations.AlterField(
+            model_name='bankaccount',
+            name='currency',
+            field=models.CharField(default='USD', max_length=3, verbose_name='Moneda'),
+        ),
+        migrations.AlterField(
+            model_name='bankaccount',
+            name='deleted_at',
+            field=models.DateTimeField(blank=True, editable=False, null=True),
+        ),
+        migrations.AlterModelTable(
+            name='bankaccount',
+            table=None,
+        ),
+        migrations.DeleteModel(
+            name='Fund',
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\migrations\0003_alter_exchangerate_options.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 20:47
+
+from django.db import migrations
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('core', '0002_alter_bankaccount_options_and_more'),
+    ]
+
+    operations = [
+        migrations.AlterModelOptions(
+            name='exchangerate',
+            options={'verbose_name': 'Tasa de Cambio', 'verbose_name_plural': 'Tasas de Cambio'},
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\core\migrations\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\properties\admin.py
+--------------------------------------------------------------------------------
+from django.contrib import admin
+
+# Register your models here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\properties\apps.py
+--------------------------------------------------------------------------------
+from django.apps import AppConfig
+
+
+class PropertiesConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'properties'
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\properties\models.py
+--------------------------------------------------------------------------------
+from django.db import models
+
+# Create your models here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\properties\tests.py
+--------------------------------------------------------------------------------
+from django.test import TestCase
+
+# Create your tests here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\properties\views.py
+--------------------------------------------------------------------------------
+from django.shortcuts import render
+
+# Create your views here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\properties\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\properties\migrations\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\admin.py
+--------------------------------------------------------------------------------
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import User
+
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    model = User
+    # Campos que se verán en la lista principal
+    list_display = ('email', 'first_name', 'last_name', 'profile_type', 'is_staff')
+    list_filter = ('profile_type', 'is_staff', 'is_active')
+    
+    # Configuración de los formularios de edición según DICCIONARIO_DATOS_V2
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Información Personal', {'fields': ('first_name', 'last_name', 'phone_number', 'national_id')}),
+        ('Perfil SaaS', {'fields': ('profile_type', 'referral_code', 'successful_referrals', 'auth_provider')}),
+        ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Fechas Importantes', {'fields': ('last_login', 'date_joined')}),
+    )
+
+    # Configuración para crear usuarios nuevos
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            # AQUÍ AGREGAMOS LOS CAMPOS FALTANTES PARA QUE SALGAN AL CREAR
+            'fields': (
+                'email', 
+                'password', 
+                'first_name', 
+                'last_name', 
+                'phone_number', 
+                'national_id',    # <--- Agregado
+                'profile_type',   # <--- Agregado
+                'referral_code'
+            ),
+        }),
+    )
+    search_fields = ('email', 'national_id')
+    ordering = ('email',)
+
+from .models import TenantProfile
+
+@admin.register(TenantProfile)
+class TenantProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'tenant', 'role', 'unit_number', 'is_active')
+    list_filter = ('role', 'tenant')
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\apps.py
+--------------------------------------------------------------------------------
+from django.apps import AppConfig
+
+
+class UsersConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'users'
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\models.py
+--------------------------------------------------------------------------------
+import uuid
+from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from django.conf import settings
+
+# 1. MANAGER (Lógica de creación de usuarios)
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError(_('El Email es obligatorio'))
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        
+        # Valores por defecto para superusuario
+        extra_fields.setdefault('first_name', 'Admin')
+        extra_fields.setdefault('last_name', 'SaaS')
+        extra_fields.setdefault('phone_number', '+58000000000') 
+        extra_fields.setdefault('profile_type', 'COMPANY')
+        extra_fields.setdefault('referral_code', 'ADMIN-001')
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError(_('Superuser must have is_staff=True.'))
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(_('Superuser must have is_superuser=True.'))
+
+        return self.create_user(email, password, **extra_fields)
+
+# 2. MODELO USER (Tabla 1 - CORE SAAS)
+class User(AbstractBaseUser, PermissionsMixin):
+    """
+    Tabla 1: User
+    Fuente: DICCIONARIO_DATOS_V2
+    Ajustes Quirúrgicos: email(255), profile_type(NN), referral(NN), successful_referrals(Added)
+    """
+    
+    # ENUMS
+    PROFILE_TYPE_CHOICES = [
+        ('INDEPENDENT', 'Administrador Independiente'),
+        ('SELF_MANAGED', 'Junta de Condominio (Autogestión)'),
+        ('COMPANY', 'Empresa Administradora'),
+    ]
+    
+    AUTH_PROVIDER_CHOICES = [
+        ('EMAIL', 'Email'),
+        ('GOOGLE', 'Google'),
+    ]
+
+    # CAMPOS PRINCIPALES
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    # AJUSTE 1: max_length=255 explícito
+    email = models.EmailField(_('email address'), unique=True, db_index=True, max_length=255)
+    
+    first_name = models.CharField(_('first name'), max_length=50)
+    last_name = models.CharField(_('last name'), max_length=50)
+    
+    phone_number = models.CharField(_('phone number'), max_length=20, unique=True)
+    
+    national_id = models.CharField(_('cédula/rif'), max_length=20, blank=True, null=True, db_index=True)
+    
+    # AJUSTE 2: Eliminado null=True, blank=True (Ahora es Not Null según Diccionario)
+    profile_type = models.CharField(
+        max_length=20,
+        choices=PROFILE_TYPE_CHOICES,
+        default='INDEPENDENT' # Se sugiere un default si la BD no acepta nulos, o el frontend debe enviarlo siempre.
+    )
+    
+    # AJUSTE 3: Eliminado null=True, blank=True (Ahora es Not Null según Diccionario)
+    referral_code = models.CharField(max_length=12, unique=True, default="TEMP")
+    
+    # AJUSTE 4: Nuevo campo agregado
+    successful_referrals = models.IntegerField(default=0)
+    
+    # Seguridad
+    auth_provider = models.CharField(
+        max_length=10,
+        choices=AUTH_PROVIDER_CHOICES,
+        default='EMAIL'
+    )
+    
+    # Control de Django
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(default=timezone.now)
+    last_login = models.DateTimeField(blank=True, null=True)
+
+    # Auditoría Obligatoria
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+        db_table = 'users_user'
+
+    def __str__(self):
+        return self.email
+
+class TenantProfile(models.Model):
+    """
+    Perfil Local (Rol en un Edificio).
+    Define qué es el usuario DENTRO de un condominio específico.
+    """
+    ROLE_CHOICES = [
+        ('ADMIN', 'Administrador Global'),
+        ('OWNER', 'Propietario'),
+        ('RESIDENT', 'Residente (Inquilino)'),
+        ('STAFF', 'Personal / Vigilancia'),
+        ('ACCOUNTANT', 'Contador'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # Vincula al Usuario Global
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tenant_profiles')
+    # Vincula al Edificio
+    tenant = models.ForeignKey('core.Tenant', on_delete=models.CASCADE, related_name='profiles')
+    
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='RESIDENT')
+    unit_number = models.CharField(max_length=20, blank=True, help_text="Apto 5B, Local 2")
+    
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'tenant') 
+        verbose_name = "Perfil de Condominio"
+        verbose_name_plural = "Perfiles de Condominio"
+
+    def __str__(self):
+        return f"{self.user.email} -> {self.role} en {self.tenant.name}"
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\serializers.py
+--------------------------------------------------------------------------------
+from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
+from djoser.serializers import UserSerializer as BaseUserSerializer
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserCreateSerializer(BaseUserCreateSerializer):
+    """
+    Se usa cuando alguien se REGISTRA (Sign Up).
+    Heredamos de Djoser para mantener la seguridad de la contraseña,
+    pero agregamos nuestros campos personalizados.
+    """
+    class Meta(BaseUserCreateSerializer.Meta):
+        model = User
+        # Agregamos los campos que definimos en tu modelo User
+        fields = ('id', 'email', 'password', 'first_name', 'last_name', 
+                  'phone_number', 'national_id', 'profile_type', 'referral_code')
+
+class UserSerializer(BaseUserSerializer):
+    """
+    Se usa cuando alguien consulta SU PROPIO PERFIL (Me).
+    Aquí no mostramos la contraseña.
+    """
+    # Campo calculado para mostrar el nombre completo bonito
+    full_name = serializers.SerializerMethodField()
+
+    class Meta(BaseUserSerializer.Meta):
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name', 'full_name',
+                  'phone_number', 'national_id', 'profile_type', 'is_staff')
+        read_only_fields = ('email', 'is_staff')
+
+    def get_full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\tests.py
+--------------------------------------------------------------------------------
+from django.test import TestCase
+
+# Create your tests here.
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\views.py
+--------------------------------------------------------------------------------
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+import requests
+
+class GoogleLoginCallback(APIView):
+    """
+    TRAFFIC CONTROLLER:
+    Recibe el código de Google, lo canjea por un JWT y decide el destino.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        code = request.GET.get('code')
+        state = request.GET.get('state')
+
+        if not code or not state:
+            return Response({'error': 'Faltan credenciales de Google'}, status=400)
+
+        # 1. URL interna para canjear el código por el Token
+        token_url = "http://localhost:8000/api/auth/o/google-oauth2/"
+        
+        # 2. Datos para el canje
+        data = {
+            'code': code,
+            'state': state,
+        }
+
+        try:
+            # --- AQUÍ ESTÁ EL TRUCO ---
+            # Pasamos las 'cookies' del navegador a la petición interna.
+            # Así el backend sabe que somos nosotros y encuentra el 'state'.
+            response = requests.post(token_url, data=data, cookies=request.COOKIES)
+            
+            # 4. Retornamos la respuesta (Tus Tokens o el error real)
+            return Response(response.json(), status=response.status_code)
+            
+        except Exception as e:
+            return Response({'error': f'Error de conexión interna: {str(e)}'}, status=500)
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\migrations\0001_initial.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 14:27
+
+import django.utils.timezone
+import uuid
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+        ('auth', '0012_alter_user_first_name_max_length'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='User',
+            fields=[
+                ('password', models.CharField(max_length=128, verbose_name='password')),
+                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('email', models.EmailField(db_index=True, max_length=254, unique=True, verbose_name='email address')),
+                ('first_name', models.CharField(max_length=50, verbose_name='first name')),
+                ('last_name', models.CharField(max_length=50, verbose_name='last name')),
+                ('phone_number', models.CharField(max_length=20, unique=True, verbose_name='phone number')),
+                ('national_id', models.CharField(blank=True, db_index=True, max_length=20, null=True, verbose_name='cédula/rif')),
+                ('profile_type', models.CharField(blank=True, choices=[('INDEPENDENT', 'Administrador Independiente'), ('SELF_MANAGED', 'Junta de Condominio (Autogestión)'), ('COMPANY', 'Empresa Administradora')], max_length=20, null=True)),
+                ('referral_code', models.CharField(blank=True, max_length=12, null=True, unique=True)),
+                ('auth_provider', models.CharField(choices=[('EMAIL', 'Email'), ('GOOGLE', 'Google')], default='EMAIL', max_length=10)),
+                ('is_staff', models.BooleanField(default=False)),
+                ('is_active', models.BooleanField(default=True)),
+                ('date_joined', models.DateTimeField(default=django.utils.timezone.now)),
+                ('last_login', models.DateTimeField(blank=True, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('deleted_at', models.DateTimeField(blank=True, null=True)),
+                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
+                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
+            ],
+            options={
+                'verbose_name': 'user',
+                'verbose_name_plural': 'users',
+                'db_table': 'users_user',
+            },
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\migrations\0002_tenantprofile.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 18:25
+
+import django.db.models.deletion
+import uuid
+from django.conf import settings
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('core', '0002_alter_bankaccount_options_and_more'),
+        ('users', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='TenantProfile',
+            fields=[
+                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('role', models.CharField(choices=[('ADMIN', 'Administrador Global'), ('OWNER', 'Propietario'), ('RESIDENT', 'Residente (Inquilino)'), ('STAFF', 'Personal / Vigilancia'), ('ACCOUNTANT', 'Contador')], default='RESIDENT', max_length=20)),
+                ('unit_number', models.CharField(blank=True, help_text='Apto 5B, Local 2', max_length=20)),
+                ('is_active', models.BooleanField(default=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='profiles', to='core.tenant')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tenant_profiles', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'verbose_name': 'Perfil de Condominio',
+                'verbose_name_plural': 'Perfiles de Condominio',
+                'unique_together': {('user', 'tenant')},
+            },
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\migrations\0003_user_successful_referrals_alter_user_email_and_more.py
+--------------------------------------------------------------------------------
+# Generated by Django 5.0.14 on 2026-01-28 20:59
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('users', '0002_tenantprofile'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='user',
+            name='successful_referrals',
+            field=models.IntegerField(default=0),
+        ),
+        migrations.AlterField(
+            model_name='user',
+            name='email',
+            field=models.EmailField(db_index=True, max_length=255, unique=True, verbose_name='email address'),
+        ),
+        migrations.AlterField(
+            model_name='user',
+            name='profile_type',
+            field=models.CharField(choices=[('INDEPENDENT', 'Administrador Independiente'), ('SELF_MANAGED', 'Junta de Condominio (Autogestión)'), ('COMPANY', 'Empresa Administradora')], default='INDEPENDENT', max_length=20),
+        ),
+        migrations.AlterField(
+            model_name='user',
+            name='referral_code',
+            field=models.CharField(default='TEMP', max_length=12, unique=True),
+        ),
+    ]
+
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\backend\users\migrations\__init__.py
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\frontend-saas\.env
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\frontend-saas\Dockerfile
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\frontend-saas\package.json
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\frontend-saas\vite.config.js
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\frontend-saas\src\App.jsx
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\frontend-saas\src\main.jsx
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\landing-page\Dockerfile
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\landing-page\package.json
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\mobile-app\app.json
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\mobile-app\package.json
+--------------------------------------------------------------------------------
+[ARCHIVO VACÍO]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\mosquitto\config\mosquitto.conf
+--------------------------------------------------------------------------------
+persistence true
+persistence_location /mosquitto/data/
+log_dest file /mosquitto/log/mosquitto.log
+
+# Puerto estándar MQTT (Para sensores y Backend)
+listener 1883
+allow_anonymous true
+
+# Puerto WebSockets (Para Frontend en el futuro)
+listener 9001
+protocol websockets
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\whatsapp-gateway\Dockerfile
+--------------------------------------------------------------------------------
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Instalamos dependencias de sistema mínimas
+RUN apk add --no-cache git
+
+# Copiamos archivos de dependencias
+COPY package*.json ./
+
+# Instalamos dependencias de Node
+RUN npm install --production
+
+# Copiamos el código
+COPY . .
+
+# El servicio correrá en segundo plano escuchando a Redis
+CMD ["node", "index.js"]
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\whatsapp-gateway\index.js
+--------------------------------------------------------------------------------
+// whatsapp-gateway/index.js
+console.log("Microservicio WhatsApp Iniciado - Esperando conexión a Redis...");
+// Mantiene el proceso vivo para que Docker no crea que se murió
+setInterval(() => { }, 10000);
+
+--------------------------------------------------------------------------------
+RUTA: mascondominios-root\whatsapp-gateway\package.json
+--------------------------------------------------------------------------------
+{
+    "name": "mascondominios-whatsapp",
+    "version": "1.0.0",
+    "description": "Microservicio de Mensajería WhatsApp Multi-Tenant",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "ioredis": "^5.3.0",
+        "winston": "^3.10.0"
+    }
+}
